@@ -20,6 +20,7 @@ func main(){
 	app := gin.Default()
 	app.GET("/",getVersion)
 	app.GET("/saleorder", ctrl.GetSaleorder)
+	app.POST("/saleorder", ctrl.PostSaleorder)
 	app.Run(":8000")
 
 }

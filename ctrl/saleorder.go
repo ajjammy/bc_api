@@ -14,11 +14,15 @@ func GetSaleorder(c *gin.Context){
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
 	fmt.Println("call so.GetByDocno :",dbx)
-	ss,err := so.GetByKeyWord("W01-SCV5905-02",dbx)
+	ss,err := so.GetByDocno("W01-SCV5905-0215",dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
 	fmt.Println(ss)
 	c.JSON(http.StatusOK,ss)
 
+}
+
+func PostSaleorder(c *gin.Context){
+c.
 }
