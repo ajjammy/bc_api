@@ -4,26 +4,27 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	m "npdl.co/BC_API/bean"
-	"npdl.co/BC_API/config"
-	mrq "npdl.co/BC_API/bean/resp"
+	//m "github.com/satit13/bc_api/bean"
+//	"github.com/satit13/bc_api/config"
+	mrq "github.com/satit13/bc_api/bean/resp"
 	_ "github.com/denisenkom/go-mssqldb"
 	//"github.com/jmoiron/sqlx"
+	//"github.com/revel/modules/db/app"
 )
 
 
 func main(){
 	fmt.Println("BC API Project")
 	// 1 = MsSql server , 0 = MySql
-	dsn := config.LoadDSN("config.json",1)
+//	dsn := config.LoadDSN("config.json",1)
 
 	// 1 = MsSql server
-	db := m.NewDB(dsn,1)
-	err := db.Ping()
-	if err != nil {
-		fmt.Println("Error connect database : ",err.Error())
-	}
-	fmt.Println("dsn : " ,dsn)
+	//db := m.NewDB(dsn,1)
+	//err := db.Ping()
+	//if err != nil {
+	//	fmt.Println("Error connect database : ",err.Error())
+	//}
+	//fmt.Println("dsn : " ,dsn)
 	app := gin.Default()
 	app.GET("/",getVersion)
 	app.GET("/saleorder", getSaleorder)
