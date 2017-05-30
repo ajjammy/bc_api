@@ -14,7 +14,7 @@ func GetSaleorder(c *gin.Context){
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
 	fmt.Println("call so.GetByDocno :",dbx)
-	ss,err := so.GetByKeyWord("W01-SCV5905-021",dbx)
+	ss,err := so.GetByKeyWord("W01-SCV5905-02",dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
