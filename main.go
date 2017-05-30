@@ -6,7 +6,7 @@ import (
 	"net/http"
 	//m "github.com/satit13/bc_api/bean"
 //	"github.com/satit13/bc_api/config"
-	 "github.com/mrtomyum/bc_api/ctrl"
+	 "github.com/satit13/bc_api/ctrl"
 	_ "github.com/denisenkom/go-mssqldb"
 	//"github.com/jmoiron/sqlx"
 	//"github.com/revel/modules/db/app"

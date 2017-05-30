@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	so "github.com/mrtomyum/bc_api/bean/resp"
+	so "github.com/satit13/bc_api/bean/resp"
 	"log"
 )
 

@@ -2,8 +2,8 @@ package ctrl
 
 import (
 	"github.com/jmoiron/sqlx"
-	db "github.com/mrtomyum/bc_api/bean"
-	config "github.com/mrtomyum/bc_api/config"
+	db "github.com/satit13/bc_api/bean"
+	config "github.com/satit13/bc_api/config"
 	"log"
 	"fmt"
 )
