@@ -4,6 +4,8 @@ import (
 //"database/sql"
 "log"
 "github.com/jmoiron/sqlx"
+ _ "github.com/denisenkom/go-mssqldb"
+
 )
 
 func NewDB(dsn string,dbType int) (db *sqlx.DB ){
