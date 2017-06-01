@@ -58,6 +58,7 @@ func GetSaleorder(c *gin.Context){
 		c.JSON(http.StatusNotFound, rs)
 	} else {
 		rs.Status = api.SUCCESS
+		rs.Message = "SUCCESS"
 		rs.Data = ss
 		//rs.Link.Self = config.API_HOST + "/v1/users/"
 		c.JSON(http.StatusOK, rs)

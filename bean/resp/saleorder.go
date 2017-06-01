@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 type Saleorder struct {
-	Docno string
-	Arcode string
-	SumOfItemAmount float32
-	DiscountAmount float32
-	BeforeTaxAmount float32
-	TaxAmount float32
-	TotalAmount float32
-	Items  []*Saleordersub
+	Docno string`json:"doc_no"`
+	Arcode string `json:"ar_code"`
+	SumOfItemAmount float32 `json:"sum_of_item_amount"`
+	DiscountAmount float32 `json:"discount_amount"`
+	BeforeTaxAmount float32 `json:"before_tax_amount"`
+	TaxAmount float32 `json:"tax_amount"`
+	TotalAmount float32 `json:"total_amount"`
+	Items  []*Saleordersub `json:"items"`
 }
 
 type Saleordersub struct {
