@@ -19,6 +19,7 @@ type Config struct {
 	DBName string `json:"db_name"`
 	DBUser string `json:"db_user"`
 	DBPass string `json:"db_pass"`
+	DBPort string `json:"port"`
 }
 
 func LoadDSN(fileName string,dbType int) string {
@@ -43,7 +44,7 @@ func LoadDSN(fileName string,dbType int) string {
 		//dsn := "root:mypass@tcp(nava.work:3306)/sys?parseTime=true"
 	}
 	if dbType == 1 {
-		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d", c.DBHost, c.DBUser, c.DBPass, 1433)
+		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s", c.DBHost, c.DBUser, c.DBPass, c.DBPort)
 		//dsn := "root:mypass@tcp(nava.work:3306)/sys?parseTime=true"
 	}
 	log.Println("DSN =", dsn)

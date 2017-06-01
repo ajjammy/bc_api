@@ -12,6 +12,17 @@ type Saleorder struct {
 	BeforeTaxAmount float32
 	TaxAmount float32
 	TotalAmount float32
+	Items  []*Saleordersub
+}
+
+type Saleordersub struct {
+	Docno string
+	Arcode string
+	SumOfItemAmount float32
+	DiscountAmount float32
+	BeforeTaxAmount float32
+	TaxAmount float32
+	TotalAmount float32
 
 }
 

@@ -24,5 +24,5 @@ func GetSaleorder(c *gin.Context){
 }
 
 func PostSaleorder(c *gin.Context){
-c.
+
 }
