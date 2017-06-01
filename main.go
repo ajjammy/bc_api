@@ -24,7 +24,7 @@ func main(){
 	app.POST("/saleorder", ctrl.PostSaleorder)
 	app.GET("/customers",ctrl.GetCustomer)
 	app.GET("/employee",ctrl.GetEmployee)
-	app.GET("/item",ctrl.GetItem)
+	app.GET("/items",ctrl.GetItem)
 	app.Run(":8000")
 
 }

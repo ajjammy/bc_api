@@ -23,17 +23,16 @@ func GetItem(c *gin.Context){
 
 	fmt.Println("token = ",token)
 	item := Resp.Item{}
-
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
 	fmt.Println("call Item.GetByCode :",keyword)
 
 
-	err := item.GetByCode(keyword,dbx)
+	items,err := item.GetByKeyword(keyword,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
-	fmt.Println(item)
+	fmt.Println(items)
 
 	rs := api.Response{}
 
@@ -43,7 +42,7 @@ func GetItem(c *gin.Context){
 		c.JSON(http.StatusNotFound, rs)
 	} else {
 		rs.Status = "success"
-		rs.Data = item
+		rs.Data = items
 		//rs.Link.Self = config.API_HOST + "/v1/users/"
 		c.JSON(http.StatusOK, rs)
 	}
