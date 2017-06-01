@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	c "github.com/satit13/bc_api/bean/resp"
+	cus "github.com/satit13/bc_api/bean/resp"
 )
 
 func GetCustomer(c *gin.Context){
@@ -21,11 +21,11 @@ func GetCustomer(c *gin.Context){
 
 
 	fmt.Println("token = ",token)
-	cust := c.Customer{}
+	cust := cus.Customer{}
 
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
-	fmt.Println("call so.GetCustomer :",keyword)
+	fmt.Println("call customer.GetCustomer :",keyword)
 
 
 	cc,err := cust.GetByKeyWord(keyword,dbx)
