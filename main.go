@@ -19,7 +19,8 @@ func main(){
 
 	app := gin.Default()
 	app.GET("/",getVersion)
-	app.GET("/saleorder", ctrl.GetSaleorder)
+	app.GET("/saleorders", ctrl.GetSaleorderList)
+	app.GET("/saleorder/:keyword",ctrl.GetSaleorder)
 	app.POST("/saleorder", ctrl.PostSaleorder)
 	app.Run(":8000")
 
