@@ -1,6 +1,9 @@
 package Resp
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+	"fmt"
+)
 
 type Item struct {
 	Code string
@@ -14,8 +17,17 @@ type Stock struct {
 	whcode string `json:"wh_code"`
 }
 
-func(i *Item)GetByCode(keyword string,db *sqlx.DB)(items []Item,err error){
-//	items := []Item{}
-return
+func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
+	lcCommand := "select code,name1 from bcnp.dbo.bcitem where code = '"+itemcode+"'"
+	fmt.Println(lcCommand)
+	// Get saleorder from Database by docno
+	err = db.Get(i,lcCommand)
+	if err !=nil{
+	return err
+	}
+	fmt.Println(i)
+	return nil
 }
+
+

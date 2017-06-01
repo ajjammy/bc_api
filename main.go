@@ -23,6 +23,7 @@ func main(){
 	app.GET("/saleorder",ctrl.GetSaleorder)
 	app.POST("/saleorder", ctrl.PostSaleorder)
 	app.GET("/customers",ctrl.GetCustomer)
+	app.GET("/item",ctrl.GetItem)
 	app.Run(":8000")
 
 }
