@@ -14,7 +14,7 @@ type Item struct {
 }
 
 type Stock struct {
-	qty int32
+	qty float32
 	unitcode string
 	whcode string `json:"wh_code"`
 }
@@ -25,6 +25,11 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
+	fmt.Println(itemcode)
+	sqlsub := "select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode='"+i.Code+"'"
+	fmt.Println(i.Code)
+	err = db.Get(&i.Stock,sqlsub)
+
 	if err !=nil{
 	return err
 	}
@@ -44,7 +49,12 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 
 	for _, item := range items {
 		//todo: add child node
-		fmt.Println(item.Code)
+			fmt.Println("item stock loop")
+			sqlsub := `select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode=?`
+			fmt.Println(item.Code)
+			err = db.Select(&item.Stock,sqlsub,item.Code)
+			fmt.Println(sqlsub)
+
 	}
 
 	fmt.Println(i)
