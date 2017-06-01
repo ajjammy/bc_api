@@ -53,12 +53,11 @@ func GetSaleorder(c *gin.Context){
 	rs := api.Response{}
 
 	if err != nil {
-		rs.Status = api.ERROR
+		rs.Status = "error"
 		rs.Message = "No Content: " + err.Error()
 		c.JSON(http.StatusNotFound, rs)
 	} else {
-		rs.Status = api.SUCCESS
-		rs.Message = "SUCCESS"
+		rs.Status = "success"
 		rs.Data = ss
 		//rs.Link.Self = config.API_HOST + "/v1/users/"
 		c.JSON(http.StatusOK, rs)

@@ -9,7 +9,7 @@ const (
 )
 
 type Response struct {
-	Status  ResponseStatus `json:"status"`
+	Status  string `json:"status"`
 	Message string         `json:"message,omitempty"`
 	//Link    `json:"links"`
 	Data    interface{} `json:"data,omitempty"`
