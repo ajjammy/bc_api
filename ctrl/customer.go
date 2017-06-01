@@ -33,7 +33,7 @@ func GetCustomer(c *gin.Context){
 	if err != nil{
 		log.Println(err.Error())
 	}
-	fmt.Println(cc)
+	//fmt.Println(cc)
 
 	rs := api.Response{}
 

@@ -34,7 +34,7 @@ func GetEmployee(c *gin.Context){
 	if err != nil{
 		log.Println(err.Error())
 	}
-	fmt.Println(ee)
+	//fmt.Println(ee)
 
 	rs := api.Response{}
 
