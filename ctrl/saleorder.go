@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	so "github.com/satit13/bc_api/bean/resp"
+	api "github.com/satit13/bc_api/bean/resp"
 	"log"
 	//"strconv"
 )
@@ -48,6 +49,20 @@ func GetSaleorder(c *gin.Context){
 		log.Println(err.Error())
 	}
 	fmt.Println(ss)
+
+	rs := api.Response{}
+
+	if err != nil {
+		rs.Status = api.ERROR
+		rs.Message = "No Content: " + err.Error()
+		c.JSON(http.StatusNotFound, rs)
+	} else {
+		rs.Status = api.SUCCESS
+		rs.Data = ss
+		//rs.Link.Self = config.API_HOST + "/v1/users/"
+		c.JSON(http.StatusOK, rs)
+	}
+
 	c.JSON(http.StatusOK,ss)
 
 }
