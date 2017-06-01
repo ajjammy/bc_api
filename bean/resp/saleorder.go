@@ -27,6 +27,7 @@ type Saleordersub struct {
 }
 
 func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(ss []Saleorder,err error){
+
 	lcCommand := "select docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
 		" from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
@@ -36,7 +37,7 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(ss []Saleorder,err error)
 	if err !=nil{
 		return nil,err
 	}
-	fmt.Println(s)
+	fmt.Println(ss)
 	return ss,nil
 }
 
@@ -45,7 +46,7 @@ func(s *Saleorder)GetByKeyWord(docno string,db *sqlx.DB)(ss []Saleorder,err erro
 		" from bcnp.dbo.bcsaleorder where docno like '%"+docno+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
-	ss = []Saleorder{}
+	//ss = []Saleorder{}
 	err = db.Select(&ss,lcCommand)
 	if err !=nil{
 		return nil,err

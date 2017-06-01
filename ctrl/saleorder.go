@@ -63,7 +63,7 @@ func GetSaleorder(c *gin.Context){
 		c.JSON(http.StatusOK, rs)
 	}
 
-	c.JSON(http.StatusOK,ss)
+	//c.JSON(http.StatusOK,rs)
 
 }
 
