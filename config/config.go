@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	API_HOST string   = "http://api.nava.work:8000"
+	API_HOST string   = "http://nopadol.net:8001"
 	ORG_NOPADOL int = 1
 	ORG_NAVA   int  = 2
 )
@@ -43,6 +43,7 @@ func LoadDSN(fileName string,dbType int) string {
 		dsn = c.DBUser + ":" + c.DBPass + "@" + c.DBHost + "/" + c.DBName + "?parseTime=true"
 		//dsn := "root:mypass@tcp(nava.work:3306)/sys?parseTime=true"
 	}
+	// Microsoft SQLserver Pattern
 	if dbType == 1 {
 		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s", c.DBHost, c.DBUser, c.DBPass, c.DBPort)
 		//dsn := "root:mypass@tcp(nava.work:3306)/sys?parseTime=true"
