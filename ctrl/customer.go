@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	cus "github.com/satit13/bc_api/bean/resp"
+	api "github.com/satit13/bc_api/bean/resp"
 )
 
 func GetCustomer(c *gin.Context){
@@ -16,11 +17,11 @@ func GetCustomer(c *gin.Context){
 	//keyword := c.Param("keyword")
 	//token := c.Param("token")
 	//param1 := c.URL.Query().Get("param1")
-	token := c.Request.URL.Query().Get("token")
+	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
 
 
-	fmt.Println("token = ",token)
+	fmt.Println("access_token = ",access_token)
 	cust := cus.Customer{}
 
 	//result := so.GetByDocno("test")
@@ -33,6 +34,19 @@ func GetCustomer(c *gin.Context){
 		log.Println(err.Error())
 	}
 	fmt.Println(cc)
-	c.JSON(http.StatusOK,cc)
+
+	rs := api.Response{}
+
+	if err != nil {
+		rs.Status = "false"
+		rs.Message = "Search Customer error"
+		c.JSON(http.StatusNotFound, rs)
+	} else {
+		rs.Status = "true"
+		rs.Message = "Search Customer success"
+		rs.Data = cc
+		//rs.Link.Self = config.API_HOST + "/v1/users/"
+		c.JSON(http.StatusOK, rs)
+	}
 
 }
