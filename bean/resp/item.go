@@ -8,15 +8,15 @@ import (
 )
 
 type Item struct {
-	Code string
+	Code string `json:"code"`
 	Name string `json:"item_name" db:"name1"`
-	Stock []Stock
+	Stocks []*Stock `json:"stocks"`
 }
 
 type Stock struct {
-	qty float32
-	unitcode string
-	whcode string `json:"wh_code"`
+	Qty float32 `json:"qty" db:"qty"`
+	UnitCode string `json:"unit_code" db:"unitcode"`
+	WhCode string `json:"wh_code" db:"whcode"`
 }
 
 func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
@@ -26,9 +26,9 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(itemcode)
-	sqlsub := "select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode='"+i.Code+"'"
-	fmt.Println(i.Code)
-	err = db.Get(&i.Stock,sqlsub)
+	sqlsub := `select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode=?`
+	fmt.Println(sqlsub)
+	err = db.Select(&i.Stocks,sqlsub,i.Code)
 
 	if err !=nil{
 	return err
@@ -52,7 +52,7 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 			fmt.Println("item stock loop")
 			sqlsub := `select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode=?`
 			fmt.Println(item.Code)
-			err = db.Select(&item.Stock,sqlsub,item.Code)
+			err = db.Select(&item.Stocks,sqlsub,item.Code)
 			fmt.Println(sqlsub)
 
 	}
