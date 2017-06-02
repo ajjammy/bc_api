@@ -8,7 +8,8 @@ import (
 	api "github.com/satit13/bc_api/bean/resp"
 	"log"
 	//"strconv"
-	"npdl.co/it/BC_API/bean/resp"
+
+	//"npdl.co/it/BC_API/bean/resp"
 )
 
 func GetSaleorderList(c *gin.Context){
@@ -66,6 +67,6 @@ func GetSaleorder(c *gin.Context){
 }
 
 func PostSaleOrder(c *gin.Context){
-	s := Resp.Saleorder{}
-	c.BindJSON(s)
+
+	//c.BindJSON(s)
 }
