@@ -47,12 +47,12 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		return nil,err
 	}
 
-	for _, item := range items {
+	for idx, item := range items {
 		//todo: add child node
 			fmt.Println("item stock loop")
-			sqlsub := `select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode=?`
+			sqlsub := "select qty,unitcode,whcode from bcnp.dbo.bcstkwarehouse where itemcode='"+item.Code+"'"
 			fmt.Println(item.Code)
-			err = db.Select(&item.Stocks,sqlsub,item.Code)
+			err = db.Select(&items[idx].Stocks,sqlsub)
 			fmt.Println(sqlsub)
 
 	}
