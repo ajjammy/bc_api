@@ -15,7 +15,7 @@ type Employee struct {
 
 func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err error){
 	lcCommand := "select top 5 code,name,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
-		" from bcnp.dbo.bcsale where code like '%"+keyword+"%' or name like '%"+keyword+"%'"
+		" from bcnp.dbo.bcsale where code like '%"+keyword+"%' or name like '%"+keyword+"%' or telephone like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
@@ -27,5 +27,18 @@ func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err erro
 
 	fmt.Println(ee)
 
+	return ee,nil
+}
+
+func(e *Employee)GetEmployeeCode(keyword string,db *sqlx.DB)(ee []Employee,err error){
+	lcCommand := "select code,name,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
+		" from bcnp.dbo.bcsale where code = '"+keyword+"'"
+	fmt.Println(lcCommand)
+	err = db.Select(&ee,lcCommand)
+
+	if err !=nil{
+		return nil,err
+	}
+	fmt.Println(ee)
 	return ee,nil
 }
