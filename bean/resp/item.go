@@ -52,7 +52,13 @@ type Unit struct {
 
 func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
-	lcCommand := "select code,name1,defstkunitcode,stockqty,remainoutqty,reserveqty,remaininqty,mygrade,picfilename1 " +
+	lcCommand := "select code,name1,defstkunitcode," +
+		"isnull(stockqty,0) as stockqty," +
+		"isnull(remainoutqty,0) as remainoutqty," +
+		"isnull(reserveqty,0) as reserveqty," +
+		"isnull(remaininqty,0) as remaininqty," +
+		"isnull(mygrade,'-') as mygrade," +
+		"isnull(picfilename1,'') as picfilename1 " +
 		"from bcnp.dbo.bcitem where code = '"+itemcode+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
