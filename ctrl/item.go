@@ -67,7 +67,7 @@ func GetItemList(c *gin.Context){
 	item := Resp.Item{}
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
-	fmt.Println("call Item.GetByCode :",keyword)
+	fmt.Println("call Item.GetByKeyword :",keyword)
 
 
 	items,err := item.GetByKeyword(keyword,dbx)
