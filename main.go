@@ -21,7 +21,7 @@ func main(){
 	app.GET("/saleorders", ctrl.GetSaleorderList)
 	//app.GET("/saleorder/:keyword/:token",ctrl.GetSaleorder)
 	app.GET("/saleorder",ctrl.GetSaleorder)
-	app.POST("/saleorder", ctrl.PostSaleorder)
+	app.POST("/saleorder", ctrl.PostSaleOrder)
 	app.GET("/customer",ctrl.GetCustomer)
 	app.GET("/customers",ctrl.GetCustomerList)
 	app.GET("/employee",ctrl.GetEmployee)
