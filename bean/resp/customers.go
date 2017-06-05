@@ -19,7 +19,7 @@ type Customer struct {
 
 func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err error){
 	lcCommand := "select top 10 code,name1,billaddress,telephone,debtlimit1,debtlimitbal,debtamount,sumofmark1,'' as impageprofile" +
-		" from bcnp.dbo.bcar where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or telephone like '%"+keyword+"%' or billaddress like '%"+keyword+"%'"
+		" from bcnp.dbo.bcar where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or telephone like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
