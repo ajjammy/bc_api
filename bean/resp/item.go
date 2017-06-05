@@ -52,7 +52,7 @@ type Unit struct {
 
 func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
-	lcCommand := "select code,name1,defstkunitcode," +
+	lcCommand := "select top 10 code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
 		"isnull(remainoutqty,0) as remainoutqty," +
 		"isnull(reserveqty,0) as reserveqty," +
@@ -86,7 +86,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
 func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 
-	lcCommand := "select code,name1,defstkunitcode," +
+	lcCommand := "select top 10  code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
 		"isnull(remainoutqty,0) as remainoutqty," +
 		"isnull(reserveqty,0) as reserveqty," +

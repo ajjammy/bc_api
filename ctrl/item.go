@@ -7,6 +7,7 @@ import (
 	"log"
 	"github.com/satit13/bc_api/bean/resp"
 	api "github.com/satit13/bc_api/bean/resp"
+//	"os"
 )
 
 func GetItem(c *gin.Context){
@@ -14,6 +15,8 @@ func GetItem(c *gin.Context){
 	c.Header("Server", "BC_API")
 	c.Header("Host", "nopadol.net:8001")
 	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods","GET, POST, PATCH, PUT, DELETE, OPTIONS")
+
 	//keyword := c.Param("keyword")
 	//token := c.Param("token")
 	//param1 := c.URL.Query().Get("param1")
@@ -94,3 +97,4 @@ func GetItemList(c *gin.Context){
 }
 
 //c.JSON(http.StatusOK,rs)
+
