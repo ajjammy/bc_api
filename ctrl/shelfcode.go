@@ -1,17 +1,17 @@
 package ctrl
 
+
 import (
 	"fmt"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	sale "github.com/satit13/bc_api/bean/resp"
+	sh "github.com/satit13/bc_api/bean/resp"
 	api "github.com/satit13/bc_api/bean/resp"
 )
 
-
-func GetEmployeeList(c *gin.Context){
-	log.Println("call GET Employee List")
+func GetShelfcodeList(c *gin.Context){
+	log.Println("call GET Shelfcode List")
 	c.Header("Server", "BC_API")
 	c.Header("Host", "nopadol.net:8001")
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -22,12 +22,12 @@ func GetEmployeeList(c *gin.Context){
 	keyword := c.Request.URL.Query().Get("keyword")
 
 	fmt.Println("access_token = ",access_token)
-	emp := sale.Employee{}
+	shelf := sh.Shelfcode{}
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
-	fmt.Println("call Employee.GetEmployee :",keyword)
+	fmt.Println("call Shelfcode.GetShelfcode :",keyword)
 
-	ee,err := emp.GetByKeyWord(keyword,dbx)
+	ss,err := shelf.GetByKeyWord(keyword,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
@@ -39,14 +39,14 @@ func GetEmployeeList(c *gin.Context){
 		c.JSON(http.StatusNotFound, rs)
 	} else {
 		rs.Status = "success"
-		rs.Data = ee
+		rs.Data = ss
 		//rs.Link.Self = config.API_HOST + "/v1/users/"
 		c.JSON(http.StatusOK, rs)
 	}
 }
 
-func GetEmployee(c *gin.Context){
-	log.Println("call GET Employee")
+func GetShelfcode(c *gin.Context){
+	log.Println("call GET Shelfcode")
 	c.Header("Server", "BC_API")
 	c.Header("Host", "nopadol.net:8001")
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -54,11 +54,11 @@ func GetEmployee(c *gin.Context){
 	keyword := c.Request.URL.Query().Get("keyword")
 
 	fmt.Println("access_token = ",access_token)
-	emp := sale.Employee{}
+	shelf := sh.Shelfcode{}
 
-	fmt.Println("call Employee.GetEmployee :",keyword)
+	fmt.Println("call Shelfcode.GetShelfcode :",keyword)
 
-	ee,err := emp.GetEmployeeCode(keyword,dbx)
+	ss,err := shelf.GetShelfcode(keyword,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
@@ -68,15 +68,15 @@ func GetEmployee(c *gin.Context){
 		rs.Message = "No Content: " + err.Error()
 		c.JSON(http.StatusNotFound, rs)
 	} else {
-		if ee==nil{
-			//fmt.Println("Yes")
+		if ss==nil{
 			rs.Status = "error"
 			rs.Message = "No Content: NotData"
 			c.JSON(http.StatusNotFound, rs)
 		}else {
 			rs.Status = "success"
-			rs.Data = ee
+			rs.Data = ss
 			c.JSON(http.StatusOK, rs)
 		}
 	}
 }
+

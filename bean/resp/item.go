@@ -19,7 +19,7 @@ type Item struct {
 	PoQty	float32 `json:"po_qty" db:"remaininqty"`
 	MyGrade string `json:"my_grade" db:"mygrade"`
 	Comm float32 `json:"comm"`
-	ImageProfile string `json:"image_profile" db:"picfilename1"`
+	ImageProfile string `json:"img_profile" db:"picfilename1"`
 
 	//“sale_qty”:”12”,
 	//“reserve_qty”:”3”,
