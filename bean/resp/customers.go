@@ -22,7 +22,8 @@ func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err erro
 		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as telephone" +
 		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
 		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
-		" from bcnp.dbo.bcar where isnull(code,'') like '%"+keyword+"%' or isnull(name1,'') like '%"+keyword+"%' or isnull(telephone,'') like '%"+keyword+"%'"
+		" from bcnp.dbo.bcar where isnull(code,'') like '%"+keyword+"%' " +
+		"or isnull(name1,'') like '%"+keyword+"%' or isnull(telephone,'') like '%"+keyword+"%' order by code"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
@@ -42,7 +43,7 @@ func(c *Customer)GetCustomerCode(keyword string,db *sqlx.DB)(cc []Customer,err e
 		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as telephone" +
 		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
 		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
-		" from bcnp.dbo.bcar where code = '"+keyword+"'"
+		" from bcnp.dbo.bcar where code = '"+keyword+"' order by code"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
