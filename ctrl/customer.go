@@ -16,12 +16,13 @@ func GetCustomerList(c *gin.Context){
 	c.Header("Access-Control-Allow-Origin", "*")
 	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
-
 	fmt.Println("access_token = ",access_token)
-	cust := cus.Customer{}
-
 	fmt.Println("call customer.GetCustomer :",keyword)
 
+	//if keyword != nil{
+	//
+	//}
+	cust := cus.Customer{}
 	cc,err := cust.GetByKeyWord(keyword,dbx)
 	if err != nil{
 		log.Println(err.Error())

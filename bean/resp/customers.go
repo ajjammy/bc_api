@@ -18,7 +18,10 @@ type Customer struct {
 }
 
 func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err error){
-	lcCommand := "select top 10 code,name1,billaddress,telephone,debtlimit1,debtlimitbal,debtamount,sumofmark1,'' as impageprofile" +
+	lcCommand := "select top 10 isnull(code,'') as code,isnull(name1,'') as name1" +
+		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as " +
+		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
+		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
 		" from bcnp.dbo.bcar where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or telephone like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
@@ -35,7 +38,10 @@ func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err erro
 }
 
 func(c *Customer)GetCustomerCode(keyword string,db *sqlx.DB)(cc []Customer,err error){
-	lcCommand := "select code,name1,billaddress,telephone,debtlimit1,debtlimitbal,debtamount,sumofmark1,'' as impageprofile" +
+	lcCommand := "select top 10 isnull(code,'') as code,isnull(name1,'') as name1" +
+		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as " +
+		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
+		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
 		" from bcnp.dbo.bcar where code = '"+keyword+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
