@@ -64,7 +64,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(itemcode)
-	sqlsub := `select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where shelfcode = '-' and whcode not like '%ISP%' and  itemcode=?`
+	sqlsub := `select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
 
@@ -104,7 +104,9 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 	for idx, item := range items {
 		//todo: add child node
 			fmt.Println("item stock loop")
-			sqlsub := "select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where shelfcode ='-' and whcode not like '%ISP%'  and  itemcode='"+item.Code+"'"
+			sqlsub := "select qty,unitcode,whcode,shelfcode " +
+				"from bcnp.dbo.bcstklocation " +
+				"where shelfcode ='-' and whcode not like '%ISP%'  and whcode not like '%TRN%' and  itemcode='"+item.Code+"'"
 			fmt.Println(item.Code)
 			err = db.Select(&items[idx].Stocks,sqlsub)
 			fmt.Println(sqlsub)
