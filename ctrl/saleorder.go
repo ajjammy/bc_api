@@ -21,7 +21,20 @@ func GetSaleorderList(c *gin.Context){
 		log.Println(err.Error())
 	}
 	fmt.Println(ss)
-	c.JSON(http.StatusOK,ss)
+
+	rs := api.Response{}
+
+	if err != nil {
+		rs.Status = "error"
+		rs.Message = "No Content: " + err.Error()
+		c.JSON(http.StatusNotFound, rs)
+	} else {
+		rs.Status = "success"
+		rs.Data = ss
+		//rs.Link.Self = config.API_HOST + "/v1/users/"
+		c.JSON(http.StatusOK, rs)
+	}
+	//c.JSON(http.StatusOK,rs)
 }
 
 
