@@ -17,17 +17,16 @@ type Saleorder struct {
 
 type Saleordersub struct {
 	Id int64  `json:"id"`//roworder
-	Linenumber int64  `json:"linenumber"`
-	Itemcode string `json:"itemcode"`
-	Itemname string `json:"itemname"`
+	Linenumber int64  `json:"line_number"`
+	Itemcode string `json:"item_code"`
+	Itemname string `json:"item_name"`
 	Qty float32`json:"qty"`
-	Unitcode string `json:"unitcode"`
+	Unitcode string `json:"unit_code"`
 	Price  float32 `json:"price"`
 	Amount float32 `json:"amount"`
-	Netamount float32 `json:"netamount"`
-	Packingrate1 float32 `json:"packingrate_1"`
-	Packingrate2 float32 `json:"packingrate_2"`
-
+	Netamount float32 `json:"net_amount"`
+	Packingrate1 float32 `json:"packing_rate_1"`
+	Packingrate2 float32 `json:"packing_rate_2"`
 }
 
 func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
