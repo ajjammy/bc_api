@@ -55,8 +55,8 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 }
 
 func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err error){
-	lcCommand := "select docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
-		" from bcnp.dbo.bcsaleorder where docno like '%"+keyword+"%'"
+	lcCommand := "select top 10 docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
+		" from bcnp.dbo.bcsaleorder where docno like '%"+keyword+"%' "
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
