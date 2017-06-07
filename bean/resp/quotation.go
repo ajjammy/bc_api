@@ -11,7 +11,7 @@ type Quotation struct {
 	SaleCode            string `json:"sale_code"  db:"SaleCode"`
 	SaleName            string `json:"sale_name" db:"SaleName"`
 	RefNo               string `json:"ref_no" db:"RefNo"`
-	TaxRate             string `json:"tax_rate" db:"TaxRate"`
+	TaxRate             float64 `json:"tax_rate" db:"TaxRate"`
 	TaxType             int `json:"tax_type" db:"TaxType"`
 	MyDescription       string `json:"my_description" db:"MyDescription"`
 	SumItemAmount       float32 `json:"sum_item_amount" db:"SumItemAmount"`
