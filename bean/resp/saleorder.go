@@ -65,6 +65,17 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 	if err !=nil{
 		return nil,err
 	}
-	fmt.Println(s)
+	// todo : add child node in for loop
+	for i,so := range ss{
+		sosub := `select  a.roworder as id,a.linenumber,a.itemcode,a.itemname,a.qty
+	 		,a.unitcode,a.price,a.amount,a.netamount,a.packingrate1,a.packingrate2
+		from bcnp.dbo.bcsaleordersub a
+			where a.docno=? `
+		fmt.Println(sosub)
+		err = db.Select(&ss[i].Items,sosub,so.Docno)
+
+	}
+
+	//fmt.Println(ss)
 	return ss,nil
 }
