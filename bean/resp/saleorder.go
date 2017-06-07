@@ -16,29 +16,43 @@ type Saleorder struct {
 }
 
 type Saleordersub struct {
-	Docno string
-	Arcode string
-	SumOfItemAmount float32
-	DiscountAmount float32
-	BeforeTaxAmount float32
-	TaxAmount float32
-	TotalAmount float32
+	Id int64  `json:"id"`//roworder
+	Linenumber int64  `json:"linenumber"`
+	Itemcode string `json:"itemcode"`
+	Itemname string `json:"itemname"`
+	Qty float32`json:"qty"`
+	Unitcode string `json:"unitcode"`
+	Price  float32 `json:"price"`
+	Amount float32 `json:"amount"`
+	Netamount float32 `json:"netamount"`
+	Packingrate1 float32 `json:"packingrate_1"`
+	Packingrate2 float32 `json:"packingrate_2"`
 
 }
 
-func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(ss []Saleorder,err error){
+func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 
 	lcCommand := "select docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
 		" from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
-	ss = []Saleorder{}
-	err = db.Select(&ss,lcCommand)
+	//ss = []Saleorder{}
+	err = db.Get(s,lcCommand)
 	if err !=nil{
-		return nil,err
+		return err
 	}
-	fmt.Println(ss)
-	return ss,nil
+
+
+	fmt.Println(s)
+	// todo: add Node sub details
+
+	sosub := `select  a.roworder as id,a.linenumber,a.itemcode,a.itemname,a.qty
+	 		,a.unitcode,a.price,a.amount,a.netamount,a.packingrate1,a.packingrate2
+		from bcnp.dbo.bcsaleordersub a
+			where a.docno=? `
+	fmt.Println(sosub)
+	err = db.Select(&s.Items,sosub,docno)
+	return err
 }
 
 func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err error){

@@ -42,11 +42,11 @@ func GetSaleorder(c *gin.Context){
 	fmt.Println("call so.GetByDocno :",keyword)
 
 
-	ss,err := so.GetByKeyWord(keyword,dbx)
+	err :=so.GetByDocno(keyword,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
-	fmt.Println(ss)
+	fmt.Println(so)
 
 	rs := api.Response{}
 
@@ -56,7 +56,7 @@ func GetSaleorder(c *gin.Context){
 		c.JSON(http.StatusNotFound, rs)
 	} else {
 		rs.Status = "success"
-		rs.Data = ss
+		rs.Data = so
 		//rs.Link.Self = config.API_HOST + "/v1/users/"
 		c.JSON(http.StatusOK, rs)
 	}
