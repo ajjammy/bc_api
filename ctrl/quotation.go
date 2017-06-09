@@ -12,17 +12,19 @@ import (
 func GetQuotation(c *gin.Context){
 	log.Println("call GET Quotation By Docno")
 	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
+	c.Header("Host", "nopadol.net:8000")
 	c.Header("Access-Control-Allow-Origin", "*")
 	token := c.Request.URL.Query().Get("token")
 	docno := c.Request.URL.Query().Get("docno")
 
 	fmt.Println("token = ",token)
-	qto := qt.Quotation{}
+	qto := new(qt.Quotation)
+	qto.DocNo = docno
 
 	fmt.Println("call qt.GetByDocno :",docno)
 
 	err :=qto.GetByDocno(docno,dbx)
+	fmt.Println("dbx = ",dbx.DB)
 	if err != nil{
 		log.Println(err.Error())
 	}

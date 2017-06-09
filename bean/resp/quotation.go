@@ -67,9 +67,11 @@ type QuotationSub struct {
 	LineNumber        int `json:"line_number" db:"LineNumber"`
 }
 
-func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
+func (q *Quotation) GetByDocno(docno string,db *sqlx.DB)error {
 
-	lcCommand := "select isnull(a.docno,'')DocNo,a.DocDate,isnull(a.DueDate,'') as DueDate,isnull(a.DeliveryDate,'') as DeliveryDate" +
+	fmt.Println(q.DocNo)
+
+	lcCommand := "select isnull(a.docno,'') as DocNo,a.DocDate,isnull(a.DueDate,'') as DueDate,isnull(a.DeliveryDate,'') as DeliveryDate" +
 		",isnull(a.arcode,'') as ArCode,isnull(b.name1,'') as ArName,isnull(b.billAddress,'') as ArAddress" +
 		",isnull(b.Telephone,'') as ArTelephone,isnull(b.fax,'') as ArFax,isnull(a.salecode,'') as SaleCode" +
 		",isnull(c.name,'') as SaleName,'' as RefNo,isnull(a.taxrate,7) as TaxRate,a.TaxType" +
@@ -89,7 +91,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 		" left join bcnp.dbo.BCContactList as d on a.ContactCode=d.code and a.arcode=d.ParentCode" +
 		" left join bcnp.dbo.BCProject as f on a.ProjectCode=f.code" +
 		" left join bcnp.dbo.BCAllocate as g on a.AllocateCode=g.code" +
-		" where a.docno='"+docno+"'"
+		" where a.docno='"+q.DocNo+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
@@ -99,13 +101,13 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	}
 	fmt.Println(q)
 	// todo: add Node sub details
-	//qtsub := `select a.ItemCode,b.name1 as ItemName,a.Qty,a.Price,isnull(a.discountword,'') as DisCountWordSub
-	//		,isnull(a.discountamount,0) as DisCountAmountSub,a.UnitCode,a.NetAmount,a.Amount
-	//		,isnull(a.mydescription,'') as ItemDescription,a.IsConditionSend,a.Iscancel,isnull(a.PackingRate1,0) as PackingRate,a.LineNumber
-	//	from bcnp.dbo.bcQuotationsub as a
-	//	left join bcnp.dbo.bcitem as b on a.itemcode=b.code
-	//	where a.docno=?`
-	//fmt.Println(qtsub)
-	//err = db.Select(&q.Subs, qtsub, docno)
+	qtsub := `select a.ItemCode,b.name1 as ItemName,a.Qty,a.Price,isnull(a.discountword,'') as DisCountWordSub
+			,isnull(a.discountamount,0) as DisCountAmountSub,a.UnitCode,a.NetAmount,a.Amount
+			,isnull(a.mydescription,'') as ItemDescription,a.IsConditionSend,a.Iscancel,isnull(a.PackingRate1,0) as PackingRate,a.LineNumber
+		from bcnp.dbo.bcQuotationsub as a
+		left join bcnp.dbo.bcitem as b on a.itemcode=b.code
+		where a.docno=?`
+	fmt.Println(qtsub)
+	err = db.Select(&q.Subs, qtsub, docno)
 	return err
 }
