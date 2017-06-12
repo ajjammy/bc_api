@@ -13,7 +13,7 @@ type Saleorder struct {
 	BeforeTaxAmount float32 `json:"before_tax_amount"`
 	TaxAmount float32 `json:"tax_amount"`
 	TotalAmount float32 `json:"total_amount"`
-	Items  []*Saleordersub `json:"items"`
+	Items  []*Saleordersub `json:"item"`
 }
 
 type Saleordersub struct {
