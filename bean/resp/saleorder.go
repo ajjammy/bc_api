@@ -3,7 +3,7 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
-	"time"
+//	"time"
 )
 
 type Saleorder struct {
@@ -48,7 +48,7 @@ type Saleorder struct {
 	Canceldatetime string `json:"canceldatetime"`
 	Isconditionsend int `json:"isconditionsend"`
 	Deliveryday int `json:"delivery_day"`
-	Deliverydate time.Time `json:"delivery_date"`
+	Deliverydate string `json:"delivery_date"`
 	//items []*Sosub
 
 	Items  []*Saleordersub `json:"item"`
@@ -142,7 +142,11 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 	// todo: add Node sub details
 
 	sosub := `select  roworder as id,
-			docno,taxtype,itemcode,docdate,arcode,
+			isnull(docno,'') as docno,
+			isnull(taxtype,0) as taxtype,
+			isnull(itemcode,'') as itemcode,
+			isnull(docdate,'') as docdate,
+			isnull(arcode,'') as arcode,
 			isnull(departcode,'') as departcode,
 			isnull(salecode,'') as salecode,
 			isnull(mydescription,'') as mydescription,
@@ -177,8 +181,42 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 }
 
 func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err error){
-	lcCommand := "select top 10 docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
-		" from bcnp.dbo.bcsaleorder where docno like '%"+keyword+"%' "
+	lcCommand := "select top 20 " +
+		"isnull(docno,'') as docno," +
+		"isnull(docdate,'') as docdate," +
+		"isnull(taxtype,0) as taxtype," +
+		"isnull(billtype,0) as billtype," +
+		"isnull(arcode,'') as arcode," +
+		"isnull(departcode,'') as departcode," +
+		"isnull(creditday,0) as creditday," +
+		"isnull(duedate,'') as duedate," +
+		"isnull(salecode,'') as salecode,taxrate," +
+		"isconfirm," +
+		"isnull(mydescription,'') as mydescription ," +
+		"billstatus," +
+		"sostatus," +
+		"holdingstatus," +
+		"sumofitemamount," +
+		"isnull(discountword,'') as discountword," +
+		"isnull(discountamount,0) as discountamount," +
+		"isnull(afterdiscount,0)as afterdiscount," +
+		"isnull(beforetaxamount,0)as beforetaxamount," +
+		"isnull(taxamount,0) as taxamount," +
+		"isnull(totalamount,0) as totalamount," +
+		"isnull(netamount,0) as netamount," +
+		"isnull(iscancel,0)as iscancel," +
+		"isnull(creatorcode,'') as creatorcode," +
+		"isnull(createdatetime,'') as createdatetime," +
+		"isnull(lasteditorcode,'') as lasteditorcode," +
+		"isnull(lasteditdatet,'') as lasteditdatet," +
+		"isnull(confirmcode,'') as confirmcode," +
+		"isnull(confirmdatetime,'') as confirmdatetime," +
+		"isnull(cancelcode,'') as cancelcode," +
+		"isnull(canceldatetime,'') as canceldatetime," +
+		"isnull(isconditionsend,0) as isconditionsend," +
+		"isnull(deliveryday,0)as deliveryday," +
+		"isnull(deliverydate,'') as deliverydate " +
+		"from bcnp.dbo.bcsaleorder where docno like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
@@ -188,11 +226,37 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 	}
 	// todo : add child node in for loop
 	for i,so := range ss{
-		sosub := `select  a.roworder as id,a.linenumber,a.itemcode,a.itemname,a.qty
-	 		,a.unitcode,a.price,a.amount,a.netamount,a.packingrate1,a.packingrate2,
-	 		a.docno,convert(char(10),a.docdate,103) as docdate,a.taxtype,a.arcode
-		from bcnp.dbo.bcsaleordersub a
-			where a.docno=? `
+
+		sosub := `select  roworder as id,
+			docno,taxtype,itemcode,docdate,arcode,
+			isnull(departcode,'') as departcode,
+			isnull(salecode,'') as salecode,
+			isnull(mydescription,'') as mydescription,
+			isnull(itemname,'') as itemname,
+			isnull(whcode,'') as whcode,
+			isnull(shelfcode,'')as shelfcode,
+			isnull(qty,0) as qty,
+			isnull(remainqty,0) as remainqty,
+			isnull(price,0) as price,
+			isnull(discountword,'') as discountword,
+			isnull(discountamount,0) as discountamount,
+			isnull(amount,0) as amount,
+			isnull(netamount,0) as netamount,
+			isnull(homeamount,0) as homeamount,
+			isnull(unitcode,'') as unitcode,
+			isnull(iscancel,0)as iscancel,
+			isnull(linenumber,0) as linenumber,
+			isnull(categorycode,'') as categorycode,
+			isnull(groupcode,'') as groupcode,
+			isnull(brandcode,'') as brandcode,
+			isnull(typecode,'') as typecode,
+			isnull(formatcode,'') as formatcode,
+			isnull(barcode,'') as barcode,
+			isnull(taxrate,0) as taxrate,
+			isnull(packingrate1,1) as packingrate1,
+			isnull(packingrate2,1) as packingrate2
+		from bcnp.dbo.bcsaleordersub
+			where docno=? `
 		fmt.Println(sosub)
 		err = db.Select(&ss[i].Items,sosub,so.Docno)
 
