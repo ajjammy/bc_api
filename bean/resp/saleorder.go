@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
 //	"time"
+//	"github.com/gin-gonic/gin"
 )
 
 type Saleorder struct {
@@ -265,3 +266,4 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 	//fmt.Println(ss)
 	return ss,nil
 }
+

@@ -78,7 +78,10 @@ func GetSaleorder(c *gin.Context){
 
 }
 
-//func PostSaleOrder(c *gin.Context){
-//	s := Resp.Saleorder{}
-//	c.BindJSON(s)
-//}
+func PostNewSaleorder(c *gin.Context){
+
+	rs := api.Response{}
+	rs.Status="success"
+
+	c.JSON(http.StatusOK,rs)
+}

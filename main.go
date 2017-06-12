@@ -21,6 +21,7 @@ func main(){
 	app.GET("/saleorders", ctrl.GetSaleorderList)
 	//app.GET("/saleorder/:keyword/:token",ctrl.GetSaleorder)
 	app.GET("/saleorder",ctrl.GetSaleorder)
+	app.POST("/saleorder",ctrl.PostNewSaleorder)
 	//	app.POST("/saleorder", ctrl.PostSaleOrder)
 	app.GET("/quotation",ctrl.GetQuotation)
 	//	app.get("/quotation", ctrl.GetQuotation)
