@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
 )
+
 type Saleorder struct {
 	Docno string`json:"doc_no"`
 	Arcode string `json:"ar_code"`
@@ -23,7 +24,7 @@ type Saleordersub struct {
 	Qty float32`json:"qty"`
 	Unitcode string `json:"unit_code"`
 	Price  float32 `json:"price"`
-	Amount float32 `json:"amount"`
+	Amount float32 `json:"amounts"`
 	Netamount float32 `json:"net_amount"`
 	Packingrate1 float32 `json:"packing_rate_1"`
 	Packingrate2 float32 `json:"packing_rate_2"`
