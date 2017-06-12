@@ -1,5 +1,6 @@
 package reqs
 
+import "time"
 
 type SaleorderReq struct {
 
@@ -37,7 +38,7 @@ type SaleorderReq struct {
 	canceldatetime string
 	isconditionsend int
 	deliveryday int
-	deliverydate string
+	deliverydate time.Time
 	items []*Sosub
 }
 
