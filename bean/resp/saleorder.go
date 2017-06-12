@@ -3,16 +3,54 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
+	"time"
 )
 
 type Saleorder struct {
-	Docno string`json:"doc_no"`
-	Arcode string `json:"ar_code"`
-	SumOfItemAmount float32 `json:"sum_of_item_amount"`
-	DiscountAmount float32 `json:"discount_amount"`
-	BeforeTaxAmount float32 `json:"before_tax_amount"`
-	TaxAmount float32 `json:"tax_amount"`
-	TotalAmount float32 `json:"total_amount"`
+	//Docno string`json:"doc_no"`
+	//Arcode string `json:"ar_code"`
+	//SumOfItemAmount float32 `json:"sum_of_item_amount"`
+	//DiscountAmount float32 `json:"discount_amount"`
+	//BeforeTaxAmount float32 `json:"before_tax_amount"`
+	//TaxAmount float32 `json:"tax_amount"`
+	//TotalAmount float32 `json:"total_amount"`
+	Docno string `json:"doc_no"`
+	Docdate string `json:"docdate"`
+	Taxtype int `json:"taxtype"`
+	Billtype int `json:"billtype"`
+	Arcode string `json:"arcode"`
+	Departcode string `json:"departcode"`
+	Creditday int `json:"creditday"`
+	Duedate string `json:"duedate"`
+	Salecode string `json:"salecode"`
+	Taxrate float32 `json:"taxrate"`
+	Isconfirm int `json:"isconfirm"`
+	Mydescription string `json:"mydescription"`
+	Billstatus int `json:"billstatus"`
+	Sostatus int `json:"so_status"`
+	Holdingstatus int `json:"holding_status"`
+	Sumofitemamount float32 `json:"sumofitemamount"`
+	Discountword string `json:"discountword"`
+	Discountamount float32 `json:"discount_amount" DB:"discountamount" `
+	Afterdiscount float32 `json:"afterdiscount"`
+	Beforetaxamount float32 `json:"beforetaxamount"`
+	Taxamount float32 `json:"taxamount"`
+	Totalamount float32 `json:"totalamount"`
+	Netamount float32 `json:"netamount"`
+	Iscancel int `json:"iscancel"`
+	Creatorcode string `json:"creatorcode"`
+	Createdatetime string `json:"createdatetime"`
+	Lasteditorcode string `json:"lasteditorcode"`
+	Lasteditdatet string  `json:"lasteditdatet"`// must to convert to datetime type in sql server
+	Confirmcode string `json:"confirmcode"`
+	Confirmdatetime string `json:"confirmdatetime"`
+	Cancelcode string `json:"cancelcode"`
+	Canceldatetime string `json:"canceldatetime"`
+	Isconditionsend int `json:"isconditionsend"`
+	Deliveryday int `json:"delivery_day"`
+	Deliverydate time.Time `json:"delivery_date"`
+	//items []*Sosub
+
 	Items  []*Saleordersub `json:"item"`
 }
 
@@ -32,7 +70,9 @@ type Saleordersub struct {
 
 func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 
-	lcCommand := "select docno,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount" +
+	lcCommand := "select docno,docdate,billtype,departcode," +
+		"duedate,salecode,arcode,sumofitemamount,discountamount,beforetaxamount,taxamount,totalamount," +
+		"taxrate,isconfirm,billstatus,creatorcode,createdatetime,lasteditorcode,lasteditdatet,cancelcode,canceldatetime " +
 		" from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
