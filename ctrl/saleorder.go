@@ -9,6 +9,7 @@ import (
 	"log"
 	//"strconv"
 	//_ "npdl.co/it/BC_API/bean/resp"
+	"npdl.co/it/BC_API/bean/resp"
 )
 
 func GetSaleorderList(c *gin.Context){
@@ -82,6 +83,9 @@ func PostNewSaleorder(c *gin.Context){
 
 	rs := api.Response{}
 	rs.Status="success"
+	// todo : mock data saleorder & Test
+	// todo : mock data saleordersub & test
 
 	c.JSON(http.StatusOK,rs)
 }
+
