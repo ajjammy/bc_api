@@ -46,7 +46,7 @@ type Saleorder struct {
 	Confirmdatetime string `json:"confirmdatetime"`
 	Cancelcode string `json:"cancelcode"`
 	Canceldatetime string `json:"canceldatetime"`
-	Isconditionsend int `json:"isconditionsend"`
+	Isconditionsend int `json:"iscondition_send"`
 	Deliveryday int `json:"delivery_day"`
 	Deliverydate time.Time `json:"delivery_date"`
 	//items []*Sosub
