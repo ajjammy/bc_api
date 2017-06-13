@@ -80,12 +80,12 @@ func GetSaleorder(c *gin.Context){
 }
 
 func PostNewSaleorder(c *gin.Context){
-
 	rs := api.Response{}
 	rs.Status="success"
 	// todo : mock data saleorder & Test
 	// todo : mock data saleordersub & test
-
+	// todo : Post Saleorder
+	// todo : Post Saleordersub
 	c.JSON(http.StatusOK,rs)
 }
 

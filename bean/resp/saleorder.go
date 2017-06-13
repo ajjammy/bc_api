@@ -68,7 +68,7 @@ type Saleordersub struct {
 	//Packingrate1 float32 `json:"packing_rate_1"`
 	//Packingrate2 float32 `json:"packing_rate_2"`
 
-	Docno string `json:"docno"`
+	Docno string `json:"doc_no"`
 	Taxtype int `json:"tax_type"`
 	Itemcode string `json:"item_code"`
 	Docdate string `json:"docdate" db:"docdate"`
