@@ -9,7 +9,7 @@ import (
 	"log"
 	//"strconv"
 	//_ "npdl.co/it/BC_API/bean/resp"
-	"npdl.co/it/BC_API/bean/resp"
+	//"npdl.co/it/BC_API/bean/resp"
 )
 
 func GetSaleorderList(c *gin.Context){
