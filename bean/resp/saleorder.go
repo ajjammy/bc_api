@@ -15,7 +15,7 @@ type Saleorder struct {
 	//BeforeTaxAmount float32 `json:"before_tax_amount"`
 	//TaxAmount float32 `json:"tax_amount"`
 	//TotalAmount float32 `json:"total_amount"`
-	Docno string `json:"docno"`
+	Docno string `json:"doc_no"`
 	Docdate string `json:"docdate"`
 	Taxtype int `json:"taxtype"`
 	Billtype int `json:"billtype"`
