@@ -291,12 +291,12 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 
 func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 		for _,k :=  range sb{
-			fmt.Println(k.Itemcode)
 
+	fmt.Println(k.Itemcode)
 	lccommand := `insert into bcsaleordersub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
-	shelfcode,qty,rmainqty,price,discountword,
+	shelfcode,qty,remainqty,price,discountword,
 	discountamount,amount,netamount,homeamount,unitcode,
 	iscancel,linenumber,categorycode,groupcode,brandcode,
 	typecode,formatcode,barcode,taxrate,packingrate1,
@@ -312,9 +312,12 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 
 			db.Exec(lccommand,
 			k.Docno,k.Taxtype,k.Itemcode,k.Docdate,k.Arcode,
-			k.Departcode,k.Salecode)
-
-
+			k.Departcode,k.Salecode,k.Mydescription,k.Itemname,k.Whcode
+			k.Shelfcode,k.Qty,k.Remainqty,k.Price,k.Discountamount,
+			k.Discountamount,k.Amount,k.Netamount,k.Homeamount,k.Unitcode,
+			k.Iscancel,k.Linenumber,k.Categorycode,k.Groupcode,k.Brandcode,
+			k.Typecode,k.Formatcode,k.Barcode,k.Taxrate,k.Packingrate1,
+			k.Packingrate2)
 		}
 
 
