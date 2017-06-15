@@ -8,13 +8,6 @@ import (
 )
 
 type Saleorder struct {
-	//Docno string`json:"doc_no"`
-	//Arcode string `json:"ar_code"`
-	//SumOfItemAmount float32 `json:"sum_of_item_amount"`
-	//DiscountAmount float32 `json:"discount_amount"`
-	//BeforeTaxAmount float32 `json:"before_tax_amount"`
-	//TaxAmount float32 `json:"tax_amount"`
-	//TotalAmount float32 `json:"total_amount"`
 	Docno string `json:"doc_no"`
 	Docdate string `json:"docdate"`
 	Taxtype int `json:"taxtype"`
@@ -267,3 +260,49 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 	return ss,nil
 }
 
+func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
+	lccommand := `insert into bcnp.dbo.bcsaleorder (docno,docdate,taxtype,billtype,arcode,
+		departcode,creditday,duedate,salecode,taxrate,isconfirm,mydescription,billstatus,
+		sostatus,holdingstatus,sumofitemamount,discountword,discountamount,
+		afterdiscount,beforetaxamount,taxamount,totalamount,netamount,
+		iscancel,creatorcode,createdatetime,lasteditorcode,lasteditdatet,confirmcode,confirmdatetime,
+		cancelcode,canceldatetime,isconditionsend,deliveryday,deliverydate)
+		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+	_,err = db.Exec(lccommand,
+		s.Docno,
+		s.Docdate,
+		s.Taxtype,
+		s.Billtype,
+		s.Arcode,
+		s.Departcode,
+		s.Creditday,
+		s.Duedate,
+		s.Salecode,
+		s.Taxrate,
+		s.Isconfirm,
+		s.Mydescription,
+		s.Billstatus,
+		s.Sostatus,
+		s.Holdingstatus,
+		s.Sumofitemamount,
+		s.Discountword,
+		s.Discountamount,
+		s.Afterdiscount,
+		s.Beforetaxamount,s.Taxamount,s.Totalamount,s.Netamount,
+		s.Iscancel,s.Creatorcode,s.Createdatetime,s.Lasteditorcode,s.Lasteditdatet,s.Confirmcode,s.Confirmdatetime,
+		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
+
+	// todo : insert sub
+	err = s.InsertSub(&s.Items,db)
+	if err != nil {
+		fmt.Println(err.Error)
+	}
+	return NewSoNumber,err
+}
+
+func(s *Saleorder)InsertSub(sosub []Saleordersub,db *sqlx.DB)(err error){
+		for k,_ := range sosub{
+
+		}
+	return err
+}

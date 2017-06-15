@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	so "github.com/satit13/bc_api/bean/resp"
+	so  "github.com/satit13/bc_api/bean/resp"
 	api "github.com/satit13/bc_api/bean/resp"
 	"log"
 	//"strconv"
@@ -80,7 +80,31 @@ func GetSaleorder(c *gin.Context){
 }
 
 func PostNewSaleorder(c *gin.Context){
+	log.Println("call PostNewSaleOrder()")
+	c.Header("Server", "BC_API SYS")
+	c.Header("Host", "nopadol.net:8000")
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
+	so := so.Saleorder{}
 	rs := api.Response{}
+	if err := c.BindJSON(&so); err != nil{
+		log.Println("Error decode.Decode(&so) >>", err)
+		rs.Status = api.FAIL
+		rs.Message = err.Error()
+	} else {
+		newSoNumber,err := so.Insert(dbx)
+		if err != nil {
+			fmt.Println("Error Insert DB:", err)
+			rs.Status = "fail"
+			rs.Message = err.Error()
+		} else {
+			rs.Status = "success"
+			rs.Data = newSoNumber
+		}
+	}
+
+	//-------------------
+
 	rs.Status="success"
 	// todo : mock data saleorder & Test
 	// todo : mock data saleordersub & test
