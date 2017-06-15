@@ -293,7 +293,7 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
 
 	// todo : insert sub
-	//err = s.InsertSub(&s.Items,db)
+	err = s.InsertSub(&s.Items,db)
 	if err != nil {
 		fmt.Println(err.Error)
 	}
@@ -301,5 +301,8 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 }
 
 func(s *Saleorder)InsertSub(sosub []Saleordersub,db *sqlx.DB)(err error){
+		for k,_ := range sosub{
+
+		}
 	return err
 }
