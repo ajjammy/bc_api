@@ -49,18 +49,7 @@ type Saleorder struct {
 }
 
 type Saleordersub struct {
-	Id int64  `json:"id"`//roworder
-	//Linenumber int64  `json:"line_number"`
-	//Itemcode string `json:"item_code"`
-	//Itemname string `json:"item_name"`
-	//Qty float32`json:"qty"`
-	//Unitcode string `json:"unit_code"`
-	//Price  float32 `json:"price"`
-	//Amount float32 `json:"amounts"`
-	//Netamount float32 `json:"net_amount"`
-	//Packingrate1 float32 `json:"packing_rate_1"`
-	//Packingrate2 float32 `json:"packing_rate_2"`
-
+	Id int64  `json:"id"`
 	Docno string `json:"doc_no"`
 	Taxtype int `json:"tax_type"`
 	Itemcode string `json:"item_code"`
@@ -293,16 +282,42 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
 
 	// todo : insert sub
-	err = s.InsertSub(&s.Items,db)
+	err = s.InsertSub(s.Items,db)
 	if err != nil {
 		fmt.Println(err.Error)
 	}
 	return NewSoNumber,err
 }
 
-func(s *Saleorder)InsertSub(sosub []Saleordersub,db *sqlx.DB)(err error){
-		for k,_ := range sosub{
+func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
+		for _,k :=  range sb{
+			fmt.Println(k.Itemcode)
+
+	lccommand := `insert into bcsaleordersub (
+	docno,taxtype,itemcode,docdate,arcode,
+	departcode,salecode,mydescription,itemname,whcode,
+	shelfcode,qty,rmainqty,price,discountword,
+	discountamount,amount,netamount,homeamount,unitcode,
+	iscancel,linenumber,categorycode,groupcode,brandcode,
+	typecode,formatcode,barcode,taxrate,packingrate1,
+	packingrate2
+	) values (
+	?,?,?,?,?,
+	?,?,?,?,?,
+	?,?,?,?,?,
+	?,?,?,?,?,
+	?,?,?,?,?,
+	?,?,?,?,?,
+	? )`
+
+			db.Exec(lccommand,
+			k.Docno,k.Taxtype,k.Itemcode,k.Docdate,k.Arcode,
+			k.Departcode,k.Salecode)
+
 
 		}
+
+
+
 	return err
 }

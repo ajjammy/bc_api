@@ -15,7 +15,7 @@ func TestInsertSo(t *testing.T) {
 	// Setup
 
 	MockSo := Saleorder{}
-	lcDoc := "W01-SCV5905-0016"
+	lcDoc := "W01-SCV5905-0017"
 	err := MockSo.GetByDocno(lcDoc,dbtest)
 	fmt.Println(MockSo)
 	// Tear down

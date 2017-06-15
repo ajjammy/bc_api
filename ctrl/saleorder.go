@@ -89,7 +89,7 @@ func PostNewSaleorder(c *gin.Context){
 	rs := api.Response{}
 	if err := c.BindJSON(&so); err != nil{
 		log.Println("Error decode.Decode(&so) >>", err)
-		rs.Status = api.FAIL
+		rs.Status = "fail"
 		rs.Message = err.Error()
 	} else {
 		newSoNumber,err := so.Insert(dbx)
