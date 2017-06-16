@@ -293,7 +293,7 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 		for _,k :=  range sb{
 
 	fmt.Println(k.Itemcode)
-	lccommand := `insert into bcsaleordersub (
+	lccommand := `insert into bcnp.dbo.bcsaleordersub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
 	shelfcode,qty,remainqty,price,discountword,
@@ -310,14 +310,19 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 	?,?,?,?,?,
 	? )`
 
-			db.Exec(lccommand,
+		_,err :=db.Exec(lccommand,
 			k.Docno,k.Taxtype,k.Itemcode,k.Docdate,k.Arcode,
-			k.Departcode,k.Salecode,k.Mydescription,k.Itemname,k.Whcode
+			k.Departcode,k.Salecode,k.Mydescription,k.Itemname,k.Whcode,
 			k.Shelfcode,k.Qty,k.Remainqty,k.Price,k.Discountamount,
 			k.Discountamount,k.Amount,k.Netamount,k.Homeamount,k.Unitcode,
 			k.Iscancel,k.Linenumber,k.Categorycode,k.Groupcode,k.Brandcode,
 			k.Typecode,k.Formatcode,k.Barcode,k.Taxrate,k.Packingrate1,
 			k.Packingrate2)
+
+			if err != nil {
+				fmt.Println(err.Error())
+				return err
+			}
 		}
 
 
