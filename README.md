@@ -1,14 +1,14 @@
 # Sale_BC_API
 
-API for BeAccount 
-ผู้รับผิดชอบ Noi , Bee
+- API for BeAccount 
+- ผู้รับผิดชอบ Noi , Bee
 
 ## Tools 
-Go Language 
+- Go Language 
 
 ## DB 
-SQL Server  
-Integrate with bcAccount Application 
+- SQL Server  
+- Integrate with bcAccount Application 
 
 ## EndPoint
   
