@@ -11,21 +11,13 @@
 - Integrate with bcAccount Application 
 
 ## EndPoint
-  
-- /saleorder(GET)
-
-- /saleorders(GET)
-
-- /saleorder(POST)   
-
-- /item(GET)
-
-- /items(GET)
-
-- /customer(GET)
-
-- /customers(GET)
-
+ - /saleorder(GET)
+ - /saleorders(GET)
+ - /saleorder(POST)   
+ - /item(GET)
+ - /items(GET)
+ - /customer(GET)
+ - /customers(GET)
  - /employee(GET)
  - /employees(GET)
  - /warehouse(GET)
