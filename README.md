@@ -12,21 +12,21 @@
 
 ## EndPoint
   
-/saleorder(GET)
+- /saleorder(GET)
 
-/saleorders(GET)
+- /saleorders(GET)
 
-/saleorder(POST)   
+- /saleorder(POST)   
 
-/item(GET)
+- /item(GET)
 
-/items(GET)
+- /items(GET)
 
-/customer(GET)
+- /customer(GET)
 
-/customers(GET)
+- /customers(GET)
 
-/employee(GET)
+ - /employee(GET)
 
 /employees(GET)
 
