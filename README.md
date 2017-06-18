@@ -26,5 +26,17 @@ Integrate with bcAccount Application
 
 /customers(GET)
 
+/employee(GET)
+
+/employees(GET)
+
+/warehouse(GET)
+
+/warehouses(GET)
+
+/shelfcode(GET)
+
+/shelfcodes(GET)
+
 
 
