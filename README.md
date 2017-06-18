@@ -5,11 +5,20 @@ API for BeAccount
 
 ## Tools 
 Go Language 
+
 ## DB 
-Maria DB
+SQL Server  
+Integrate with bcAccount Application 
+
 ##EndPoint
+/saleorder(GET)
+/saleorders(GET)
+/saleorder(POST)   
 
-
+/item(GET)
+/items(GET)
+/customer(GET)
+/customers(GET)
 
 
 
