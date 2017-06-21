@@ -1,29 +1,30 @@
 # Sale_BC_API
 
-- API for BeAccount 
-- ผู้รับผิดชอบ Noi , Bee
+API for BCAccount Application to integrate with web ui
 
 ## Tools 
-- Go Language 
-
+```aidl
+Golang
+```
 ## DB 
-- SQL Server  
-- Integrate with bcAccount Application 
+```aidl
+MSSQL
+```
 
 ## EndPoint
- - /saleorder(GET)
- - /saleorders(GET)
- - /saleorder(POST)   
- - /item(GET)
- - /items(GET)
- - /customer(GET)
- - /customers(GET)
- - /employee(GET)
- - /employees(GET)
- - /warehouse(GET)
- - /warehouses(GET)
- - /shelfcode(GET)
- - /shelfcodes(GET)
+    /saleorder(GET)
+    /saleorders(GET)
+    /saleorder(POST)   
+    /item(GET)
+    /items(GET)
+    /customer(GET)
+    /customers(GET)
+    /employee(GET)
+    /employees(GET)
+    /warehouse(GET)
+    /warehouses(GET)
+    /shelfcode(GET)
+    /shelfcodes(GET)
 
 
 
