@@ -91,12 +91,22 @@ func PostNewSaleorder(c *gin.Context){
 		log.Println("Error decode.Decode(&so) >>", err)
 		rs.Status = "fail"
 		rs.Message = err.Error()
+		c.JSON(http.StatusOK,rs)
+
 	} else {
+		if so.CheckExists(dbx,so.Docno){
+
+			rs.Status="fail"
+			rs.Message="Saleorder number : "+so.Docno+"aready exists"
+			c.JSON(http.StatusOK,rs)
+		}
+
 		newSoNumber,err := so.Insert(dbx)
 		if err != nil {
 			fmt.Println("Error Insert DB:", err)
 			rs.Status = "fail"
 			rs.Message = err.Error()
+			c.JSON(http.StatusOK,rs)
 		} else {
 			rs.Status = "success"
 			rs.Data = newSoNumber

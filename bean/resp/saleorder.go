@@ -250,6 +250,8 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 }
 
 func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
+
+
 	lccommand := `insert into bcnp.dbo.bcsaleorder (docno,docdate,taxtype,billtype,arcode,
 		departcode,creditday,duedate,salecode,taxrate,isconfirm,mydescription,billstatus,
 		sostatus,holdingstatus,sumofitemamount,discountword,discountamount,
@@ -324,8 +326,15 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 				return err
 			}
 		}
-
-
-
 	return err
+}
+
+func(s *Saleorder)CheckExists(db *sqlx.DB,docno string)(bool) {
+	fmt.Println("Begin CheckExists")
+	s.GetByDocno(docno,db)
+	if s.Docno != docno {
+		return true
+	}
+	return  false
+
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
 	"testing"
+//	"net/http"
 )
 var dbx *sqlx.DB
 
@@ -13,12 +14,15 @@ var dbx *sqlx.DB
 func TestInsertSo(t *testing.T) {
 
 	// Setup
+	e := true
 
 	MockSo := Saleorder{}
-	lcDoc := "W01-SCV5905-0021"
+	lcDoc := "W01-SCV5905-0022"
 	err := MockSo.GetByDocno(lcDoc,dbtest)
-	fmt.Println(MockSo)
+	//fmt.Println(MockSo)
 	// Tear down
+
+
 
 	//clear old data before
 	lccommand := `delete bcnp.dbo.bcsaleorder where docno = ?`
@@ -35,12 +39,11 @@ func TestInsertSo(t *testing.T) {
 	}
 
 
-	newDoc,err := MockSo.Insert(dbtest)
+	_,err = MockSo.Insert(dbtest)
 
 	if err != nil {
 		t.Error(err)
-		return
+		t.Fatalf("expect %s but Got Error! %s",e,err.Error())
 	}
-	//fmt.Println()
-	t.Logf("Success insert new record : ",newDoc)
+
 }
