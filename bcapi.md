@@ -1,6 +1,7 @@
 # API 
 
 ## GET /item
+ค้นหาสินค้าเป็นรายการ 
 
 * Content-Type: "application/json" 
 * ?keyword="2120250"
