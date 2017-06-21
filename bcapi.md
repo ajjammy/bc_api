@@ -51,3 +51,56 @@
 ```
 * Status: 200
 * Content-Type: "application/json; charset=utf-8"
+
+===
+
+## GET /warehouses
+* Content-Type: "application/json" 
+===
+### RESPONSE
+```json
+{"status":"success",
+  "data":[
+          {"warehouse_code":"080","warehouse_name":"นอกสถานที่/โฮมโชว์/แฟร์/ท้ายวังชั่วคราว"},
+          {"warehouse_code":"099","warehouse_name":"ซื้อมาขายไป"},
+          {"warehouse_code":"ISP1","warehouse_name":"Inspection S01"},
+          {"warehouse_code":"ISP2","warehouse_name":"Inspection S02"},
+          {"warehouse_code":"S00","warehouse_name":"ซื้อมาขายไป"},
+          {"warehouse_code":"S01","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S02","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S03","warehouse_name":"ExpertPaint Shop"},
+          {"warehouse_code":"S0-PASS","warehouse_name":"คลัง Pass ส่ง"},
+          {"warehouse_code":"S1-A","warehouse_name":"สนญ.โชว์รูม"},
+          {"warehouse_code":"S1-B","warehouse_name":"สนญ.Drivethru"},
+          {"warehouse_code":"S1-C","warehouse_name":"สนญ.สินค้าสต๊อก"},
+          {"warehouse_code":"S1-CD","warehouse_name":"คลังสินเชื่อ"},
+          {"warehouse_code":"S1-DEM","warehouse_name":"สำนักงานใหญ่-Demo"},
+          {"warehouse_code":"S1-DMG","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-FIN","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-ISP","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-MD1","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-NIV","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-OFS","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-PASS","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-PRO","warehouse_name":"นอกสถานที่"},
+          {"warehouse_code":"S1-RTV","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-SHW","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-SPO","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-TRN","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S1-VND","warehouse_name":"สำนักงานใหญ่"},
+          {"warehouse_code":"S2-A","warehouse_name":"สาขา.โชว์รูม"},
+          {"warehouse_code":"S2-B","warehouse_name":"สาขา.Drivethru"},
+          {"warehouse_code":"S2-C","warehouse_name":"สาขา.สต๊อก"},
+          {"warehouse_code":"S2-DMG","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-ISP","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-NIV","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-OFS","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-PASS","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-PRO","warehouse_name":"นอกสถานที่(สันกำแพง)"},
+          {"warehouse_code":"S2-RTV","warehouse_name":"S2-RTV"},
+          {"warehouse_code":"S2-SHW","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-SPO","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-TRN","warehouse_name":"สาขาสันกำแพง"},
+          {"warehouse_code":"S2-VND","warehouse_name":"สาขาสันกำแพง"}]
+          }
+```
