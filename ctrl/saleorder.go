@@ -78,25 +78,79 @@ func GetSaleorder(c *gin.Context){
 	//c.JSON(http.StatusOK,rs)
 
 }
-
-func PostNewSaleorder(c *gin.Context){
+func PutSaleorder(c *gin.Context){
 	log.Println("call PostNewSaleOrder()")
-	c.Header("Server", "BC_API SYS")
+	c.Header("Server", "BC_API ")
 	c.Header("Host", "nopadol.net:8000")
 	c.Header("Content-Type", "application/json")
 	c.Header("Access-Control-Allow-Origin", "*")
 
-	fmt.Println("Ctrl.PostNewSaleorder")
+	//todo: delete old data
+	fmt.Println("call PutSaleorder()")
 	so := so.Saleorder{}
 	rs := api.Response{}
+
 	if err := c.BindJSON(&so); err != nil{
 		fmt.Println(so)
 		log.Println("Error decode.Decode(&so) >>", err)
 		rs.Status = "fail"
 		rs.Message = err.Error()
 		c.JSON(http.StatusOK,rs)
+		return
+	}
 
-	} else {
+	existdocno := so.CheckExists(dbx,so.Docno)
+	fmt.Println(existdocno)
+	if !existdocno{
+		rs.Status = "fail"
+		rs.Message = "ไม่มีเอกสารเลชที่นี้อยู่ ไม่สามารถ Update ได้"
+		return
+	}
+	// DELETE
+	err :=  so.Delete(dbx,so.Docno)
+
+	if err != nil {  // cannot delete
+		//  มีรายการแล้ว
+		rs.Status="fail"
+		rs.Message = err.Error()
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+	// INSERT SO UPDATE
+	_,err = so.Insert(dbx)
+	if err != nil{
+		rs.Status="fail"
+		rs.Message = err.Error()
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+	rs.Status = "success"
+	rs.Data = so
+	c.JSON(http.StatusOK,rs)
+	return
+}
+
+
+func PostNewSaleorder(c *gin.Context){
+		log.Println("call PostNewSaleOrder()")
+		c.Header("Server", "BC_API ")
+		c.Header("Host", "nopadol.net:8000")
+		c.Header("Content-Type", "application/json")
+		c.Header("Access-Control-Allow-Origin", "*")
+
+		fmt.Println("Ctrl.PostNewSaleorder")
+		so := so.Saleorder{}
+		rs := api.Response{}
+		if err := c.BindJSON(&so); err != nil{
+			fmt.Println(so)
+			log.Println("Error decode.Decode(&so) >>", err)
+			rs.Status = "fail"
+			rs.Message = err.Error()
+			c.JSON(http.StatusOK,rs)
+
+		} else {
 		if so.CheckExists(dbx,so.Docno) == true {
 			//  มีรายการแล้ว
 			rs.Status="fail"

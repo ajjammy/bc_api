@@ -339,16 +339,37 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 func(s *Saleorder)CheckExists(db *sqlx.DB,docno string)(bool) {
 	fmt.Println("Begin CheckExists")
 	lccommand := "select top 1 docno from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
-
-	
 	rs,_ := db.Exec(lccommand)
 	chkRow,_ := rs.RowsAffected()
 	if chkRow > 0 {
 		return true
 		fmt.Println("data aleady exists!!! cannot insert this number : ",docno)
 	}
-
-
 	return  false
+
+}
+
+
+func(s *Saleorder)Delete(db *sqlx.DB,docno string)( err error){
+	//todo : Delete Before Update Saleorder
+	//todo : saleorder
+	fmt.Println("begin Saleorder.Delete")
+	lccommand := "delete from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
+	rs,_ := db.Exec(lccommand)
+	_,err = rs.RowsAffected()
+	if err != nil{
+		return err
+	}
+
+	//todo : saleordersub
+	lccommand = "delete from bcnp.dbo.bcsaleordersub where docno = '"+docno+"'"
+	_,err = db.Exec(lccommand)
+
+	_,err = rs.RowsAffected()
+	if err != nil{
+		return err
+	}
+
+	return nil
 
 }

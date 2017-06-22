@@ -23,6 +23,7 @@ func main(){
 	app.GET("/saleorder",ctrl.GetSaleorder)
 	app.POST("/saleorder",ctrl.PostNewSaleorder)
 	//	app.POST("/saleorder", ctrl.PostSaleOrder)
+	app.PUT("/saleorder", ctrl.PutSaleorder)
 	app.GET("/quotation",ctrl.GetQuotation)
 	//	app.get("/quotation", ctrl.GetQuotation)
 	app.GET("/customer",ctrl.GetCustomer)
