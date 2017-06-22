@@ -13,11 +13,9 @@ var dbx *sqlx.DB
 func TestSaleorder_CheckExists(t *testing.T) {
 	e := true
 	lcDoc := "W01-SCV5905-0022"
-<<<<<<< HEAD
-	fmt.Println("Begin testSaleorder_CheckExists")
-=======
+
 	fmt.Println("<---------------Begin testSaleorder_CheckExists")
->>>>>>> dev
+
 	MockSo := Saleorder{}
 	a := MockSo.CheckExists(dbtest,lcDoc)
 	fmt.Println(a)
