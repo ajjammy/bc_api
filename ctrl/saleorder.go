@@ -85,9 +85,12 @@ func PostNewSaleorder(c *gin.Context){
 	c.Header("Host", "nopadol.net:8000")
 	c.Header("Content-Type", "application/json")
 	c.Header("Access-Control-Allow-Origin", "*")
+
+	fmt.Println("Ctrl.PostNewSaleorder")
 	so := so.Saleorder{}
 	rs := api.Response{}
 	if err := c.BindJSON(&so); err != nil{
+		fmt.Println(so)
 		log.Println("Error decode.Decode(&so) >>", err)
 		rs.Status = "fail"
 		rs.Message = err.Error()
