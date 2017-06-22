@@ -36,16 +36,16 @@ func TestInsertSo(t *testing.T) {
 
 
 	//clear old data before
-	//lccommand := `delete bcnp.dbo.bcsaleorder where docno = ?`
-	//_,err = dbtest.Exec(lccommand,lcDoc)
-	//if err != nil{
-	//	fmt.Println("error : ",err.Error())
-	//}
-	//lccommand = `delete bcnp.dbo.bcsaleordersub where docno =?`
-	//_,err = dbtest.Exec(lccommand,lcDoc)
-	//if err != nil{
-	//	fmt.Println("error : ",err.Error())
-	//}
+	lccommand := `delete bcnp.dbo.bcsaleorder where docno = ?`
+	_,err = dbtest.Exec(lccommand,lcDoc)
+	if err != nil{
+		fmt.Println("error : ",err.Error())
+	}
+	lccommand = `delete bcnp.dbo.bcsaleordersub where docno =?`
+	_,err = dbtest.Exec(lccommand,lcDoc)
+	if err != nil{
+		fmt.Println("error : ",err.Error())
+	}
 
 
 	_,err = MockSo.Insert(dbtest)

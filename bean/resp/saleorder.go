@@ -114,14 +114,14 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 		"isnull(deliveryday,0)as deliveryday," +
 		"isnull(deliverydate,getdate()) as deliverydate " +
 		"from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
-	fmt.Println(lcCommand)
+	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
 	err = db.Get(s,lcCommand)
 	if err !=nil{
 		return err
 	}
-	fmt.Println(s)
+	//fmt.Println(s)
 	// todo: add Node sub details
 
 	sosub := `select  roworder as id,
@@ -158,7 +158,7 @@ func(s *Saleorder)GetByDocno(docno string,db *sqlx.DB)(err error){
 			isnull(packingrate2,1) as packingrate2
 		from bcnp.dbo.bcsaleordersub
 			where docno=? `
-	fmt.Println(sosub)
+	//fmt.Println(sosub)
 	err = db.Select(&s.Items,sosub,docno)
 	return err
 }
@@ -298,9 +298,8 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 }
 
 func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
-		for _,k :=  range sb{
+	for _,k :=  range sb{
 
-	fmt.Println(k.Itemcode)
 	lccommand := `insert into bcnp.dbo.bcsaleordersub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
