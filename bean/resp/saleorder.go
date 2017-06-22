@@ -283,10 +283,16 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 		s.Iscancel,s.Creatorcode,s.Createdatetime,s.Lasteditorcode,s.Lasteditdatet,s.Confirmcode,s.Confirmdatetime,
 		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
 
+
+	if err != nil  {
+		return s.Docno,err
+	}
+
 	// todo : insert sub
 	err = s.InsertSub(s.Items,db)
 	if err != nil {
 		fmt.Println(err.Error)
+		return s.Docno,err
 	}
 	return NewSoNumber,err
 }
@@ -331,10 +337,17 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 
 func(s *Saleorder)CheckExists(db *sqlx.DB,docno string)(bool) {
 	fmt.Println("Begin CheckExists")
-	s.GetByDocno(docno,db)
-	if s.Docno != docno {
+	lccommand := "select top 1 docno from bcnp.dbo.bcsaleorder where docno = '"+docno+"'"
+
+	
+	rs,_ := db.Exec(lccommand)
+	chkRow,_ := rs.RowsAffected()
+	if chkRow > 0 {
 		return true
+		fmt.Println("data aleady exists!!! cannot insert this number : ",docno)
 	}
+
+
 	return  false
 
 }

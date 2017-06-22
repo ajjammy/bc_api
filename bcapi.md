@@ -57,7 +57,9 @@
 
 ## GET /warehouses
 * Content-Type: "application/json" 
+
 ===
+
 ### RESPONSE
 ```json
 {"status":"success",

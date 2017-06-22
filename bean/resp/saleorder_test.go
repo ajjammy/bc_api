@@ -10,6 +10,17 @@ import (
 )
 var dbx *sqlx.DB
 
+func TestSaleorder_CheckExists(t *testing.T) {
+	e := true
+	lcDoc := "W01-SCV5905-0022x"
+	fmt.Println("Begin testSaleorder_CheckExists")
+	MockSo := Saleorder{}
+	a := MockSo.CheckExists(dbtest,lcDoc)
+	fmt.Println(a)
+	if e != a{
+		t.Fatalf("Expected %s But got %s",e,a)
+	}
+}
 
 func TestInsertSo(t *testing.T) {
 
@@ -25,18 +36,16 @@ func TestInsertSo(t *testing.T) {
 
 
 	//clear old data before
-	lccommand := `delete bcnp.dbo.bcsaleorder where docno = ?`
-	_,err = dbtest.Exec(lccommand,lcDoc)
-
-	if err != nil{
-		fmt.Println("error : ",err.Error())
-	}
-
-	lccommand = `delete bcnp.dbo.bcsaleordersub where docno =?`
-	_,err = dbtest.Exec(lccommand,lcDoc)
-	if err != nil{
-		fmt.Println("error : ",err.Error())
-	}
+	//lccommand := `delete bcnp.dbo.bcsaleorder where docno = ?`
+	//_,err = dbtest.Exec(lccommand,lcDoc)
+	//if err != nil{
+	//	fmt.Println("error : ",err.Error())
+	//}
+	//lccommand = `delete bcnp.dbo.bcsaleordersub where docno =?`
+	//_,err = dbtest.Exec(lccommand,lcDoc)
+	//if err != nil{
+	//	fmt.Println("error : ",err.Error())
+	//}
 
 
 	_,err = MockSo.Insert(dbtest)
