@@ -283,7 +283,7 @@ func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 		s.Iscancel,s.Creatorcode,s.Createdatetime,s.Lasteditorcode,s.Lasteditdatet,s.Confirmcode,s.Confirmdatetime,
 		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
 
-
+	fmt.Println(lccommand)
 	if err != nil  {
 		return s.Docno,err
 	}
@@ -330,7 +330,9 @@ func(s *Saleorder)InsertSub(sb []*Saleordersub,db *sqlx.DB)(err error){
 				fmt.Println(err.Error())
 				return err
 			}
+			fmt.Println(lccommand)
 		}
+
 	return err
 }
 

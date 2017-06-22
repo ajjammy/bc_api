@@ -1,7 +1,7 @@
 # API 
 
 ## GET /item
-ค้นหาสินค้าเป็นรายการ 
+Searh Item from "itemcode" field  - return one record of item 
 
 * Content-Type: "application/json" 
 * ?keyword="2120250"

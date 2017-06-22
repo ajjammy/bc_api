@@ -85,28 +85,34 @@ func PostNewSaleorder(c *gin.Context){
 	c.Header("Host", "nopadol.net:8000")
 	c.Header("Content-Type", "application/json")
 	c.Header("Access-Control-Allow-Origin", "*")
+
+	fmt.Println("Ctrl.PostNewSaleorder")
 	so := so.Saleorder{}
 	rs := api.Response{}
 	if err := c.BindJSON(&so); err != nil{
+		fmt.Println(so)
 		log.Println("Error decode.Decode(&so) >>", err)
 		rs.Status = "fail"
 		rs.Message = err.Error()
 		c.JSON(http.StatusOK,rs)
 
 	} else {
-		if so.CheckExists(dbx,so.Docno){
-
+		if so.CheckExists(dbx,so.Docno) == true {
+			//  มีรายการแล้ว
 			rs.Status="fail"
-			rs.Message="Saleorder number : "+so.Docno+"aready exists"
-			c.JSON(http.StatusOK,rs)
+			rs.Message="SaleOrder : "+so.Docno+" Aready exists"
+			c.JSON(http.StatusConflict,rs)
+			return
 		}
 
 		newSoNumber,err := so.Insert(dbx)
+		fmt.Println("<---------------Start insert code")
 		if err != nil {
 			fmt.Println("Error Insert DB:", err)
 			rs.Status = "fail"
-			rs.Message = err.Error()
-			c.JSON(http.StatusOK,rs)
+			rs.Message = "Error Insert Saleorder :"+err.Error()
+			c.JSON(http.StatusBadRequest,rs)
+			return
 		} else {
 			rs.Status = "success"
 			rs.Data = newSoNumber
