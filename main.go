@@ -35,7 +35,8 @@ func main(){
 	app.GET("/shelfcode",ctrl.GetShelfcode)
 	app.GET("/items",ctrl.GetItemList)
 	app.GET("/item",ctrl.GetItem)
-	app.GET("/allocate",ctrl.GetAllocateList)
+	app.GET("/allocates",ctrl.GetAllocateList)
+	app.GET("/projects", ctrl.GetProjectList)
 	app.Run(":8000")
 
 }
