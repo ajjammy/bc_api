@@ -97,19 +97,22 @@ func PostNewSaleorder(c *gin.Context){
 		c.JSON(http.StatusOK,rs)
 
 	} else {
-		if so.CheckExists(dbx,so.Docno){
-
+		if so.CheckExists(dbx,so.Docno) == true {
+			//  มีรายการแล้ว
 			rs.Status="fail"
-			rs.Message="Saleorder number : "+so.Docno+"aready exists"
-			c.JSON(http.StatusOK,rs)
+			rs.Message="SaleOrder : "+so.Docno+" Aready exists"
+			c.JSON(http.StatusConflict,rs)
+			return
 		}
 
 		newSoNumber,err := so.Insert(dbx)
+		fmt.Println("<---------------Start insert code")
 		if err != nil {
 			fmt.Println("Error Insert DB:", err)
 			rs.Status = "fail"
-			rs.Message = err.Error()
-			c.JSON(http.StatusOK,rs)
+			rs.Message = "Error Insert Saleorder :"+err.Error()
+			c.JSON(http.StatusBadRequest,rs)
+			return
 		} else {
 			rs.Status = "success"
 			rs.Data = newSoNumber
