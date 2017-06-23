@@ -1,16 +1,20 @@
 package Resp
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+
+)
 
 type Allocate struct {
+	Id int64
 	Code string
 	Name string
 }
 
 func(a *Allocate)GetAll(db *sqlx.DB) (as []Allocate, err error) {
-	lccommand := "select code,name from bcnp.dbo.bcallocate"
+	lcCommand := "select roworder as id,code,name from bcnp.dbo.bcallocate"
 
-	err = db.Select(&as,lccommand)
+	err = db.Select(&as,lcCommand)
 	if err != nil{
 		return nil,err
 	}

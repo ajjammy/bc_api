@@ -3,14 +3,15 @@ package Resp
 import "github.com/jmoiron/sqlx"
 
 type Project struct {
+	Id int64
 	Code string
 	Name string
 }
 
 func(p *Project)GetAll(db *sqlx.DB) (pjs []Project, err error) {
-	lccommand := "select code,name from bcnp.dbo.bcproject"
+	lcCommand := "select roworder as  id,code,name from bcnp.dbo.bcproject"
 
-	err = db.Select(&pjs,lccommand)
+	err = db.Select(&pjs,lcCommand)
 	if err != nil{
 		return nil,err
 	}
