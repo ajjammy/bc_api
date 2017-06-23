@@ -185,3 +185,27 @@ func PostNewSaleorder(c *gin.Context){
 	c.JSON(http.StatusOK,rs)
 }
 
+func VoidSaleorder(c *gin.Context){
+	log.Println("call PostNewSaleOrder()")
+	c.Header("Server", "BC_API ")
+	c.Header("Host", "nopadol.net:8000")
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
+
+
+	token := c.Request.URL.Query().Get("token")
+	fmt.Println(token)
+	soNumber := c.Request.URL.Query().Get("soNumber")
+
+	rs := api.Response{}
+	so := so.Saleorder{}
+	err := so.Void(dbx,soNumber)
+	if err != nil{
+		rs.Status="fail"
+		rs.Message=err.Error()
+		c.JSON(http.StatusBadRequest,rs)
+		return
+	}
+	rs.Status = "success"
+	c.JSON(http.StatusOK,rs)
+}

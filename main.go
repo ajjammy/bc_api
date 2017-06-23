@@ -24,6 +24,7 @@ func main(){
 	app.POST("/saleorder",ctrl.PostNewSaleorder)
 	//	app.POST("/saleorder", ctrl.PostSaleOrder)
 	app.PUT("/saleorder", ctrl.PutSaleorder)
+	app.DELETE("/saleorder", ctrl.VoidSaleorder)
 
 	app.GET("/quotation",ctrl.GetQuotation)
 	//	app.get("/quotation", ctrl.GetQuotation)
