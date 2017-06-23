@@ -78,6 +78,8 @@ func GetSaleorder(c *gin.Context){
 	//c.JSON(http.StatusOK,rs)
 
 }
+
+
 func PutSaleorder(c *gin.Context){
 	log.Println("call PostNewSaleOrder()")
 	c.Header("Server", "BC_API ")

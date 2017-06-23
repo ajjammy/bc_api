@@ -24,6 +24,7 @@ func main(){
 	app.POST("/saleorder",ctrl.PostNewSaleorder)
 	//	app.POST("/saleorder", ctrl.PostSaleOrder)
 	app.PUT("/saleorder", ctrl.PutSaleorder)
+
 	app.GET("/quotation",ctrl.GetQuotation)
 	//	app.get("/quotation", ctrl.GetQuotation)
 	app.GET("/customer",ctrl.GetCustomer)
@@ -38,6 +39,7 @@ func main(){
 	app.GET("/item",ctrl.GetItem)
 	app.GET("/allocates",ctrl.GetAllocateList)
 	app.GET("/projects", ctrl.GetProjectList)
+
 	app.Run(":8000")
 
 }

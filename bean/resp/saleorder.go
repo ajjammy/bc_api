@@ -373,3 +373,28 @@ func(s *Saleorder)Delete(db *sqlx.DB,docno string)( err error){
 	return nil
 
 }
+
+
+func(s *Saleorder)Void(db *sqlx.DB,docno string)( err error){
+	//todo : Delete Before Update Saleorder
+	//todo : saleorder
+	fmt.Println("begin Saleorder.Delete")
+	lccommand := "update bcnp.dbo.bcsaleorder set iscancel = 1 where docno = '"+docno+"'"
+	rs,_ := db.Exec(lccommand)
+	_,err = rs.RowsAffected()
+	if err != nil{
+		return err
+	}
+
+	//todo : saleordersub
+	lccommand = "Update bcnp.dbo.bcsaleordersub set iscancel = 1 where docno = '"+docno+"'"
+	_,err = db.Exec(lccommand)
+
+	_,err = rs.RowsAffected()
+	if err != nil{
+		return err
+	}
+
+	return nil
+
+}
