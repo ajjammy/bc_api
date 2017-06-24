@@ -8,7 +8,7 @@ import (
 )
 
 type Item struct {
-	Id int64 `json:"id"`
+	Roworder int64 `json:"id"`
 	Code string `json:"item_code"`
 	Name string `json:"item_name" db:"name1"`
 	UnitCode string `json:"unit_code" db:"defstkunitcode"`
@@ -53,7 +53,7 @@ type Unit struct {
 
 func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
-	lcCommand := "select top 10  roworder as Id, code,name1,defstkunitcode," +
+	lcCommand := "select top 10  roworder, code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
 		"isnull(remainoutqty,0) as remainoutqty," +
 		"isnull(reserveqty,0) as reserveqty," +
@@ -87,7 +87,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 
 func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 
-	lcCommand := "select top 10 roworder as Id, code,name1,defstkunitcode," +
+	lcCommand := "select top 10 roworder , code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
 		"isnull(remainoutqty,0) as remainoutqty," +
 		"isnull(reserveqty,0) as reserveqty," +
