@@ -11,9 +11,7 @@ import (
 
 func GetCustomerList(c *gin.Context){
 	log.Println("call GET Customer List")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys = headerKeys
 	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
 	fmt.Println("access_token = ",access_token)
@@ -41,9 +39,7 @@ func GetCustomerList(c *gin.Context){
 
 func GetCustomer(c *gin.Context){
 	log.Println("call GET Customer List")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
 

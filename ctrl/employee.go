@@ -12,9 +12,7 @@ import (
 
 func GetEmployeeList(c *gin.Context){
 	log.Println("call GET Employee List")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	//keyword := c.Param("keyword")
 	//token := c.Param("token")
 	//param1 := c.URL.Query().Get("param1")

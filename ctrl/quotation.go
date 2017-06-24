@@ -11,9 +11,7 @@ import (
 
 func GetQuotation(c *gin.Context){
 	log.Println("call GET Quotation By Docno")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8000")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	token := c.Request.URL.Query().Get("token")
 	docno := c.Request.URL.Query().Get("docno")
 

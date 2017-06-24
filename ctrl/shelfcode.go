@@ -12,9 +12,7 @@ import (
 
 func GetShelfcodeList(c *gin.Context){
 	log.Println("call GET Shelfcode List")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	//keyword := c.Param("keyword")
 	//token := c.Param("token")
 	//param1 := c.URL.Query().Get("param1")
@@ -47,9 +45,7 @@ func GetShelfcodeList(c *gin.Context){
 
 func GetShelfcode(c *gin.Context){
 	log.Println("call GET Shelfcode")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
 

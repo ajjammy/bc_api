@@ -41,9 +41,7 @@ func GetSaleorderList(c *gin.Context){
 
 func GetSaleorder(c *gin.Context){
 	log.Println("call GET Saleorder By Docno")
-	c.Header("Server", "BC_API")
-	c.Header("Host", "nopadol.net:8001")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 	token := c.Request.URL.Query().Get("token")
 	keyword := c.Request.URL.Query().Get("keyword")
 
@@ -82,10 +80,7 @@ func GetSaleorder(c *gin.Context){
 
 func PutSaleorder(c *gin.Context){
 	log.Println("call PostNewSaleOrder()")
-	c.Header("Server", "BC_API ")
-	c.Header("Host", "nopadol.net:8000")
-	c.Header("Content-Type", "application/json")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 
 	//todo: delete old data
 	fmt.Println("call PutSaleorder()")
@@ -137,10 +132,7 @@ func PutSaleorder(c *gin.Context){
 
 func PostNewSaleorder(c *gin.Context){
 		log.Println("call PostNewSaleOrder()")
-		c.Header("Server", "BC_API ")
-		c.Header("Host", "nopadol.net:8000")
-		c.Header("Content-Type", "application/json")
-		c.Header("Access-Control-Allow-Origin", "*")
+		c.Keys=headerKeys
 
 		fmt.Println("Ctrl.PostNewSaleorder")
 		so := so.Saleorder{}
@@ -187,10 +179,7 @@ func PostNewSaleorder(c *gin.Context){
 
 func VoidSaleorder(c *gin.Context){
 	log.Println("call PostNewSaleOrder()")
-	c.Header("Server", "BC_API ")
-	c.Header("Host", "nopadol.net:8000")
-	c.Header("Content-Type", "application/json")
-	c.Header("Access-Control-Allow-Origin", "*")
+	c.Keys=headerKeys
 
 
 	token := c.Request.URL.Query().Get("token")

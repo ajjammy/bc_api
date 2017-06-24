@@ -9,6 +9,7 @@ import (
 )
 
 func GetProjectList(c *gin.Context){
+	c.Keys=headerKeys
 	pjs := Resp.Project{}
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)

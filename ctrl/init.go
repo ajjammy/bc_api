@@ -10,6 +10,7 @@ import (
 
 var dbx *sqlx.DB
 //var rs *Response
+var headerKeys = make(map[string]interface{})
 
 func init() {
 	// Read configuration file from "config.json"
@@ -30,3 +31,15 @@ func init() {
 	log.Println("Connected db: ", dbx)
 }
 
+
+func setHeader() {
+
+	headerKeys = map[string]interface{}{
+		"Server":"bc_api",
+		"Host":"venus:8080",
+		"Content_Type":"application/json",
+		"Access-Control-Allow-Origin":"*",
+		"Access-Control-Allow-Methods":"GET, POST, PUT, DELETE",
+		"Access-Control-Allow-Headers":"Origin, Content-Type, X-Auth-Token",
+	}
+}

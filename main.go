@@ -8,6 +8,7 @@ import (
 //	"github.com/satit13/bc_api/config"
 	 "github.com/satit13/bc_api/ctrl"
 	_ "github.com/denisenkom/go-mssqldb"
+	"gopkg.in/gin-contrib/cors.v1"
 	//"github.com/jmoiron/sqlx"
 	//"github.com/revel/modules/db/app"
 )
@@ -17,6 +18,7 @@ func main(){
 	// 1 = MsSql server , 0 = MySql
 
 	app := gin.Default()
+	app.Use(cors.Default())
 	app.GET("/",getVersion)
 	app.GET("/saleorders", ctrl.GetSaleorderList)
 	//app.GET("/saleorder/:keyword/:token",ctrl.GetSaleorder)

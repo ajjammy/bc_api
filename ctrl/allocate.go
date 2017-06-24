@@ -12,7 +12,7 @@ func GetAllocateList(c *gin.Context){
 	as := Resp.Allocate{}
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
-
+	c.Keys = headerKeys
 	ss,err := as.GetAll(dbx)
 	if err != nil{
 		log.Println(err.Error())
