@@ -48,7 +48,7 @@ func(c *Customer)GetCustomerCode(keyword string,db *sqlx.DB)(cc []Customer,err e
 		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
 		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile " +
 		" ,isnull(billcredit,0)as creditday " +
-		" from bcnp.dbo.bcar where code = '"+keyword+"' order by code"
+		" from bcnp.dbo.bcar where code = '"+keyword+"' orgder by code"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
