@@ -6,6 +6,7 @@ import (
 )
 
 type Employee struct {
+	Roworder int64 `json:"id"`
 	Code string `json:"sale_code" db:"code"`
 	Name string `json:"sale_name" db:"name"`
 	Telephone string `json:"sale_telephone" db:"telephone"`
@@ -14,7 +15,7 @@ type Employee struct {
 }
 
 func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err error){
-	lcCommand := "select top 5 isnull(code,'') as code,isnull(name,'') as name" +
+	lcCommand := "select top 5 roworder, isnull(code,'') as code,isnull(name,'') as name" +
 		" ,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
 		" from bcnp.dbo.bcsale where code like '%"+keyword+"%' or name like '%"+keyword+"%' or telephone like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
@@ -32,7 +33,7 @@ func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err erro
 }
 
 func(e *Employee)GetEmployeeCode(keyword string,db *sqlx.DB)(ee []Employee,err error){
-	lcCommand := "select top 5 isnull(code,'') as code,isnull(name,'') as name" +
+	lcCommand := "select top 5 roworder, isnull(code,'') as code,isnull(name,'') as name" +
 		" ,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
 		" from bcnp.dbo.bcsale where code = '"+keyword+"'"
 	fmt.Println(lcCommand)
