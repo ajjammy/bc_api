@@ -6,6 +6,7 @@ import (
 )
 
 type Customer struct {
+	Roworder int64 `json:"id"`
 	Code string `json:"ar_code" db:"code"`
 	Name1 string `json:"ar_name" db:"name1"`
 	BillAddress string `json:"address" db:"billaddress"`
@@ -15,13 +16,15 @@ type Customer struct {
 	DebtAmount float32 `json:"debt_amount" db:"debtamount"`
 	SumOfMark1 float32 `json:"point"  db:"sumofmark1"`
 	ImageProfile string `json:"img_profile" db:"impageprofile"`
+	Creditday int `json:"credit_day"`
 }
 
 func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err error){
-	lcCommand := "select top 10 isnull(code,'') as code,isnull(name1,'') as name1" +
+	lcCommand := "select top 10 roworder, isnull(code,'') as code,isnull(name1,'') as name1" +
 		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as telephone" +
 		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
-		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
+		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile, " +
+		" isnull(billcredit,0)as creditday " +
 		" from bcnp.dbo.bcar where isnull(code,'') like '%"+keyword+"%'" +
 		" or isnull(name1,'') like '%"+keyword+"%' or isnull(telephone,'') like '%"+keyword+"%'" +
 		" or isnull(billaddress,'') like '%"+keyword+"%' order by code"
@@ -40,10 +43,11 @@ func(c *Customer)GetByKeyWord(keyword string,db *sqlx.DB)(cc []Customer,err erro
 }
 
 func(c *Customer)GetCustomerCode(keyword string,db *sqlx.DB)(cc []Customer,err error){
-	lcCommand := "select top 10 isnull(code,'') as code,isnull(name1,'') as name1" +
+	lcCommand := "select top 10 roworder, isnull(code,'') as code,isnull(name1,'') as name1" +
 		" ,isnull(billaddress,'') as billaddress,isnull(telephone,'') as telephone" +
 		" ,isnull(debtlimit1,0) as debtlimit1,isnull(debtlimitbal,0) as debtlimitbal" +
-		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile" +
+		" ,isnull(debtamount,0) as debtamount,isnull(sumofmark1,0) as sumofmark1,'' as impageprofile " +
+		" ,isnull(billcredit,0)as creditday " +
 		" from bcnp.dbo.bcar where code = '"+keyword+"' order by code"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno

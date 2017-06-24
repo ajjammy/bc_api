@@ -252,35 +252,22 @@ func(s *Saleorder)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Saleorder,err er
 func(s *Saleorder)Insert(db *sqlx.DB)(NewSoNumber string,err error){
 
 
-	lccommand := `insert into bcnp.dbo.bcsaleorder (docno,docdate,taxtype,billtype,arcode,
-		departcode,creditday,duedate,salecode,taxrate,isconfirm,mydescription,billstatus,
-		sostatus,holdingstatus,sumofitemamount,discountword,discountamount,
-		afterdiscount,beforetaxamount,taxamount,totalamount,netamount,
-		iscancel,creatorcode,createdatetime,lasteditorcode,lasteditdatet,confirmcode,confirmdatetime,
+	lccommand := `insert into bcnp.dbo.bcsaleorder (
+		docno,docdate,taxtype,billtype,arcode,
+		departcode,creditday,duedate,salecode,taxrate,
+		isconfirm,mydescription,billstatus,sostatus,holdingstatus,
+		sumofitemamount,discountword,discountamount,afterdiscount,beforetaxamount,
+		taxamount,totalamount,netamount,iscancel,creatorcode,
+		createdatetime,lasteditorcode,lasteditdatet,confirmcode,confirmdatetime,
 		cancelcode,canceldatetime,isconditionsend,deliveryday,deliverydate)
 		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 	_,err = db.Exec(lccommand,
-		s.Docno,
-		s.Docdate,
-		s.Taxtype,
-		s.Billtype,
-		s.Arcode,
-		s.Departcode,
-		s.Creditday,
-		s.Duedate,
-		s.Salecode,
-		s.Taxrate,
-		s.Isconfirm,
-		s.Mydescription,
-		s.Billstatus,
-		s.Sostatus,
-		s.Holdingstatus,
-		s.Sumofitemamount,
-		s.Discountword,
-		s.Discountamount,
-		s.Afterdiscount,
-		s.Beforetaxamount,s.Taxamount,s.Totalamount,s.Netamount,
-		s.Iscancel,s.Creatorcode,s.Createdatetime,s.Lasteditorcode,s.Lasteditdatet,s.Confirmcode,s.Confirmdatetime,
+		s.Docno,s.Docdate,s.Taxtype,s.Billtype,s.Arcode,
+		s.Departcode,s.Creditday,s.Duedate,s.Salecode,s.Taxrate,
+		s.Isconfirm,s.Mydescription,s.Billstatus,s.Sostatus,s.Holdingstatus,
+		s.Sumofitemamount,s.Discountword,s.Discountamount,s.Afterdiscount,s.Beforetaxamount,
+		s.Taxamount,s.Totalamount,s.Netamount,s.Iscancel,s.Creatorcode,
+		s.Createdatetime,s.Lasteditorcode,s.Lasteditdatet,s.Confirmcode,s.Confirmdatetime,
 		s.Cancelcode,s.Canceldatetime,s.Isconditionsend,s.Deliveryday,s.Deliverydate)
 
 	fmt.Println(lccommand)

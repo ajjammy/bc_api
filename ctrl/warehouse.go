@@ -45,6 +45,7 @@ func GetWarehouseList(c *gin.Context){
 
 func GetWarehouse(c *gin.Context){
 	log.Println("call GET Warehouse")
+	// set header
 	c.Keys=headerKeys
 	access_token := c.Request.URL.Query().Get("access_token")
 	keyword := c.Request.URL.Query().Get("keyword")
