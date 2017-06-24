@@ -36,7 +36,7 @@ func setHeader() {
 
 	headerKeys = map[string]interface{}{
 		"Server":"bc_api",
-		"Host":"nopadol.net:8001",
+		"Host":"venus:8000",
 		"Content_Type":"application/json",
 		"Access-Control-Allow-Origin":"*",
 		"Access-Control-Allow-Methods":"GET, POST, PUT, DELETE",
