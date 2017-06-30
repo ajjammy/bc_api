@@ -40,10 +40,10 @@ func GetQuotation(c *gin.Context){
 }
 
 func PostNewQuotation(c *gin.Context){
-	log.Println("call PostNewSaleOrder()")
+	log.Println("call PostNewQuotation()")
 	c.Keys=headerKeys
 
-	fmt.Println("Ctrl.PostNewSaleorder")
+	fmt.Println("Ctrl.PostNewQuotation")
 	qt := qt.Quotation{}
 	rs := api.Response{}
 	if err := c.BindJSON(&qt); err != nil{
@@ -57,7 +57,7 @@ func PostNewQuotation(c *gin.Context){
 		if qt.CheckExists(dbx,qt.DocNo) == true {
 			//  มีรายการแล้ว
 			rs.Status="fail"
-			rs.Message="SaleOrder : "+qt.DocNo+" Aready exists"
+			rs.Message="Quotation : "+qt.DocNo+" Aready exists"
 			c.JSON(http.StatusConflict,rs)
 			return
 		}
