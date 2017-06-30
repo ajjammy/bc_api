@@ -3,9 +3,11 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
+	//"go/doc"
 )
 
 type Quotation struct {
+	Id                  string `json:"id" db:"roworder"`
 	DocNo               string `json:"doc_no" db:"DocNo"`
 	DocDate             string `json:"doc_date" db:"DocDate"`
 	DueDate             string `json:"due_date" db:"DueDate"`
@@ -51,51 +53,94 @@ type Quotation struct {
 }
 
 type QuotationSub struct {
-	Id int64  `json:"id"`
-	ItemCode          string `json:"item_code" db:"ItemCode"`
-	ItemName          string `json:"item_name" db:"ItemName"`
-	Qty               float64 `json:"qty" db:"Qty"`
-	Price             float64 `json:"price" db:"Price"`
-	DisCountWordSub   string `json:"dis_count_word_sub" db:"DisCountWordSub"`
-	DisCountAmountSub float64 `json:"dis_count_amount_sub" db:"DisCountAmountSub"`
-	UnitCode          string `json:"unit_code" db:"UnitCode"`
-	NetAmount         float64 `json:"net_amount" db:"NetAmount"`
-	Amount            float64 `json:"amount" db:"Amount"`
-	ItemDescription   string `json:"item_description" db:"ItemDescription"`
-	IsConditionSend   int `json:"is_condition_send" db:"IsConditionSend"`
-	Iscancel          int `json:"is_cancel" db:"Iscancel"`
-	PackingRate       float64 `json:"packing_Rate" db:"PackingRate"`
-	LineNumber        int `json:"line_number" db:"LineNumber"`
-
-
-
+	Id              int64  `json:"id" db:"roworder"`
+	DocNo           string `json:"doc_no"`
+	Taxtype         int `json:"taxtype"`
+	ItemCode        string `json:"item_code" db:"ItemCode"`
+	DocDate         string `json:"doc_date"`
+	Arcode          string `json:"arcode"`
+	Departcode      string `json:"departcode"`
+	Salecode        string `json:"salecode"`
+	Mydescription   string `json:"mydescription"`
+	ItemName        string `json:"item_name" db:"ItemName"`
+	Whcode          string `json:"wh_code"`
+	Shelfcode       string `json:"shelf_code"`
+	Qty             float64 `json:"qty" db:"Qty"`
+	Remainqty       float32 `json:"remain_qty"`
+	Price           float64 `json:"price" db:"Price"`
+	DisCountWord    string `json:"dis_count_word_sub" db:"DisCountWord"`
+	DisCountAmount  float64 `json:"dis_count_amount_sub" db:"DisCountAmount"`
+	UnitCode        string `json:"unit_code" db:"UnitCode"`
+	NetAmount       float64 `json:"net_amount" db:"NetAmount"`
+	Amount          float64 `json:"amount" db:"Amount"`
+	Homeamount      float32 `json:"home_amount"`
+	ItemDescription string `json:"item_description" db:"ItemDescription"`
+	IsConditionSend int `json:"is_condition_send" db:"IsConditionSend"`
+	Iscancel        int `json:"is_cancel" db:"Iscancel"`
+	LineNumber      int `json:"line_number" db:"LineNumber"`
+	PackingRate     float64 `json:"packing_Rate" db:"PackingRate"`
+	Categorycode    string `json:"category_code"`
+	Groupcode       string `json:"group_code"`
+	Brandcode       string `json:"brand_code"`
+	Typecode        string `json:"type_code"`
+	Formatcode      string `json:"format_code"`
+	Barcode         string `json:"barcode"`
+	Taxrate         float32 `json:"tax_rate"`
+	Packingrate1    float32 `json:"packing_rate_1"`
+	Packingrate2    float32 `json:"packing_rate_2"`
 }
 
-func (q *Quotation) GetByDocno(docno string,db *sqlx.DB)error {
-
+func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	fmt.Println(q.DocNo)
-
-	lcCommand := "select isnull(a.docno,'') as DocNo,a.DocDate,isnull(a.DueDate,'') as DueDate,isnull(a.DeliveryDate,'') as DeliveryDate" +
-		",isnull(a.arcode,'') as ArCode,isnull(b.name1,'') as ArName,isnull(b.billAddress,'') as ArAddress" +
-		",isnull(b.Telephone,'') as ArTelephone,isnull(b.fax,'') as ArFax,isnull(a.salecode,'') as SaleCode" +
-		",isnull(c.name,'') as SaleName,'' as RefNo,isnull(a.taxrate,7) as TaxRate,a.TaxType" +
-		",isnull(a.MyDescription1,a.MyDescription2) as MyDescription,isnull(a.sumofitemamount,0) as SumItemAmount" +
-		",isnull(a.discountword,'') as DisCountWord,isnull(a.discountamount,0) as DisCountAmount" +
-		",isnull(a.AfterDiscount,0) as AfterDiscountAmount,isnull(a.BeforeTaxAmount,0) as BeforeTaxAmount" +
-		",isnull(a.TaxAmount,0) as TaxAmount,isnull(a.TotalAmount,0) as TotalAmount,a.Iscancel,a.IsConfirm,a.BillStatus" +
-		",a.BillType,isnull(a.CreditDay,0) as CreditDay,isnull(ContactCode,'') as ContactCode,isnull(d.name,'') as ContactName" +
-		",isnull(a.ProjectCode,'') as ProjectCode,isnull(f.name,'') as ProjectName,isnull(a.AllocateCode,'') as AllocateCode" +
-		",isnull(g.name,'') as AllocateName,isnull(a.CreatorCode,'') as CreatorCode,isnull(a.CreateDateTime,'') as CreateDateTime" +
-		",isnull(a.lastEditorCode,'') as EditorCode,isnull(a.lasteditdatet,'') as EditDateTime,isnull(a.ConfirmCode,'') as ConfirmCode" +
-		",isnull(a.ConfirmDateTime,'') as ConfirmDataTime,isnull(a.CancelCode,'') as  CancelCode" +
-		",isnull(a.CancelDateTime,'') as CancelDateTime" +
+	lcCommand := "select a.roworder , " +
+		" isnull(a.docno,'') as DocNo," +
+		" a.DocDate," +
+		" isnull(a.DueDate,'') as DueDate," +
+		" isnull(a.DeliveryDate,'') as DeliveryDate," +
+		" isnull(a.arcode,'') as ArCode," +
+		" isnull(b.name1,'') as ArName," +
+		" isnull(b.billAddress,'') as ArAddress," +
+		" isnull(b.Telephone,'') as ArTelephone," +
+		" isnull(b.fax,'') as ArFax," +
+		" isnull(a.salecode,'') as SaleCode," +
+		" isnull(c.name,'') as SaleName," +
+		" '' as RefNo," +
+		" isnull(a.taxrate,7) as TaxRate," +
+		" a.TaxType," +
+		" isnull(a.MyDescription1,'') as MyDescription," +
+		" isnull(a.sumofitemamount,0) as SumItemAmount," +
+		" isnull(a.discountword,'') as DisCountWord," +
+		" isnull(a.discountamount,0) as DisCountAmount," +
+		" isnull(a.AfterDiscount,0) as AfterDiscountAmount," +
+		" isnull(a.BeforeTaxAmount,0) as BeforeTaxAmount," +
+		" isnull(a.TaxAmount,0) as TaxAmount," +
+		" isnull(a.TotalAmount,0) as TotalAmount," +
+		" a.Iscancel," +
+		" a.IsConfirm," +
+		" a.BillStatus," +
+		" a.BillType," +
+		" isnull(a.CreditDay,0) as CreditDay," +
+		" isnull(ContactCode,'') as ContactCode," +
+		" isnull(d.name,'') as ContactName," +
+		" isnull(a.ProjectCode,'') as ProjectCode," +
+		" isnull(f.name,'') as ProjectName," +
+		" isnull(a.AllocateCode,'') as AllocateCode," +
+		" isnull(g.name,'') as AllocateName," +
+		" isnull(a.CreatorCode,'') as CreatorCode," +
+		" isnull(a.CreateDateTime,'') as CreateDateTime," +
+		" isnull(a.lastEditorCode,'') as EditorCode," +
+		" isnull(a.lasteditdatet,'') as EditDateTime," +
+		" isnull(a.ConfirmCode,'') as ConfirmCode," +
+		" isnull(a.ConfirmDateTime,'') as ConfirmDataTime," +
+		" isnull(a.CancelCode,'') as  CancelCode," +
+		" isnull(a.CancelDateTime,'') as CancelDateTime" +
 		" from bcnp.dbo.bcquotation as a" +
 		" left join bcnp.dbo.bcar as b on a.arcode=b.code" +
 		" left join bcnp.dbo.bcsale as c on a.salecode=c.code" +
 		" left join bcnp.dbo.BCContactList as d on a.ContactCode=d.code and a.arcode=d.ParentCode" +
 		" left join bcnp.dbo.BCProject as f on a.ProjectCode=f.code" +
 		" left join bcnp.dbo.BCAllocate as g on a.AllocateCode=g.code" +
-		" where a.docno='"+q.DocNo+"'"
+		" where a.docno='" + q.DocNo + "'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
@@ -105,55 +150,66 @@ func (q *Quotation) GetByDocno(docno string,db *sqlx.DB)error {
 	}
 	fmt.Println(q)
 	// todo: add Node sub details
-	qtsub := `select a.ItemCode,b.name1 as ItemName,a.Qty,a.Price,isnull(a.discountword,'') as DisCountWordSub
-			,isnull(a.discountamount,0) as DisCountAmountSub,a.UnitCode,a.NetAmount,a.Amount
-			,isnull(a.mydescription,'') as ItemDescription,a.IsConditionSend,a.Iscancel,isnull(a.PackingRate1,0) as PackingRate,a.LineNumber
-		from bcnp.dbo.bcQuotationsub as a
-		left join bcnp.dbo.bcitem as b on a.itemcode=b.code
-		where a.docno=?`
+	qtsub := `select a.roworder
+			,a.docno
+			,a.docdate
+			,a.arcode
+			,a.salecode
+			,a.ItemCode
+			,a.departcode
+			,b.name1 as ItemName
+			,a.Qty
+			,a.whcode
+			,a.shelfcode
+			,a.Price
+			,isnull(a.discountword,'') as DisCountWord
+			,isnull(a.discountamount,0) as DisCountAmount
+			,a.UnitCode,a.NetAmount,a.Amount
+			,isnull(a.mydescription,'') as ItemDescription
+			,a.IsConditionSend
+			,a.Iscancel
+			,isnull(a.PackingRate1,0) as PackingRate,a.LineNumber
+		  from bcnp.dbo.bcQuotationsub as a
+		  left join bcnp.dbo.bcitem as b on a.itemcode=b.code
+		  where a.docno=?`
 	fmt.Println(qtsub)
 	err = db.Select(&q.Subs, qtsub, docno)
 	return err
 }
 
+func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
-func(q *Quotation)Insert(db *sqlx.DB)(NewQtNo string,err error){
-
-
-	lccommand := `insert into bcnp.dbo.bcsaleorder (
+	lccommand := `insert into bcnp.dbo.bcquotation (
 		docno,docdate,taxtype,billtype,arcode,
-		creditday,duedate,salecode,taxrate,
-		isconfirm,mydescription,billstatus,
-		SumItemAmount,discountword,discountamount,afterdiscount,beforetaxamount,
-		taxamount,totalamount,beforetaxamount,iscancel,creatorcode,
-		createdatetime,lasteditorcode,lasteditdatet,confirmcode,confirmdatetime,
-		cancelcode,canceldatetime,deliverydate)
-		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-	_,err = db.Exec(lccommand,
-		q.DocNo,q.DocDate,q.TaxType,q.BillType,q.ArCode,
-		q.CreditDay,q.DueDate,q.SaleCode,q.TaxRate,
-		q.IsConfirm,q.MyDescription,q.BillStatus,
-		q.SumItemAmount,q.DisCountWord,q.DisCountAmount,q.AfterDiscountAmount,q.BeforeTaxAmount,
-		q.TaxAmount,q.TotalAmount,q.BeforeTaxAmount,q.Iscancel,q.CreatorCode,
-		q.CreateDateTime,q.EditorCode,q.EditDateTime,q.ConfirmCode,q.ConfirmDataTime,
-		q.CancelCode,q.CancelDateTime,q.DeliveryDate)
+		creditday,duedate,salecode,taxrate,isconfirm,
+		mydescription,billstatus,SumItemAmount,discountword,discountamount,
+		afterdiscount,beforetaxamount,taxamount,totalamount,beforetaxamount,
+		iscancel,creatorcode,createdatetime,lasteditorcode,lasteditdatet,
+		confirmcode,confirmdatetime,cancelcode,canceldatetime,deliverydate)
+		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+	_, err = db.Exec(lccommand,
+		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
+		q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,q.IsConfirm,
+		q.MyDescription, q.BillStatus,q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
+		q.AfterDiscountAmount, q.BeforeTaxAmount,q.TaxAmount, q.TotalAmount, q.BeforeTaxAmount,
+		q.Iscancel, q.CreatorCode,q.CreateDateTime, q.EditorCode, q.EditDateTime,
+		q.ConfirmCode, q.ConfirmDataTime,q.CancelCode, q.CancelDateTime, q.DeliveryDate)
 
 	fmt.Println(lccommand)
-	if err != nil  {
-		return q.DocNo,err
+	if err != nil {
+		return q.DocNo, err
 	}
 
 	// todo : insert sub
-	//err = s.InsertSub(s.Items,db)
-	//if err != nil {
-	//	fmt.Println(err.Error)
-	//	return s.Docno,err
-	//}
-	return NewQtNo,err
+	err = s.InsertSub(s.Items,db)
+	if err != nil {
+		fmt.Println(err.Error)
+		return s.Docno,err
+	}
+	return NewQtNo, err
 }
 
-
-func(q *Quotation)InsertSub(sb []*QuotationSub,db *sqlx.DB)(err error){
+func (q *Quotation)InsertSub(sb []*QuotationSub, db *sqlx.DB) (err error) {
 	//for _,k :=  range sb{
 	//
 	//
