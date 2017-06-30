@@ -182,18 +182,23 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 	lccommand := `insert into bcnp.dbo.bcquotation (
 		docno,docdate,taxtype,billtype,arcode,
 		creditday,duedate,salecode,taxrate,isconfirm,
-		mydescription,billstatus,SumItemAmount,discountword,discountamount,
-		afterdiscount,beforetaxamount,taxamount,totalamount,beforetaxamount,
-		iscancel,creatorcode,createdatetime,lasteditorcode,lasteditdatet,
-		confirmcode,confirmdatetime,cancelcode,canceldatetime,deliverydate)
-		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+		mydescription1,billstatus,SumofItemAmount,discountword,discountamount,
+		afterdiscount,beforetaxamount,taxamount,totalamount,iscancel,
+		creatorcode,createdatetime,lasteditorcode,lasteditdatet,confirmcode,
+		confirmdatetime,cancelcode,canceldatetime,deliverydate)
+		values(  ?,?,?,?,?
+			,?,?,?,?,?
+			,?,?,?,?,?
+			,?,?,?,?,?
+			,?,?,?,?,?,
+			?,?,?,?)`
 	_, err = db.Exec(lccommand,
 		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
 		q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,q.IsConfirm,
 		q.MyDescription, q.BillStatus,q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
-		q.AfterDiscountAmount, q.BeforeTaxAmount,q.TaxAmount, q.TotalAmount, q.BeforeTaxAmount,
-		q.Iscancel, q.CreatorCode,q.CreateDateTime, q.EditorCode, q.EditDateTime,
-		q.ConfirmCode, q.ConfirmDataTime,q.CancelCode, q.CancelDateTime, q.DeliveryDate)
+		q.AfterDiscountAmount, q.BeforeTaxAmount,q.TaxAmount, q.TotalAmount,q.Iscancel,
+		q.CreatorCode,q.CreateDateTime, q.EditorCode, q.EditDateTime,q.ConfirmCode,
+		q.ConfirmDataTime,q.CancelCode, q.CancelDateTime, q.DeliveryDate)
 
 	fmt.Println(lccommand)
 	if err != nil {
@@ -211,29 +216,34 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
 func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 	for _,k :=  range sub{
-
+		//,departcode,salecode,mydescription,itemname,whcode,
+		//shelfcode,qty,remainqty,price,discountword,
+		//discountamount,unitcode,netamount,amount,homeamount,
+		//isconditionsend,iscancel,linenumber,packingrate1,packingrate2 )
+		//?,?,?,?,?
+		//?,?,?,?,?
+		//?,?,?,?,?
+		//?,?,?,?,?
 	lccommand := `
 		insert into bcnp.dbo.bcQuotationsub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
 	shelfcode,qty,remainqty,price,discountword,
 	discountamount,unitcode,netamount,amount,homeamount,
-	itemdescription,isconditionsend,iscancel,linenumber,packingrate,
-	packingrate1,packingrate2 )
-	values (
-	?,?,?,?,?
-	?,?,?,?,?
-	?,?,?,?,?
-	?,?,?,?,?
-	?,?,?,?,?
-	?,? )
-	`
+	isconditionsend,iscancel,linenumber,packingrate1,packingrate2 )
+	values	(?,?,?,?,?,
+		 ?,?,?,?,?,
+		 ?,?,?,?,?,
+		 ?,?,?,?,?,
+		 ?,?,?,?,?
+		 )`
+
 		_, err := db.Exec(lccommand,
-		k.DocNo,k.Taxtype,k.ItemCode,k.DocDate,k.Arcode,
-		k.Departcode,k.Salecode,k.Mydescription,k.ItemName,
-		k.Shelfcode, k.Qty, k.Remainqty, k.Price, k.DisCountWord,
-		k.ItemDescription,k.IsConditionSend,k.Iscancel,k.LineNumber,k.PackingRate,
-		k.Packingrate1,k.Packingrate2	)
+			k.DocNo,k.Taxtype,k.ItemCode,k.DocDate,k.Arcode,
+			k.Departcode,k.Salecode,k.Mydescription,k.ItemName,k.Whcode,
+			k.Shelfcode,k.Qty, k.Remainqty, k.Price, k.DisCountWord,
+			k.DisCountAmount,k.UnitCode,k.NetAmount,k.Amount,k.Homeamount,
+			k.IsConditionSend,k.Iscancel,k.LineNumber,k.Packingrate1,k.Packingrate2)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
