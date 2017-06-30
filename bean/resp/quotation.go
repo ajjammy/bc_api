@@ -201,10 +201,10 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 	}
 
 	// todo : insert sub
-	err = s.InsertSub(s.Items,db)
+	err = q.InsertSub(q.Subs,db)
 	if err != nil {
 		fmt.Println(err.Error)
-		return s.Docno,err
+		return q.DocNo,err
 	}
 	return NewQtNo, err
 }
