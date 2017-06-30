@@ -243,3 +243,18 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 
 	return err
 }
+func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
+	fmt.Println("Begin CheckExists")
+	lccommand := "select top 1 docno from bcnp.dbo.bcquotation where docno = '" + docno + "'"
+	rs, _ := db.Exec(lccommand)
+	chkRow, _ := rs.RowsAffected()
+	if chkRow > 0 {
+		return true
+		fmt.Println("data aleady exists!!! cannot insert this number : ", docno)
+	}
+	return false
+
+}
+
+
+
