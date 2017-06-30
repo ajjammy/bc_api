@@ -103,22 +103,13 @@ func PutSaleorder(c *gin.Context){
 		rs.Message = "ไม่มีเอกสารเลชที่นี้อยู่ ไม่สามารถ Update ได้"
 		return
 	}
-	// DELETE
-	err :=  so.Delete(dbx,so.Docno)
 
-	if err != nil {  // cannot delete
-		//  มีรายการแล้ว
-		rs.Status="fail"
-		rs.Message = err.Error()
-		c.JSON(http.StatusConflict,rs)
-		return
-	}
 
 	// INSERT SO UPDATE
-	_,err = so.Insert(dbx)
+	msg,err := so.Update(dbx)
 	if err != nil{
 		rs.Status="fail"
-		rs.Message = err.Error()
+		rs.Message = msg+err.Error()
 		c.JSON(http.StatusConflict,rs)
 		return
 	}
@@ -188,7 +179,9 @@ func VoidSaleorder(c *gin.Context){
 
 	rs := api.Response{}
 	so := so.Saleorder{}
-	err := so.Void(dbx,soNumber)
+	cancelcode:="test"
+	err := so.Void(dbx,soNumber,cancelcode)
+
 	if err != nil{
 		rs.Status="fail"
 		rs.Message=err.Error()

@@ -51,6 +51,7 @@ type Quotation struct {
 }
 
 type QuotationSub struct {
+	Id int64  `json:"id"`
 	ItemCode          string `json:"item_code" db:"ItemCode"`
 	ItemName          string `json:"item_name" db:"ItemName"`
 	Qty               float64 `json:"qty" db:"Qty"`
@@ -65,6 +66,9 @@ type QuotationSub struct {
 	Iscancel          int `json:"is_cancel" db:"Iscancel"`
 	PackingRate       float64 `json:"packing_Rate" db:"PackingRate"`
 	LineNumber        int `json:"line_number" db:"LineNumber"`
+
+
+
 }
 
 func (q *Quotation) GetByDocno(docno string,db *sqlx.DB)error {
@@ -109,5 +113,56 @@ func (q *Quotation) GetByDocno(docno string,db *sqlx.DB)error {
 		where a.docno=?`
 	fmt.Println(qtsub)
 	err = db.Select(&q.Subs, qtsub, docno)
+	return err
+}
+
+
+func(q *Quotation)Insert(db *sqlx.DB)(NewQtNo string,err error){
+
+
+	lccommand := `insert into bcnp.dbo.bcsaleorder (
+		docno,docdate,taxtype,billtype,arcode,
+		creditday,duedate,salecode,taxrate,
+		isconfirm,mydescription,billstatus,
+		SumItemAmount,discountword,discountamount,afterdiscount,beforetaxamount,
+		taxamount,totalamount,beforetaxamount,iscancel,creatorcode,
+		createdatetime,lasteditorcode,lasteditdatet,confirmcode,confirmdatetime,
+		cancelcode,canceldatetime,deliverydate)
+		values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+	_,err = db.Exec(lccommand,
+		q.DocNo,q.DocDate,q.TaxType,q.BillType,q.ArCode,
+		q.CreditDay,q.DueDate,q.SaleCode,q.TaxRate,
+		q.IsConfirm,q.MyDescription,q.BillStatus,
+		q.SumItemAmount,q.DisCountWord,q.DisCountAmount,q.AfterDiscountAmount,q.BeforeTaxAmount,
+		q.TaxAmount,q.TotalAmount,q.BeforeTaxAmount,q.Iscancel,q.CreatorCode,
+		q.CreateDateTime,q.EditorCode,q.EditDateTime,q.ConfirmCode,q.ConfirmDataTime,
+		q.CancelCode,q.CancelDateTime,q.DeliveryDate)
+
+	fmt.Println(lccommand)
+	if err != nil  {
+		return q.DocNo,err
+	}
+
+	// todo : insert sub
+	//err = s.InsertSub(s.Items,db)
+	//if err != nil {
+	//	fmt.Println(err.Error)
+	//	return s.Docno,err
+	//}
+	return NewQtNo,err
+}
+
+
+func(q *Quotation)InsertSub(sb []*QuotationSub,db *sqlx.DB)(err error){
+	//for _,k :=  range sb{
+	//
+	//
+	//	if err != nil {
+	//		fmt.Println(err.Error())
+	//		return err
+	//	}
+	//	//fmt.Println(lccommand)
+	//}
+
 	return err
 }

@@ -362,11 +362,11 @@ func(s *Saleorder)Delete(db *sqlx.DB,docno string)( err error){
 }
 
 
-func(s *Saleorder)Void(db *sqlx.DB,docno string)( err error){
+func(s *Saleorder)Void(db *sqlx.DB,docno string,cancelcode string)( err error){
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Saleorder.Delete")
-	lccommand := "update bcnp.dbo.bcsaleorder set iscancel = 1 where docno = '"+docno+"'"
+	lccommand := "update bcnp.dbo.bcsaleorder set iscancel = 1,cancelcode="+cancelcode+",canceldatetime=getdate() where docno = '"+docno+"'"
 	rs,_ := db.Exec(lccommand)
 	_,err = rs.RowsAffected()
 	if err != nil{
@@ -384,4 +384,57 @@ func(s *Saleorder)Void(db *sqlx.DB,docno string)( err error){
 
 	return nil
 
+}
+
+
+func(s *Saleorder)Update(db *sqlx.DB)(msg string,err error ){
+	// Update bcsaleorder
+
+	// check so status - Update can use only new,onprocess only
+	// status : done , cancel cannot update
+	if s.Billstatus==1 || s.Iscancel==1  {
+		msg = "Cannot update status (CANCEL,DONE) "
+		return msg,err
+	}
+
+
+	lcCommand :="update bcnp.dbo.bcsaleorder set " +
+		"docno = ?,docdate=?,taxtype=?,billtype=?,arcode=?," +
+		"departcode=?,creditday=?,duedate=?,salecode=?,taxrate=?," +
+		"isconfirm=?,mydescription=?,billstatus=?," +
+		"sostatus=?,holdingstatus=?,sumofitemamount=?,discountword=?,discountamount=?," +
+		"afterdiscount=?,beforetaxamount=?,taxamount=?,totalamount=?,netamount=?," +
+		"lasteditorcode = ?lasteditdatet = getdate(),isconditionsend=?,deliveryday=?,deliverydate=?" +
+		"where docno = ?"
+	_,err = db.Exec(lcCommand,s.Docno,s.Docdate,s.Taxtype,s.Billtype,s.Arcode,
+				s.Departcode,s.Creditday,s.Duedate,s.Salecode,s.Taxrate,
+				s.Isconfirm,s.Mydescription,s.Billstatus,
+				s.Sostatus,s.Holdingstatus,s.Sumofitemamount,s.Discountword,s.Discountamount,
+				s.Afterdiscount,s.Beforetaxamount,s.Taxamount,s.Totalamount,s.Netamount,
+				s.Lasteditorcode,s.Isconditionsend,s.Deliveryday,s.Deliverydate,s.Docno)
+	if err != nil {
+		msg = "Update Error "
+		return msg,err
+	}
+
+	// update bcsaleordersub --> use delete before insert
+
+	lcCommand = "delete from bcnp.dbo.bcsaleordersub where docno = '"+s.Docno+"'"
+	_,err = db.Exec(lcCommand)
+	if err != nil{
+		msg = "delete Detail of order error ! "
+		return msg,err
+	}
+
+	// todo : insert bcsaleordersub
+	// todo : insert sub
+	err = s.InsertSub(s.Items,db)
+	if err != nil {
+		fmt.Println(err.Error)
+		msg = "insert Detail of order Error "
+		return s.Docno,err
+	}
+
+	msg = "Completed updated"
+	return msg,err
 }
