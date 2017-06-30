@@ -154,13 +154,13 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 			,a.docno
 			,a.docdate
 			,a.arcode
-			,a.salecode
+			,isnull(a.salecode,'') as salecode
 			,a.ItemCode
-			,a.departcode
-			,b.name1 as ItemName
+			,isnull(a.departcode,'') as departcode
+			,isnull(b.name1,'') as ItemName
 			,a.Qty
-			,a.whcode
-			,a.shelfcode
+			,isnull(a.whcode,'') as whcode
+			,isnull(a.shelfcode,'') as shelfcode
 			,a.Price
 			,isnull(a.discountword,'') as DisCountWord
 			,isnull(a.discountamount,0) as DisCountAmount
@@ -209,16 +209,37 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 	return NewQtNo, err
 }
 
-func (q *Quotation)InsertSub(sb []*QuotationSub, db *sqlx.DB) (err error) {
-	//for _,k :=  range sb{
-	//
-	//
-	//	if err != nil {
-	//		fmt.Println(err.Error())
-	//		return err
-	//	}
-	//	//fmt.Println(lccommand)
-	//}
+func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
+	for _,k :=  range sub{
+
+	lccommand := `
+		insert into bcnp.dbo.bcQuotationsub (
+	docno,taxtype,itemcode,docdate,arcode,
+	departcode,salecode,mydescription,itemname,whcode,
+	shelfcode,qty,remainqty,price,discountword,
+	discountamount,unitcode,netamount,amount,homeamount,
+	itemdescription,isconditionsend,iscancel,linenumber,packingrate,
+	packingrate1,packingrate2 )
+	values (
+	?,?,?,?,?
+	?,?,?,?,?
+	?,?,?,?,?
+	?,?,?,?,?
+	?,?,?,?,?
+	?,? )
+	`
+		_, err := db.Exec(lccommand,
+		k.DocNo,k.Taxtype,k.ItemCode,k.DocDate,k.Arcode,
+		k.Departcode,k.Salecode,k.Mydescription,k.ItemName,
+		k.Shelfcode, k.Qty, k.Remainqty, k.Price, k.DisCountWord,
+		k.ItemDescription,k.IsConditionSend,k.Iscancel,k.LineNumber,k.PackingRate,
+		k.Packingrate1,k.Packingrate2	)
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+		fmt.Println(lccommand)
+	}
 
 	return err
 }
