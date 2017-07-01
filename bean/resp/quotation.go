@@ -330,6 +330,6 @@ func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 	if chk.Isconfirm == 1 || chk.Billstatus == 1 || chk.Iscancel==1 {
 		return true,nil  // เอกสารอ้างอิงไปแล้ว
 	}
-	fmt.Println("test")
+	//fmt.Println("test")
 	return false,nil
 }
