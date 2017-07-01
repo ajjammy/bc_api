@@ -274,7 +274,7 @@ func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg strin
 	fmt.Println("begin Quotation.Void")
 
 
-	// todo : check status of quotation if refered , cannot to void
+	// todo : check status of quotation  cannot be  void if confirmed or refered
 	result,err = isRefered(docno,db)
 	if result == true  {
 		msg = "Document is confirmed  or refered"
@@ -285,6 +285,7 @@ func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg strin
 
 	// begin void document
 	fmt.Println("begin void document ")
+	// todo : update iscancel , cancelcode, canceldatetime to bcquotation
 	lccommand := "update bcnp.dbo.bcquotation set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	_, err = rs.RowsAffected()
@@ -293,7 +294,7 @@ func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg strin
 		return "void header error ",result,err
 	}
 
-	//todo : saleordersub
+	//todo : quotationsub cancel by update iscacel field
 	lccommand = "Update bcnp.dbo.bcquotationsub set iscancel = 1 where docno = '" + docno + "'"
 	_, err = db.Exec(lccommand)
 
