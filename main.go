@@ -30,6 +30,7 @@ func main(){
 
 	app.GET("/quotation",ctrl.GetQuotation)
 	app.POST("/quotation" , ctrl.PostNewQuotation)
+	app.DELETE("/quotation" , ctrl.VoidQuotation)
 	//
 	//	app.get("/quotation", ctrl.GetQuotation)
 	app.GET("/customer",ctrl.GetCustomer)

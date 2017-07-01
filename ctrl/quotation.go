@@ -43,7 +43,6 @@ func PostNewQuotation(c *gin.Context){
 	log.Println("call PostNewQuotation()")
 	c.Keys=headerKeys
 
-	fmt.Println("Ctrl.PostNewQuotation")
 	qt := qt.Quotation{}
 	rs := api.Response{}
 	if err := c.BindJSON(&qt); err != nil{
@@ -83,6 +82,44 @@ func PostNewQuotation(c *gin.Context){
 	// todo : mock data saleordersub & test
 	// todo : Post Saleorder
 	// todo : Post Saleordersub
+	c.JSON(http.StatusOK,rs)
+
+
+}
+
+
+func VoidQuotation(c *gin.Context){
+	log.Println("call Void_Quotation()")
+	c.Keys=headerKeys
+
+
+	token := c.Request.URL.Query().Get("token")
+	docno := c.Request.URL.Query().Get("docno")
+	fmt.Println("token = ",token)
+	qto := new(qt.Quotation)
+	qto.DocNo = docno
+	rs := api.Response{}
+
+	msg,result,err := qto.Void(dbx,qto.DocNo,"User")
+
+	if err != nil{
+		rs.Message=msg
+		rs.Status="fail"
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+	// void ไม่ได้เนื่องจาก ติด Refer เอกสาร
+	if result==false {
+		rs.Message=msg
+		rs.Status="fail"
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+
+	rs.Status ="success"
+	rs.Message = msg
 	c.JSON(http.StatusOK,rs)
 
 

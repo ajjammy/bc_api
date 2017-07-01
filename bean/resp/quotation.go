@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
 	//"go/doc"
+//	"github.com/mrtomyum/paybox_terminal/model"
 )
 
 type Quotation struct {
@@ -267,4 +268,65 @@ func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
 }
 
 
+func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string , result bool,err error) {
+	//todo : Delete Before Update Saleorder
+	//todo : saleorder
+	fmt.Println("begin Quotation.Void")
 
+
+	// todo : check status of quotation if refered , cannot to void
+	result,err = isRefered(docno,db)
+	if result == true  {
+		msg = "Document is confirmed  or refered"
+		result = false
+		return  msg,result , err
+
+	}
+
+	// begin void document
+	fmt.Println("begin void document ")
+	lccommand := "update bcnp.dbo.bcquotation set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
+	rs, _ := db.Exec(lccommand)
+	_, err = rs.RowsAffected()
+	if err != nil {
+		result = false
+		return "void header error ",result,err
+	}
+
+	//todo : saleordersub
+	lccommand = "Update bcnp.dbo.bcquotationsub set iscancel = 1 where docno = '" + docno + "'"
+	_, err = db.Exec(lccommand)
+
+	_, err = rs.RowsAffected()
+	if err != nil {
+		return "void Item error ",result,err
+	}
+
+	return "Void Completed",true,nil
+
+}
+
+
+// tempoary struct for check before void
+type chkstatus struct {
+	Docno string
+	Isconfirm int32
+	Billstatus int32
+}
+
+
+func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
+	lcCommand := "select top 1  docno,isconfirm,billstatus from bcnp.dbo.bcquotation where docno = '"+docno+"'"
+	fmt.Println(lcCommand)
+	fmt.Println("isRefered Check function begin")
+	chk := chkstatus{}
+	err = db.Get(&chk,lcCommand)
+	if err != nil {
+		fmt.Println("error query to check refered document quotation %s",err.Error())
+		return false ,err
+	}
+	if chk.Isconfirm == 1 || chk.Billstatus == 1 {
+		return true,nil  // เอกสารอ้างอิงไปแล้ว
+	}
+	return false,nil
+}
