@@ -277,7 +277,7 @@ func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg strin
 	// todo : check status of quotation  cannot be  void if confirmed or refered
 	result,err = isRefered(docno,db)
 	if result == true  {
-		msg = "Document is confirmed  or refered"
+		msg = "Document is confirmed  or refered or canceled "
 		result = false
 		return  msg,result , err
 
@@ -313,11 +313,12 @@ type chkstatus struct {
 	Docno string
 	Isconfirm int32
 	Billstatus int32
+	Iscancel int32
 }
 
 
 func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
-	lcCommand := "select top 1  docno,isconfirm,billstatus from bcnp.dbo.bcquotation where docno = '"+docno+"'"
+	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from bcnp.dbo.bcquotation where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	fmt.Println("isRefered Check function begin")
 	chk := chkstatus{}
@@ -326,7 +327,7 @@ func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 		fmt.Println("error query to check refered document quotation %s",err.Error())
 		return false ,err
 	}
-	if chk.Isconfirm == 1 || chk.Billstatus == 1 {
+	if chk.Isconfirm == 1 || chk.Billstatus == 1 || chk.Iscancel==1 {
 		return true,nil  // เอกสารอ้างอิงไปแล้ว
 	}
 	return false,nil

@@ -107,3 +107,15 @@ Searh Item from "itemcode" field  - return one record of item
           {"warehouse_code":"S2-VND","warehouse_name":"สาขาสันกำแพง"}]
           }
 ```
+
+## DELETE /quoataion
+* Content-Type: "application/json" 
+* ?docno="S01-BHV5801-0127"
+* ?token="ss5463777894857"
+
+===
+### RESPONSE
+```json
+{"status":"fail","message":"Document is confirmed  or refered or canceled "}
+```
+
