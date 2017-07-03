@@ -50,6 +50,9 @@ type Quotation struct {
 	ConfirmDataTime     string `json:"confirm_data_time"  db:"ConfirmDataTime"`
 	CancelCode          string `json:"cancel_code" db:"CancelCode"`
 	CancelDateTime      string `json:"cancel_date_time"  db:"CancelDateTime"`
+	IsConditionSend      int `json:"is_condition_send"`
+	DepartCode	string `json:"depart_code" db:"departcode"`
+	DeliveryDay	int `json:"delivery_day"`
 	Subs                []*QuotationSub `json:"subs"`
 }
 
@@ -275,7 +278,7 @@ func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg strin
 
 
 	// todo : check status of quotation  cannot be  void if confirmed or refered
-	result,err = isRefered(docno,db)
+	result,err = q.isRefered(docno,db)
 	if result == true  {
 		msg = "Document is confirmed  or refered or canceled "
 		result = false
@@ -317,7 +320,7 @@ type chkstatus struct {
 }
 
 
-func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
+func (q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from bcnp.dbo.bcquotation where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	fmt.Println("isRefered Check function begin")
@@ -332,4 +335,62 @@ func isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 	}
 	//fmt.Println("test")
 	return false,nil
+}
+
+func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
+	// Update Quotation
+
+	// check qt status - Update can use only new,onprocess only
+
+
+	// status : done , cancel cannot update
+	if q.BillStatus == 1 || q.Iscancel == 1 {
+		msg = "Cannot update status (CANCEL,DONE) "
+		return msg, err
+	}
+
+	lcCommand := "update bcnp.dbo.bcquotation set " +
+		"docno = ?,docdate=?,taxtype=?,billtype=?,arcode=?," +
+		"departcode=?,creditday=?,duedate=?,salecode=?,taxrate=?," +
+		"isconfirm=?,mydescription=?,billstatus=?," +
+		"sumofitemamount=?,discountword=?,discountamount=?," +
+		"afterdiscount=?,beforetaxamount=?,taxamount=?,totalamount=?," +
+		"lasteditorcode = ?lasteditdatet = getdate(),isconditionsend=?,deliveryday=?,deliverydate=?" +
+		"where docno = ?"
+	_, err = db.Exec(lcCommand,
+		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
+		q.DepartCode,q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,
+		q.IsConfirm,q.MyDescription, q.BillStatus,
+		q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
+		q.AfterDiscountAmount, q.BeforeTaxAmount, q.TaxAmount, q.TotalAmount,
+		q.EditorCode,q.EditDateTime, q.IsConditionSend, q.DeliveryDay,q.DeliveryDate,
+		q.DocNo)
+	if err != nil {
+		msg = "Update Error "
+		return msg, err
+	}
+
+	// update bcsaleordersub --> use delete before insert
+
+	lcCommand = "delete from bcnp.dbo.bcquotationsub where docno = '" + q.DocNo + "'"
+	_, err = db.Exec(lcCommand)
+	if err != nil {
+		msg = "delete Detail of order error ! "
+		return msg, err
+	}
+
+	// todo : insert bcsaleordersub
+	// todo : insert sub
+	err = q.InsertSub(q.Subs, db)
+	if err != nil {
+		fmt.Println(err.Error)
+		msg = "insert Detail of order Error "
+		return q.DocNo, err
+	}
+
+	msg = "Completed updated"
+	return msg, err
+
+
+
 }
