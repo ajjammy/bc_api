@@ -29,12 +29,8 @@ func main(){
 	app.DELETE("/saleorder", ctrl.VoidSaleorder)
 	app.GET("/quotation",ctrl.GetQuotation)
 	app.POST("/quotation" , ctrl.PostNewQuotation)
-//	app.DELETE("/quotation" , ctrl.VoidQuotation)
-//	app.PUT("/quotation", ctrl.PutQuotation)
-	//
-
-	//app.DELETE("/quotation", ctrl.VoidQuotation)
-	//	app.get("/quotation", ctrl.GetQuotation)
+	app.DELETE("/quotation" , ctrl.VoidQuotation)
+	app.PUT("/quotation", ctrl.PutQuotation)
 	app.GET("/customer",ctrl.GetCustomer)
 	app.GET("/customers",ctrl.GetCustomerList)
 	app.GET("/employee",ctrl.GetEmployee)

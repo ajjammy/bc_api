@@ -4,7 +4,7 @@ import (
 	"log"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	qt "github.com/satit13/bc_api/bean/resp"
+	//qt "github.com/satit13/bc_api/bean/resp"
 	api "github.com/satit13/bc_api/bean/resp"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func GetQuotation(c *gin.Context){
 	docno := c.Request.URL.Query().Get("docno")
 
 	fmt.Println("token = ",token)
-	qto := new(qt.Quotation)
+	qto := new(api.Quotation)
 	qto.DocNo = docno
 
 	fmt.Println("call qt.GetByDocno :",docno)
@@ -43,7 +43,7 @@ func PostNewQuotation(c *gin.Context){
 	log.Println("call PostNewQuotation()")
 	c.Keys=headerKeys
 
-	qt := qt.Quotation{}
+	qt := api.Quotation{}
 	rs := api.Response{}
 	if err := c.BindJSON(&qt); err != nil{
 		fmt.Println(qt)
@@ -96,7 +96,7 @@ func VoidQuotation(c *gin.Context){
 	token := c.Request.URL.Query().Get("token")
 	docno := c.Request.URL.Query().Get("docno")
 	fmt.Println("token = ",token)
-	qto := new(qt.Quotation)
+	qto := new(api.Quotation)
 	qto.DocNo = docno
 	rs := api.Response{}
 
@@ -130,7 +130,7 @@ func PutQuotation(c *gin.Context){
 	c.Keys=headerKeys
 
 	//todo: delete old data
-	qt := qt.Quotation{}
+	qt := api.Quotation{}
 	rs := api.Response{}
 	if err := c.BindJSON(&qt); err != nil{
 		fmt.Println(qt)

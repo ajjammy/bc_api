@@ -3,8 +3,6 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
-	//"go/doc"
-//	"github.com/mrtomyum/paybox_terminal/model"
 )
 
 type Quotation struct {
@@ -219,14 +217,7 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
 func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 	for _,k :=  range sub{
-		//,departcode,salecode,mydescription,itemname,whcode,
-		//shelfcode,qty,remainqty,price,discountword,
-		//discountamount,unitcode,netamount,amount,homeamount,
-		//isconditionsend,iscancel,linenumber,packingrate1,packingrate2 )
-		//?,?,?,?,?
-		//?,?,?,?,?
-		//?,?,?,?,?
-		//?,?,?,?,?
+
 	lccommand := `
 		insert into bcnp.dbo.bcQuotationsub (
 	docno,taxtype,itemcode,docdate,arcode,
@@ -270,7 +261,7 @@ func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
 }
 
 
-func (q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string , result bool,err error) {
+func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string , result bool,err error) {
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Quotation.Void")
@@ -319,7 +310,7 @@ type chkstatus struct {
 }
 
 
-func (q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
+func(q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from bcnp.dbo.bcquotation where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	fmt.Println("isRefered Check function begin")
@@ -336,7 +327,7 @@ func (q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
 	return false,nil
 }
 
-func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
+func(q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 	// Update Quotation
 
 	// check qt status - Update can use only new,onprocess only
@@ -388,7 +379,5 @@ func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 
 	msg = "Completed updated"
 	return msg, nil
-
-
 
 }

@@ -17,7 +17,7 @@ func init() {
 	// Read configuration file from "config.json"
 	//dsn := GetConfig("./model/config.json") // เปิดใช้งานจริงเมื่อ Docker Container run --link ตรงเข้า mariadb เท่านั้น
 
-	dsn := config.LoadDSN("config.json",1)
+	dsn := config.LoadDSN("./config.json",1)
 
 	//curDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 
