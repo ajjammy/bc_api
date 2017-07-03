@@ -79,7 +79,7 @@ func GetSaleorder(c *gin.Context){
 
 
 func PutSaleorder(c *gin.Context){
-	log.Println("call PostNewSaleOrder()")
+	log.Println("call PUT: Edit_SaleOrder()")
 	c.Keys=headerKeys
 
 	//todo: delete old data

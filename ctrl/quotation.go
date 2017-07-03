@@ -124,3 +124,45 @@ func VoidQuotation(c *gin.Context){
 
 
 }
+
+func PutQuotation(c *gin.Context){
+	log.Println("call PUT: Quotation()")
+	c.Keys=headerKeys
+
+	//todo: delete old data
+	qt := qt.Quotation{}
+	rs := api.Response{}
+	if err := c.BindJSON(&qt); err != nil{
+		fmt.Println(qt)
+		log.Println("Error decode.Decode(&qt) >>", err)
+		rs.Status = "fail"
+		rs.Message = err.Error()
+		c.JSON(http.StatusOK,rs)
+		return
+	}
+
+
+	existdocno := qt.CheckExists(dbx,qt.DocNo)
+	fmt.Println(existdocno)
+	if !existdocno{
+		rs.Status = "fail"
+		rs.Message = "ไม่มีเอกสารเลชที่นี้อยู่ ไม่สามารถ Update ได้"
+		return
+	}
+
+	msg,err := qt.Update(dbx)
+	if err != nil{
+		rs.Status="fail"
+		rs.Message = msg+err.Error()
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+	rs.Status = "success"
+	rs.Data = qt
+	c.JSON(http.StatusOK,rs)
+	return
+
+
+
+}
