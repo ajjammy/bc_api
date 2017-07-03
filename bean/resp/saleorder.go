@@ -8,39 +8,39 @@ import (
 )
 
 type Saleorder struct {
-	Docno           string `json:"doc_no"`
-	Docdate         string `json:"docdate"`
-	Taxtype         int `json:"taxtype"`
-	Billtype        int `json:"billtype"`
-	Arcode          string `json:"arcode"`
-	Departcode      string `json:"departcode"`
-	Creditday       int `json:"creditday"`
-	Duedate         string `json:"duedate"`
-	Salecode        string `json:"salecode"`
-	Taxrate         float32 `json:"taxrate"`
-	Isconfirm       int `json:"isconfirm"`
-	Mydescription   string `json:"mydescription"`
-	Billstatus      int `json:"billstatus"`
-	Sostatus        int `json:"so_status"`
-	Holdingstatus   int `json:"holding_status"`
-	Sumofitemamount float32 `json:"sumofitemamount"`
-	Discountword    string `json:"discountword"`
+	Docno           string `json:"doc_no" db:"docno"`
+	Docdate         string `json:"doc_date" db:"docdate"`
+	Taxtype         int `json:"tax_type" db :"taxtype"`
+	Billtype        int `json:"bill_type" db:"billtype"`
+	Arcode          string `json:"ar_code" db:"arcode"`
+	Departcode      string `json:"depart_code" db:"departcode"`
+	Creditday       int `json:"credit_day" db:"creditday"`
+	Duedate         string `json:"due_date" db:"duedate"`
+	Salecode        string `json:"sale_code" db:"salecode"`
+	Taxrate         float32 `json:"tax_rate" db:"taxrate"`
+	Isconfirm       int `json:"is_confirm" db:"isconfirm"`
+	Mydescription   string `json:"my_description" db:"mydescription"`
+	Billstatus      int `json:"bill_status" db:"billstatus"`
+	Sostatus        int `json:"so_status" db:"sostatus"`
+	Holdingstatus   int `json:"holding_status" db:"holdingstatus"`
+	Sumofitemamount float32 `json:"sum_of_item_amount" db:"sumofitemamount"`
+	Discountword    string `json:"discount_word"`
 	Discountamount  float32 `json:"discount_amount" DB:"discountamount" `
-	Afterdiscount   float32 `json:"afterdiscount"`
-	Beforetaxamount float32 `json:"beforetaxamount"`
-	Taxamount       float32 `json:"taxamount"`
-	Totalamount     float32 `json:"totalamount"`
-	Netamount       float32 `json:"netamount"`
-	Iscancel        int `json:"iscancel"`
-	Creatorcode     string `json:"creatorcode"`
-	Createdatetime  string `json:"createdatetime"`
-	Lasteditorcode  string `json:"lasteditorcode"`
-	Lasteditdatet   string  `json:"lasteditdatet"` // must to convert to datetime type in sql server
-	Confirmcode     string `json:"confirmcode"`
-	Confirmdatetime string `json:"confirmdatetime"`
-	Cancelcode      string `json:"cancelcode"`
-	Canceldatetime  string `json:"canceldatetime"`
-	Isconditionsend int `json:"iscondition_send"`
+	Afterdiscount   float32 `json:"after_discount"`
+	Beforetaxamount float32 `json:"before_tax_amount"`
+	Taxamount       float32 `json:"tax_amount"`
+	Totalamount     float32 `json:"total_amount"`
+	Netamount       float32 `json:"net_amount"`
+	Iscancel        int `json:"is_cancel"`
+	Creatorcode     string `json:"creator_code"`
+	Createdatetime  string `json:"create_datetime"`
+	Lasteditorcode  string `json:"last_editor_code"`
+	Lasteditdatet   string  `json:"last_edit_datet"` // must to convert to datetime type in sql server
+	Confirmcode     string `json:"confirm_code"`
+	Confirmdatetime string `json:"confirm_datetime"`
+	Cancelcode      string `json:"cancel_code"`
+	Canceldatetime  string `json:"cancel_datetime"`
+	Isconditionsend int `json:"is_condition_send"`
 	Deliveryday     int `json:"delivery_day"`
 	Deliverydate    string `json:"delivery_date"`
 						       //items []*Sosub
@@ -67,7 +67,7 @@ type Saleordersub struct {
 	Discountword   string `json:"discount_word"`
 	Discountamount float32 `json:"discount amount"`
 	Amount         float32 `json:"amount"`
-	Netamount      float32 `json:"netamount"`
+	Netamount      float32 `json:"net_amount"`
 	Homeamount     float32 `json:"home_amount"`
 	Unitcode       string `json:"unit_code"`
 	Iscancel       int `json:"is_cancel"`
@@ -279,7 +279,7 @@ func (s *Saleorder)Insert(db *sqlx.DB) (NewSoNumber string, err error) {
 		fmt.Println(err.Error)
 		return s.Docno, err
 	}
-	return NewSoNumber, err
+	return s.Docno, err
 }
 
 func (s *Saleorder)InsertSub(sb []*Saleordersub, db *sqlx.DB) (err error) {

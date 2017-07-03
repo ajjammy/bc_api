@@ -138,6 +138,7 @@ func PostNewSaleorder(c *gin.Context){
 		} else {
 		if so.CheckExists(dbx,so.Docno) == true {
 			//  มีรายการแล้ว
+			fmt.Println("so.docno = ",so.Docno)
 			rs.Status="fail"
 			rs.Message="SaleOrder : "+so.Docno+" Aready exists"
 			c.JSON(http.StatusConflict,rs)
