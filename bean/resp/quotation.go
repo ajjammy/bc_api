@@ -20,7 +20,6 @@ type Quotation struct {
 	ArFax               string `json:"ar_fax" db:"ArFax"`
 	SaleCode            string `json:"sale_code"  db:"SaleCode"`
 	SaleName            string `json:"sale_name" db:"SaleName"`
-	RefNo               string `json:"ref_no" db:"RefNo"`
 	TaxRate             float64 `json:"tax_rate" db:"TaxRate"`
 	TaxType             int `json:"tax_type" db:"TaxType"`
 	MyDescription       string `json:"my_description" db:"MyDescription"`
@@ -341,7 +340,7 @@ func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 	// Update Quotation
 
 	// check qt status - Update can use only new,onprocess only
-
+	fmt.Println("model.quotation.Update() -> received : ",q.DocNo)
 
 	// status : done , cancel cannot update
 	if q.BillStatus == 1 || q.Iscancel == 1 {
@@ -352,18 +351,17 @@ func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 	lcCommand := "update bcnp.dbo.bcquotation set " +
 		"docno = ?,docdate=?,taxtype=?,billtype=?,arcode=?," +
 		"departcode=?,creditday=?,duedate=?,salecode=?,taxrate=?," +
-		"isconfirm=?,mydescription=?,billstatus=?," +
-		"sumofitemamount=?,discountword=?,discountamount=?," +
-		"afterdiscount=?,beforetaxamount=?,taxamount=?,totalamount=?," +
-		"lasteditorcode = ?lasteditdatet = getdate(),isconditionsend=?,deliveryday=?,deliverydate=?" +
-		"where docno = ?"
+		"isconfirm=?,mydescription1=?,billstatus=?,sumofitemamount=?,discountword=?," +
+		"discountamount=?,afterdiscount=?,beforetaxamount=?,taxamount=?,totalamount=?," +
+		"lasteditorcode = ?,lasteditdatet = getdate(),deliveryday=?,deliverydate=? " +
+		" where docno = ?"
 	_, err = db.Exec(lcCommand,
 		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
 		q.DepartCode,q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,
 		q.IsConfirm,q.MyDescription, q.BillStatus,
 		q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
 		q.AfterDiscountAmount, q.BeforeTaxAmount, q.TaxAmount, q.TotalAmount,
-		q.EditorCode,q.EditDateTime, q.IsConditionSend, q.DeliveryDay,q.DeliveryDate,
+		q.EditorCode, q.DeliveryDay,q.DeliveryDate,
 		q.DocNo)
 	if err != nil {
 		msg = "Update Error "
@@ -385,11 +383,11 @@ func (q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 	if err != nil {
 		fmt.Println(err.Error)
 		msg = "insert Detail of order Error "
-		return q.DocNo, err
+		return msg, err
 	}
 
 	msg = "Completed updated"
-	return msg, err
+	return msg, nil
 
 
 
