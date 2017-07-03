@@ -34,7 +34,7 @@ func main(){
 	//app.PUT("/quotation", ctrl.PutQuotation)
 	//
 
-	app.DELETE("/quotation", ctrl.VoidQuotation)
+	//app.DELETE("/quotation", ctrl.VoidQuotation)
 	//	app.get("/quotation", ctrl.GetQuotation)
 	app.GET("/customer",ctrl.GetCustomer)
 	app.GET("/customers",ctrl.GetCustomerList)
