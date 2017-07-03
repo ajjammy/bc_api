@@ -321,7 +321,7 @@ func (s *Saleorder)InsertSub(sb []*Saleordersub, db *sqlx.DB) (err error) {
 	return err
 }
 
-func (s *Saleorder)CheckExists(db *sqlx.DB, docno string) (bool) {
+func(s *Saleorder)CheckExists(db *sqlx.DB, docno string) (bool) {
 	fmt.Println("Begin CheckExists")
 	lccommand := "select top 1 docno from bcnp.dbo.bcsaleorder where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
@@ -334,7 +334,7 @@ func (s *Saleorder)CheckExists(db *sqlx.DB, docno string) (bool) {
 
 }
 
-func (s *Saleorder)Delete(db *sqlx.DB, docno string) (err error) {
+func(s *Saleorder)Delete(db *sqlx.DB, docno string) (err error) {
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Saleorder.Delete")
@@ -358,7 +358,7 @@ func (s *Saleorder)Delete(db *sqlx.DB, docno string) (err error) {
 
 }
 
-func (s *Saleorder)Void(db *sqlx.DB, docno string, cancelcode string) (err error) {
+func(s *Saleorder)Void(db *sqlx.DB, docno string, cancelcode string) (err error) {
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Saleorder.Delete")
@@ -382,7 +382,7 @@ func (s *Saleorder)Void(db *sqlx.DB, docno string, cancelcode string) (err error
 
 }
 
-func (s *Saleorder)Update(db *sqlx.DB) (msg string, err error) {
+func(s *Saleorder)Update(db *sqlx.DB) (msg string, err error) {
 	// Update bcsaleorder
 
 	// check so status - Update can use only new,onprocess only
