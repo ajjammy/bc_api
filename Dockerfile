@@ -1,1 +1,3 @@
-FROM golang:1.8.3-onbuild
+FROM busybox:latest
+RUN exit 137
+RUN echo "ok"
