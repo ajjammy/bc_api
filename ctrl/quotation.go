@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	//qt "github.com/satit13/bc_api/bean/resp"
-	api "github.com/satit13/bc_api/bean/resp"
+	m "github.com/satit13/bc_api/bean/resp"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ func GetQuotation(c *gin.Context){
 	docno := c.Request.URL.Query().Get("docno")
 
 	fmt.Println("token = ",token)
-	qto := new(api.Quotation)
+	qto := new(m.Quotation)
 	qto.DocNo = docno
 
 	fmt.Println("call qt.GetByDocno :",docno)
@@ -27,7 +27,7 @@ func GetQuotation(c *gin.Context){
 		log.Println(err.Error())
 	}
 	//fmt.Println(qt)
-	rs := api.Response{}
+	rs := m.Response{}
 	if err != nil {
 		rs.Status = "error"
 		rs.Message = "No Content: " + err.Error()
@@ -43,8 +43,8 @@ func PostNewQuotation(c *gin.Context){
 	log.Println("call PostNewQuotation()")
 	c.Keys=headerKeys
 
-	qt := api.Quotation{}
-	rs := api.Response{}
+	qt := m.Quotation{}
+	rs := m.Response{}
 	if err := c.BindJSON(&qt); err != nil{
 		fmt.Println(qt)
 		log.Println("Error decode.Decode(&so) >>", err)
@@ -89,16 +89,15 @@ func PostNewQuotation(c *gin.Context){
 
 
 func VoidQuotation(c *gin.Context){
+
 	log.Println("call Void_Quotation()")
 	c.Keys=headerKeys
-
-
 	token := c.Request.URL.Query().Get("token")
 	docno := c.Request.URL.Query().Get("docno")
 	fmt.Println("token = ",token)
-	qto := new(api.Quotation)
+	qto := m.Quotation{}
 	qto.DocNo = docno
-	rs := api.Response{}
+	rs := m.Response{}
 
 	msg,result,err := qto.Void(dbx,qto.DocNo,"User")
 
@@ -130,8 +129,8 @@ func PutQuotation(c *gin.Context){
 	c.Keys=headerKeys
 
 	//todo: delete old data
-	qt := api.Quotation{}
-	rs := api.Response{}
+	qt := m.Quotation{}
+	rs := m.Response{}
 	if err := c.BindJSON(&qt); err != nil{
 		fmt.Println(qt)
 		log.Println("Error decode.Decode(&qt) >>", err)
