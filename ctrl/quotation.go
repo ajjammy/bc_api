@@ -125,7 +125,7 @@ func VoidQuotation(c *gin.Context){
 }
 
 func PutQuotation(c *gin.Context){
-	log.Println("call PUT: Quotation()")
+	log.Println("call edit: Quotation()")
 	c.Keys=headerKeys
 
 	//todo: delete old data
