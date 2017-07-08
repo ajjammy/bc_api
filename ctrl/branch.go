@@ -14,7 +14,7 @@ type Branch struct {
 
 func GetBranch(c *gin.Context){
 
-	log.Println("call Void_Quotation()")
+	log.Println("call Get Branch()")
 	c.Keys=headerKeys
 	Branchs := []Branch {
 		{"S01", "สำนักงานใหญ่"},
