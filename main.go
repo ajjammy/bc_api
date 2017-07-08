@@ -19,6 +19,7 @@ func main() {
 	app := gin.Default()
 	app.Use(cors.Default())
 	app.GET("/", getVersion)
+	app.GET("/branch" , ctrl.GetBranch)
 
 	// SO
 	app.GET("/saleorders", ctrl.GetSaleorderList)
@@ -57,3 +58,6 @@ func main() {
 func getVersion(c *gin.Context) {
 	c.JSON(http.StatusOK, "OK I'm Running on Docker !!!!")
 }
+
+
+
