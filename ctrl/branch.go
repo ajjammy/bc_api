@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"github.com/satit13/bc_api/bean/resp"
+	"fmt"
 )
 //[{"id":1,"code":"S01","name":"สำนักงานใหญ่"},{"id":2,"code":"S02","name":"สาขาสันกำแพง"},{"id":3,"code":"S01","name":"สำนักงานใหญ่"}]
 type Branch struct {
@@ -24,6 +25,6 @@ func GetBranch(c *gin.Context){
 	rs := Resp.Response{}
 	rs.Status = "success"
 	rs.Data = Branchs
-
 	c.JSON(http.StatusOK, rs)
+	fmt.Println("end of Get branch")
 }
