@@ -28,7 +28,7 @@ func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err erro
 		return nil,err
 	}
 
-	fmt.Println(ee)
+//	fmt.Println(ee)
 
 	return ee,nil
 }
