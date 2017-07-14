@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	cus "github.com/satit13/bc_api/bean/resp"
 	api "github.com/satit13/bc_api/bean/resp"
+	"strings"
 )
 
 func GetCustomerList(c *gin.Context){
@@ -16,12 +17,15 @@ func GetCustomerList(c *gin.Context){
 	keyword := c.Request.URL.Query().Get("keyword")
 	fmt.Println("access_token = ",access_token)
 	fmt.Println("call customer.GetCustomer :",keyword)
+	fmt.Println("keyword : ",keyword)
 
+	x := strings.Replace(keyword,",","%",-1)
+	fmt.Println("convert Keyword is  :",x)
 	//if keyword != nil{
 	//
 	//}
 	cust := cus.Customer{}
-	cc,err := cust.GetByKeyWord(keyword,dbx)
+	cc,err := cust.GetByKeyWord(x,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
