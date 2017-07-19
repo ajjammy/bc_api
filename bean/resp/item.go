@@ -61,7 +61,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
 		"from bcnp.dbo.bcitem where code = '"+itemcode+"'"
-	fmt.Println(lcCommand)
+	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(itemcode)
@@ -79,7 +79,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 			left join bcnp.dbo.bcitemunit b on a.unitcode=b.code
 		 	left join bcnp.dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode
 		 	where a.itemcode=?  and saletype = 0 and transporttype=0`
-	fmt.Println(unitsub)
+	//fmt.Println(unitsub)
 	err = db.Select(&i.Units,unitsub,i.Code)
 
 	return nil
@@ -95,7 +95,7 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
 		"from bcnp.dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%'"
-	fmt.Println(lcCommand)
+	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Select(&items,lcCommand)
 	if err !=nil{

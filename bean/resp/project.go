@@ -2,7 +2,7 @@ package Resp
 
 import (
 	"github.com/jmoiron/sqlx"
-	"fmt"
+//	"fmt"
 )
 
 type Project struct {
@@ -26,7 +26,7 @@ func(p *Project)GetAll(db *sqlx.DB) (pjs []Project, err error) {
 func(p *Project)GetById(db *sqlx.DB,id string) (pj Project,err error) {
 	lcCommand := "select roworder as  id,code,name from bcnp.dbo.bcproject where roworder = "+id
 	//pj := Project{}
-	fmt.Println(lcCommand)
+	//fmt.Println(lcCommand)
 	err = db.Get(&pj,lcCommand)
 	if err != nil{
 		return  pj,err

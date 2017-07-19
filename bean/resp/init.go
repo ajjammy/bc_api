@@ -33,7 +33,7 @@ func init() {
 		fmt.Println("Error connect database : ",err.Error())
 	}
 
-	fmt.Println("dsn : " ,dsn)
+	//fmt.Println("dsn : " ,dsn)
 
 	log.Println("Connected db: ", dbtest)
 }

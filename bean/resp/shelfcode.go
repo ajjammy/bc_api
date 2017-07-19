@@ -21,7 +21,7 @@ func(c *Shelfcode)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Shelfcode,err er
 	if err !=nil{
 		return nil,err
 	}
-	fmt.Println(ss)
+	//fmt.Println(ss)
 
 	return ss,nil
 }
@@ -37,6 +37,6 @@ func(c *Shelfcode)GetShelfcode(keyword string,db *sqlx.DB)(ss []Shelfcode,err er
 	if err !=nil{
 		return nil,err
 	}
-	fmt.Println(ss)
+	//fmt.Println(ss)
 	return ss,nil
 }

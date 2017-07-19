@@ -50,6 +50,7 @@ type Quotation struct {
 	IsConditionSend      int `json:"is_condition_send"`
 	DepartCode	string `json:"depart_code" db:"departcode"`
 	DeliveryDay	int `json:"delivery_day"`
+//	RefNo 		string `json:"ref_no" db:"refno"`
 	Subs                []*QuotationSub `json:"subs"`
 }
 
@@ -105,7 +106,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 		" isnull(b.fax,'') as ArFax," +
 		" isnull(a.salecode,'') as SaleCode," +
 		" isnull(c.name,'') as SaleName," +
-		" '' as RefNo," +
+		//" ' ' as RefNo," +
 		" isnull(a.taxrate,7) as TaxRate," +
 		" a.TaxType," +
 		" isnull(a.MyDescription1,'') as MyDescription," +
@@ -201,7 +202,7 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 		q.CreatorCode,q.CreateDateTime, q.EditorCode, q.EditDateTime,q.ConfirmCode,
 		q.ConfirmDataTime,q.CancelCode, q.CancelDateTime, q.DeliveryDate)
 
-	fmt.Println(lccommand)
+	//fmt.Println(lccommand)
 	if err != nil {
 		return q.DocNo, err
 	}
@@ -242,7 +243,7 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 			fmt.Println(err.Error())
 			return err
 		}
-		fmt.Println(lccommand)
+		//fmt.Println(lccommand)
 	}
 
 	return err
