@@ -41,7 +41,7 @@ type Stock struct {
 type Unit struct {
 	UnitId int `json:"unit_id" db:"id"`
 	UnitCode string `json:"unit_code" db:"unitcode"`
-	UnitName string `json:"unit_name" db:"unitname"`
+	UnitName string `json:"it_name" db:"unitname"`
 	PackingRate1 float32 `json:"packing_rate" db:"packing_rate"`
 	Price float32 `json:"price" db:"price"`
 	//“unit_id”:”0”,
@@ -94,7 +94,8 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
-		"from bcnp.dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%'"
+		"from bcnp.dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or code in " +
+		"(select itemcode  from bcnp.dbo.bcbarcodemaster where barcode like '%"+keyword+"%') "
 	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Select(&items,lcCommand)
@@ -107,7 +108,7 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 			fmt.Println("item stock loop")
 			sqlsub := "select qty,unitcode,whcode,shelfcode " +
 				"from bcnp.dbo.bcstklocation " +
-				"where shelfcode ='-' and whcode not like '%ISP%'  and whcode not like '%TRN%' and  itemcode='"+item.Code+"'"
+				"where qty>0 and shelfcode ='-' and whcode not like '%ISP%'  and whcode not like '%TRN%' and  itemcode='"+item.Code+"'"
 			fmt.Println(item.Code)
 			err = db.Select(&items[idx].Stocks,sqlsub)
 			fmt.Println(sqlsub)
