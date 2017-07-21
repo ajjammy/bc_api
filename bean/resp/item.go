@@ -65,7 +65,7 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(itemcode)
-	sqlsub := `select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
+	sqlsub := `select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
 
@@ -96,7 +96,7 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		"isnull(picfilename1,'') as picfilename1 " +
 		"from bcnp.dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or code in " +
 		"(select itemcode  from bcnp.dbo.bcbarcodemaster where barcode like '%"+keyword+"%') "
-	//fmt.Println(lcCommand)
+	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Select(&items,lcCommand)
 	if err !=nil{
