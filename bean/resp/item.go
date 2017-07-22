@@ -41,7 +41,7 @@ type Stock struct {
 type Unit struct {
 	UnitId int `json:"unit_id" db:"id"`
 	UnitCode string `json:"unit_code" db:"unitcode"`
-	UnitName string `json:"it_name" db:"unitname"`
+	UnitName string `json:"unit_name" db:"unitname"`
 	PackingRate1 float32 `json:"packing_rate" db:"packing_rate"`
 	Price float32 `json:"price" db:"price"`
 	//“unit_id”:”0”,
