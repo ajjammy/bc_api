@@ -3,6 +3,8 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
+//	"debug/dwarf"
+//	"go/doc"
 )
 
 type Qt struct {
@@ -11,10 +13,18 @@ type Qt struct {
 	ArCode              string `json:"ar_code" db:"ArCode"`
 	SaleCode            string `json:"sale_code"  db:"SaleCode"`
 	TotalAmount         float64 `json:"total_amount" db:"TotalAmount"`
+	Subs	[]*QtSub `json:"subs"`
 }
 
 
-
+type QtSub struct {
+	DocNo string `json:"doc_no"`
+	ItemCode string `json:"item_code"`
+	WhCode string `json:"wh_code"`
+	Qty int64 `json:"qty"`
+	UnitCode	string `json:"unit_code"`
+	Amount	float64 `json:"amount"`
+}
 
 type Quotation struct {
 	Id                  string `json:"id" db:"roworder"`
@@ -193,7 +203,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 }
 
 // test insert only header
-func (qh *Qt) InsHeader(db *sqlx.DB) (err error){
+func (qh *Qt) InsQt(db *sqlx.DB) (err error){
 	lcCommand := "insert into bcnp.dbo.bcquotation(" +
 		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount) " +
 		"values(?,?,?,?,?)"
@@ -201,13 +211,34 @@ func (qh *Qt) InsHeader(db *sqlx.DB) (err error){
 	if err != nil{
 		return err
 	}
+	// todo : insert sub
+	err = qh.InsSub(qh.Subs,db)
+	if err != nil {
+		fmt.Println(err.Error)
+		return err
+	}
 	return nil
 
 }
 
 
+//  test insert sub
+func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
+	for _,k :=  range sub {
+		lccommand := `insert into bcnp.dbo.bcQuotationsub(
+	DocNo,ItemCode,WhCode,Qty ,UnitCode	,Amount
+	) values (?,?,?,?,?,?)`
+		db.Exec(lccommand,
+			k.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount)
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+	}
+	return err
+}
 
-
+// ------------------------------------------------------------
 func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
 	lccommand := `insert into bcnp.dbo.bcquotation (
@@ -244,6 +275,9 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 	}
 	return NewQtNo, err
 }
+
+
+
 
 func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 	for _,k :=  range sub{

@@ -169,7 +169,7 @@ func PutQuotation(c *gin.Context){
 
 
 func PostQT(c *gin.Context){
-	log.Println("cal test insert QT Header")
+	log.Println("cal test insert QT test")
 	c.Keys=headerKeys
 	qt := m.Qt{}
 	rs := m.Response{}
@@ -182,11 +182,16 @@ func PostQT(c *gin.Context){
 		c.JSON(http.StatusOK,rs)
 		return
 	}
-
+	fmt.Println("docno = ",qt.DocNo)
 	lccommand := "delete bcnp.dbo.bcquotation where docno = ?"
 	_,err := dbx.Exec(lccommand,qt.DocNo)
+	fmt.Println(lccommand )
 
-	err = qt.InsHeader(dbx)
+	lccommand = "delete bcnp.dbo.bcquotationsub where docno = ?"
+	fmt.Println(lccommand)
+	_,err = dbx.Exec(lccommand,qt.DocNo)
+
+	err = qt.InsQt(dbx)
 	if err != nil{
 		rs.Status="fail"
 		rs.Message = err.Error()
