@@ -5,6 +5,17 @@ import (
 	"fmt"
 )
 
+type Qt struct {
+	DocNo               string `json:"doc_no" db:"DocNo"`
+	DocDate             string `json:"doc_date" db:"DocDate"`
+	ArCode              string `json:"ar_code" db:"ArCode"`
+	SaleCode            string `json:"sale_code"  db:"SaleCode"`
+	TotalAmount         float64 `json:"total_amount" db:"TotalAmount"`
+}
+
+
+
+
 type Quotation struct {
 	Id                  string `json:"id" db:"roworder"`
 	DocNo               string `json:"doc_no" db:"DocNo"`
@@ -92,6 +103,8 @@ type QuotationSub struct {
 	Packingrate2    float32 `json:"packing_rate_2"`
 }
 
+
+
 func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	fmt.Println(q.DocNo)
 	lcCommand := "select a.roworder , " +
@@ -178,6 +191,22 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	err = db.Select(&q.Subs, qtsub, docno)
 	return err
 }
+
+// test insert only header
+func (qh *Qt) InsHeader(db *sqlx.DB) (err error){
+	lcCommand := "insert into bcnp.dbo.bcquotation(" +
+		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount) " +
+		"values(?,?,?,?,?)"
+	_,err = db.Exec(lcCommand,qh.DocNo,qh.DocDate,qh.ArCode,qh.SaleCode,qh.TotalAmount)
+	if err != nil{
+		return err
+	}
+	return nil
+
+}
+
+
+
 
 func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
