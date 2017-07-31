@@ -165,3 +165,41 @@ func PutQuotation(c *gin.Context){
 
 
 }
+
+
+
+func PostQT(c *gin.Context){
+	log.Println("cal test insert QT Header")
+	c.Keys=headerKeys
+	qt := m.Qt{}
+	rs := m.Response{}
+
+	if err := c.BindJSON(&qt); err != nil{
+		fmt.Println(qt)
+		log.Println("Error decode.Decode(&qt) >>", err)
+		rs.Status = "fail"
+		rs.Message = err.Error()
+		c.JSON(http.StatusOK,rs)
+		return
+	}
+
+	lccommand := "delete bcnp.dbo.bcquotation where docno = ?"
+	_,err := dbx.Exec(lccommand,qt.DocNo)
+
+	err = qt.InsHeader(dbx)
+	if err != nil{
+		rs.Status="fail"
+		rs.Message = err.Error()
+		c.JSON(http.StatusConflict,rs)
+		return
+	}
+
+	rs.Status = "success"
+	rs.Data = qt
+	c.JSON(http.StatusOK,rs)
+	return
+
+
+
+
+}

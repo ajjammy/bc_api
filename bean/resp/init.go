@@ -24,7 +24,7 @@ func init() {
 	//fmt.Println("curdir :",curDir)
 
 
-	fmt.Println("resp.init.go -> start connect test in init()")
+	//fmt.Println("resp.init.go -> start connect test in init()")
 	//1 = MsSql server
 	dbtest = db.NewDB(dsn,1)
 	err := dbtest.Ping()
