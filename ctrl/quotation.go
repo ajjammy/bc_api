@@ -161,9 +161,6 @@ func PutQuotation(c *gin.Context){
 	rs.Data = qt
 	c.JSON(http.StatusOK,rs)
 	return
-
-
-
 }
 
 

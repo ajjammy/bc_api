@@ -229,7 +229,7 @@ func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
 	DocNo,ItemCode,WhCode,Qty ,UnitCode	,Amount
 	) values (?,?,?,?,?,?)`
 		db.Exec(lccommand,
-			k.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount)
+			qh.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
