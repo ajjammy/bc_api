@@ -17,7 +17,7 @@ type Employee struct {
 func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err error){
 	lcCommand := "select top 5 roworder, isnull(code,'') as code,isnull(name,'') as name" +
 		" ,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
-		" from bcnp.dbo.bcsale where (code like '%"+keyword+"%' or name like '%"+keyword+"%' or telephone like '%"+keyword+"%') " +
+		" from dbo.bcsale where (code like '%"+keyword+"%' or name like '%"+keyword+"%' or telephone like '%"+keyword+"%') " +
 		" and name not like '%ลาออก%'"
 	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
@@ -36,7 +36,7 @@ func(e *Employee)GetByKeyWord(keyword string,db *sqlx.DB)(ee []Employee,err erro
 func(e *Employee)GetEmployeeCode(keyword string,db *sqlx.DB)(ee []Employee,err error){
 	lcCommand := "select top 5 roworder, isnull(code,'') as code,isnull(name,'') as name" +
 		" ,isnull(telephone,'') as telephone,'S01' as profitcenter,'' as imageprofile" +
-		" from bcnp.dbo.bcsale where code = '"+keyword+"'"
+		" from dbo.bcsale where code = '"+keyword+"'"
 	//fmt.Println(lcCommand)
 	err = db.Select(&ee,lcCommand)
 

@@ -41,7 +41,7 @@ func GetProjectById(c *gin.Context){
 	//result := so.GetByDocno("test")
 	//fmt.Println("result object : ",result)
 	id := c.Param("id")
-	pj,err := p.GetById(dbx,id)
+	pj,err := p.GetByCode(dbx,id)
 
 	if err != nil{
 		log.Println(err.Error())

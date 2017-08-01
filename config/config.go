@@ -45,7 +45,7 @@ func LoadDSN(fileName string,dbType int) string {
 	}
 	// Microsoft SQLserver Pattern
 	if dbType == 1 {
-		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s", c.DBHost, c.DBUser, c.DBPass, c.DBPort)
+		dsn = fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s", c.DBHost, c.DBUser, c.DBPass, c.DBPort, c.DBName)
 		//dsn := "root:mypass@tcp(nava.work:3306)/sys?parseTime=true"
 	}
 	log.Println("DSN =", dsn)

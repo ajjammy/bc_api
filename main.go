@@ -52,6 +52,7 @@ func main() {
 	app.GET("/allocates", ctrl.GetAllocateList)
 	app.GET("/projects", ctrl.GetProjectList)
 	app.GET("/project/:id", ctrl.GetProjectById)
+	app.GET("/shelfs" , ctrl.GetShelfcodeList)
 
 	app.Run(":8000")
 

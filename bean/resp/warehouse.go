@@ -12,7 +12,7 @@ type Warehouse struct {
 
 func(c *Warehouse)GetByKeyWord(keyword string,db *sqlx.DB)(ww []Warehouse,err error){
 	lcCommand := "select code,name" +
-		" from bcnp.dbo.BCWarehouse where code like '%"+keyword+"%' or name like '%"+keyword+"%'"
+		" from dbo.BCWarehouse where code like '%"+keyword+"%' or name like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
@@ -27,7 +27,7 @@ func(c *Warehouse)GetByKeyWord(keyword string,db *sqlx.DB)(ww []Warehouse,err er
 
 func(c *Warehouse)GetWarehouseCode(keyword string,db *sqlx.DB)(ww []Warehouse,err error){
 	lcCommand := "select code,name" +
-		" from bcnp.dbo.BCWarehouse where code = '"+keyword+"'"
+		" from dbo.BCWarehouse where code = '"+keyword+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}

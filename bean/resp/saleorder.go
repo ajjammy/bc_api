@@ -112,7 +112,7 @@ func (s *Saleorder)GetByDocno(docno string, db *sqlx.DB) (err error) {
 		"isnull(isconditionsend,0) as isconditionsend," +
 		"isnull(deliveryday,0)as deliveryday," +
 		"isnull(deliverydate,getdate()) as deliverydate " +
-		"from bcnp.dbo.bcsaleorder where docno = '" + docno + "'"
+		"from dbo.bcsaleorder where docno = '" + docno + "'"
 	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
@@ -155,7 +155,7 @@ func (s *Saleorder)GetByDocno(docno string, db *sqlx.DB) (err error) {
 			isnull(taxrate,0) as taxrate,
 			isnull(packingrate1,1) as packingrate1,
 			isnull(packingrate2,1) as packingrate2
-		from bcnp.dbo.bcsaleordersub
+		from dbo.bcsaleordersub
 			where docno=? `
 	//fmt.Println(sosub)
 	err = db.Select(&s.Items, sosub, docno)
@@ -198,7 +198,7 @@ func (s *Saleorder)GetByKeyWord(keyword string, db *sqlx.DB) (ss []Saleorder, er
 		"isnull(isconditionsend,0) as isconditionsend," +
 		"isnull(deliveryday,0)as deliveryday," +
 		"isnull(deliverydate,'') as deliverydate " +
-		"from bcnp.dbo.bcsaleorder where docno like '%" + keyword + "%'"
+		"from dbo.bcsaleorder where docno like '%" + keyword + "%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//ss = []Saleorder{}
@@ -237,7 +237,7 @@ func (s *Saleorder)GetByKeyWord(keyword string, db *sqlx.DB) (ss []Saleorder, er
 			isnull(taxrate,0) as taxrate,
 			isnull(packingrate1,1) as packingrate1,
 			isnull(packingrate2,1) as packingrate2
-		from bcnp.dbo.bcsaleordersub
+		from dbo.bcsaleordersub
 			where docno=? `
 		fmt.Println(sosub)
 		err = db.Select(&ss[i].Items, sosub, so.Docno)
@@ -250,7 +250,7 @@ func (s *Saleorder)GetByKeyWord(keyword string, db *sqlx.DB) (ss []Saleorder, er
 
 func (s *Saleorder)Insert(db *sqlx.DB) (NewSoNumber string, err error) {
 
-	lccommand := `insert into bcnp.dbo.bcsaleorder (
+	lccommand := `insert into dbo.bcsaleorder (
 		docno,docdate,taxtype,billtype,arcode,
 		departcode,creditday,duedate,salecode,taxrate,
 		isconfirm,mydescription,billstatus,sostatus,holdingstatus,
@@ -285,7 +285,7 @@ func (s *Saleorder)Insert(db *sqlx.DB) (NewSoNumber string, err error) {
 func (s *Saleorder)InsertSub(sb []*Saleordersub, db *sqlx.DB) (err error) {
 	for _, k := range sb {
 
-		lccommand := `insert into bcnp.dbo.bcsaleordersub (
+		lccommand := `insert into dbo.bcsaleordersub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
 	shelfcode,qty,remainqty,price,discountword,
@@ -323,7 +323,7 @@ func (s *Saleorder)InsertSub(sb []*Saleordersub, db *sqlx.DB) (err error) {
 
 func(s *Saleorder)CheckExists(db *sqlx.DB, docno string) (bool) {
 	fmt.Println("Begin CheckExists")
-	lccommand := "select top 1 docno from bcnp.dbo.bcsaleorder where docno = '" + docno + "'"
+	lccommand := "select top 1 docno from dbo.bcsaleorder where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	chkRow, _ := rs.RowsAffected()
 	if chkRow > 0 {
@@ -338,7 +338,7 @@ func(s *Saleorder)Delete(db *sqlx.DB, docno string) (err error) {
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Saleorder.Delete")
-	lccommand := "delete from bcnp.dbo.bcsaleorder where docno = '" + docno + "'"
+	lccommand := "delete from dbo.bcsaleorder where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	_, err = rs.RowsAffected()
 	if err != nil {
@@ -346,7 +346,7 @@ func(s *Saleorder)Delete(db *sqlx.DB, docno string) (err error) {
 	}
 
 	//todo : saleordersub
-	lccommand = "delete from bcnp.dbo.bcsaleordersub where docno = '" + docno + "'"
+	lccommand = "delete from dbo.bcsaleordersub where docno = '" + docno + "'"
 	_, err = db.Exec(lccommand)
 
 	_, err = rs.RowsAffected()
@@ -362,7 +362,7 @@ func(s *Saleorder)Void(db *sqlx.DB, docno string, cancelcode string) (err error)
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Saleorder.Delete")
-	lccommand := "update bcnp.dbo.bcsaleorder set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
+	lccommand := "update dbo.bcsaleorder set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	_, err = rs.RowsAffected()
 	if err != nil {
@@ -370,7 +370,7 @@ func(s *Saleorder)Void(db *sqlx.DB, docno string, cancelcode string) (err error)
 	}
 
 	//todo : saleordersub
-	lccommand = "Update bcnp.dbo.bcsaleordersub set iscancel = 1 where docno = '" + docno + "'"
+	lccommand = "Update dbo.bcsaleordersub set iscancel = 1 where docno = '" + docno + "'"
 	_, err = db.Exec(lccommand)
 
 	_, err = rs.RowsAffected()
@@ -392,7 +392,7 @@ func(s *Saleorder)Update(db *sqlx.DB) (msg string, err error) {
 		return msg, err
 	}
 
-	lcCommand := "update bcnp.dbo.bcsaleorder set " +
+	lcCommand := "update dbo.bcsaleorder set " +
 		"docno = ?,docdate=?,taxtype=?,billtype=?,arcode=?," +
 		"departcode=?,creditday=?,duedate=?,salecode=?,taxrate=?," +
 		"isconfirm=?,mydescription=?,billstatus=?," +
@@ -413,7 +413,7 @@ func(s *Saleorder)Update(db *sqlx.DB) (msg string, err error) {
 
 	// update bcsaleordersub --> use delete before insert
 
-	lcCommand = "delete from bcnp.dbo.bcsaleordersub where docno = '" + s.Docno + "'"
+	lcCommand = "delete from dbo.bcsaleordersub where docno = '" + s.Docno + "'"
 	_, err = db.Exec(lcCommand)
 	if err != nil {
 		msg = "delete Detail of order error ! "

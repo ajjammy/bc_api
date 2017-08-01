@@ -12,7 +12,7 @@ type Allocate struct {
 }
 
 func(a *Allocate)GetAll(db *sqlx.DB) (as []Allocate, err error) {
-	lcCommand := "select roworder as id,code,name from bcnp.dbo.bcallocate"
+	lcCommand := "select roworder as id,code,name from dbo.bcallocate"
 
 	err = db.Select(&as,lcCommand)
 	if err != nil{

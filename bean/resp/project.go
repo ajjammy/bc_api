@@ -12,7 +12,7 @@ type Project struct {
 }
 
 func(p *Project)GetAll(db *sqlx.DB) (pjs []Project, err error) {
-	lcCommand := "select roworder as  id,code,name from bcnp.dbo.bcproject"
+	lcCommand := "select roworder as  id,code,name from bcproject"
 
 	err = db.Select(&pjs,lcCommand)
 	if err != nil{
@@ -23,8 +23,8 @@ func(p *Project)GetAll(db *sqlx.DB) (pjs []Project, err error) {
 
 
 
-func(p *Project)GetById(db *sqlx.DB,id string) (pj Project,err error) {
-	lcCommand := "select roworder as  id,code,name from bcnp.dbo.bcproject where roworder = "+id
+func(p *Project)GetByCode(db *sqlx.DB,code string) (pj Project,err error) {
+	lcCommand := "select roworder as  id,code,name from bcproject where code = '"+code+"'"
 	//pj := Project{}
 	//fmt.Println(lcCommand)
 	err = db.Get(&pj,lcCommand)

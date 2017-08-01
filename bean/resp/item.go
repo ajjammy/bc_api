@@ -60,12 +60,12 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
-		"from bcnp.dbo.bcitem where code = '"+itemcode+"'"
+		"from bcitem where code = '"+itemcode+"'"
 	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(itemcode)
-	sqlsub := `select qty,unitcode,whcode,shelfcode from bcnp.dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
+	sqlsub := `select qty,unitcode,whcode,shelfcode from dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
 
@@ -75,9 +75,9 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	fmt.Println(i)
 
 	unitsub := `select  a.roworder as id,a.unitcode,b.name as unitname ,c.rate1 as packing_rate,saleprice1 as price
-		from bcnp.dbo.bcpricelist a
-			left join bcnp.dbo.bcitemunit b on a.unitcode=b.code
-		 	left join bcnp.dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode
+		from dbo.bcpricelist a
+			left join dbo.bcitemunit b on a.unitcode=b.code
+		 	left join dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode
 		 	where a.itemcode=?  and saletype = 0 and transporttype=0`
 	//fmt.Println(unitsub)
 	err = db.Select(&i.Units,unitsub,i.Code)
@@ -94,8 +94,8 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
-		"from bcnp.dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or code in " +
-		"(select itemcode  from bcnp.dbo.bcbarcodemaster where barcode like '%"+keyword+"%') "
+		"from dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or code in " +
+		"(select itemcode  from dbo.bcbarcodemaster where barcode like '%"+keyword+"%') "
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Select(&items,lcCommand)
@@ -107,7 +107,7 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		//todo: add child node
 			fmt.Println("item stock loop")
 			sqlsub := "select qty,unitcode,whcode,shelfcode " +
-				"from bcnp.dbo.bcstklocation " +
+				"from dbo.bcstklocation " +
 				"where qty>0 and shelfcode ='-' and whcode not like '%ISP%'  and whcode not like '%TRN%' and  itemcode='"+item.Code+"'"
 			fmt.Println(item.Code)
 			err = db.Select(&items[idx].Stocks,sqlsub)
@@ -115,8 +115,8 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 
 		// bind : unit & Price
 		unitsub := "select  a.roworder as id,a.unitcode,b.name as unitname ,c.rate1 as packing_rate,saleprice1 as price "+
-			"from bcnp.dbo.bcpricelist a left join bcnp.dbo.bcitemunit b on a.unitcode=b.code "+
-		 	"left join bcnp.dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode"+
+			"from .dbo.bcpricelist a left join dbo.bcitemunit b on a.unitcode=b.code "+
+		 	"left join dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode"+
 		 	" where a.itemcode='"+item.Code+"'  and saletype = 0 and transporttype=0"
 		fmt.Println(unitsub)
 

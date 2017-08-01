@@ -159,12 +159,12 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 		" isnull(a.ConfirmDateTime,'') as ConfirmDataTime," +
 		" isnull(a.CancelCode,'') as  CancelCode," +
 		" isnull(a.CancelDateTime,'') as CancelDateTime" +
-		" from bcnp.dbo.bcquotation as a" +
-		" left join bcnp.dbo.bcar as b on a.arcode=b.code" +
-		" left join bcnp.dbo.bcsale as c on a.salecode=c.code" +
-		" left join bcnp.dbo.BCContactList as d on a.ContactCode=d.code and a.arcode=d.ParentCode" +
-		" left join bcnp.dbo.BCProject as f on a.ProjectCode=f.code" +
-		" left join bcnp.dbo.BCAllocate as g on a.AllocateCode=g.code" +
+		" from dbo.bcquotation as a" +
+		" left join dbo.bcar as b on a.arcode=b.code" +
+		" left join dbo.bcsale as c on a.salecode=c.code" +
+		" left join dbo.BCContactList as d on a.ContactCode=d.code and a.arcode=d.ParentCode" +
+		" left join dbo.BCProject as f on a.ProjectCode=f.code" +
+		" left join dbo.BCAllocate as g on a.AllocateCode=g.code" +
 		" where a.docno='" + q.DocNo + "'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
@@ -194,8 +194,8 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 			,a.IsConditionSend
 			,a.Iscancel
 			,isnull(a.PackingRate1,0) as PackingRate,a.LineNumber
-		  from bcnp.dbo.bcQuotationsub as a
-		  left join bcnp.dbo.bcitem as b on a.itemcode=b.code
+		  from dbo.bcQuotationsub as a
+		  left join dbo.bcitem as b on a.itemcode=b.code
 		  where a.docno=?`
 	fmt.Println(qtsub)
 	err = db.Select(&q.Subs, qtsub, docno)
@@ -204,7 +204,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 
 // test insert only header
 func (qh *Qt) InsQt(db *sqlx.DB) (err error){
-	lcCommand := "insert into bcnp.dbo.bcquotation(" +
+	lcCommand := "insert into dbo.bcquotation(" +
 		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount) " +
 		"values(?,?,?,?,?)"
 	_,err = db.Exec(lcCommand,qh.DocNo,qh.DocDate,qh.ArCode,qh.SaleCode,qh.TotalAmount)
@@ -225,7 +225,7 @@ func (qh *Qt) InsQt(db *sqlx.DB) (err error){
 //  test insert sub
 func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
 	for _,k :=  range sub {
-		lccommand := `insert into bcnp.dbo.bcQuotationsub(
+		lccommand := `insert into dbo.bcQuotationsub(
 	DocNo,ItemCode,WhCode,Qty ,UnitCode	,Amount
 	) values (?,?,?,?,?,?)`
 		db.Exec(lccommand,
@@ -241,7 +241,7 @@ func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
 // ------------------------------------------------------------
 func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
-	lccommand := `insert into bcnp.dbo.bcquotation (
+	lccommand := `insert into dbo.bcquotation (
 		docno,docdate,taxtype,billtype,arcode,
 		creditday,duedate,salecode,taxrate,isconfirm,
 		mydescription1,billstatus,SumofItemAmount,discountword,discountamount,
@@ -283,7 +283,7 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 	for _,k :=  range sub{
 
 	lccommand := `
-		insert into bcnp.dbo.bcQuotationsub (
+		insert into dbo.bcQuotationsub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
 	shelfcode,qty,remainqty,price,discountword,
@@ -297,11 +297,11 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 		 )`
 
 		_, err := db.Exec(lccommand,
-			k.DocNo,k.Taxtype,k.ItemCode,k.DocDate,k.Arcode,
-			k.Departcode,k.Salecode,k.Mydescription,k.ItemName,k.Whcode,
+			q.DocNo,q.TaxType,k.ItemCode,q.DocDate,q.ArCode,
+			q.DepartCode,q.SaleCode,k.Mydescription,k.ItemName,k.Whcode,
 			k.Shelfcode,k.Qty, k.Remainqty, k.Price, k.DisCountWord,
 			k.DisCountAmount,k.UnitCode,k.NetAmount,k.Amount,k.Homeamount,
-			k.IsConditionSend,k.Iscancel,k.LineNumber,k.Packingrate1,k.Packingrate2)
+			q.IsConditionSend,k.Iscancel,k.LineNumber,k.Packingrate1,k.Packingrate2)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
@@ -313,7 +313,7 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 }
 func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
 	fmt.Println("Begin CheckExists")
-	lccommand := "select top 1 docno from bcnp.dbo.bcquotation where docno = '" + docno + "'"
+	lccommand := "select top 1 docno from dbo.bcquotation where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	chkRow, _ := rs.RowsAffected()
 	if chkRow > 0 {
@@ -343,7 +343,7 @@ func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string
 	// begin void document
 	fmt.Println("begin void document ")
 	// todo : update iscancel , cancelcode, canceldatetime to bcquotation
-	lccommand := "update bcnp.dbo.bcquotation set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
+	lccommand := "update dbo.bcquotation set iscancel = 1,cancelcode=" + cancelcode + ",canceldatetime=getdate() where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
 	_, err = rs.RowsAffected()
 	if err != nil {
@@ -352,7 +352,7 @@ func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string
 	}
 
 	//todo : quotationsub cancel by update iscacel field
-	lccommand = "Update bcnp.dbo.bcquotationsub set iscancel = 1 where docno = '" + docno + "'"
+	lccommand = "Update dbo.bcquotationsub set iscancel = 1 where docno = '" + docno + "'"
 	_, err = db.Exec(lccommand)
 
 	_, err = rs.RowsAffected()
@@ -375,7 +375,7 @@ type chkstatus struct {
 
 
 func(q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
-	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from bcnp.dbo.bcquotation where docno = '"+docno+"'"
+	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from dbo.bcquotation where docno = '"+docno+"'"
 	fmt.Println(lcCommand)
 	fmt.Println("isRefered Check function begin")
 	chk := chkstatus{}
@@ -403,7 +403,7 @@ func(q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 		return msg, err
 	}
 
-	lcCommand := "update bcnp.dbo.bcquotation set " +
+	lcCommand := "update dbo.bcquotation set " +
 		"docno = ?,docdate=?,taxtype=?,billtype=?,arcode=?," +
 		"departcode=?,creditday=?,duedate=?,salecode=?,taxrate=?," +
 		"isconfirm=?,mydescription1=?,billstatus=?,sumofitemamount=?,discountword=?," +
@@ -425,7 +425,7 @@ func(q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 
 	// update bcsaleordersub --> use delete before insert
 
-	lcCommand = "delete from bcnp.dbo.bcquotationsub where docno = '" + q.DocNo + "'"
+	lcCommand = "delete from dbo.bcquotationsub where docno = '" + q.DocNo + "'"
 	_, err = db.Exec(lcCommand)
 	if err != nil {
 		msg = "delete Detail of order error ! "

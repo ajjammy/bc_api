@@ -13,7 +13,7 @@ type Shelfcode struct {
 
 func(c *Shelfcode)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Shelfcode,err error){
 	lcCommand := "select code,name,whcode" +
-		" from bcnp.dbo.BCShelf where code like '%"+keyword+"%' or name like '%"+keyword+"%'"
+		" from dbo.BCShelf where code like '%"+keyword+"%' or name like '%"+keyword+"%'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
@@ -28,7 +28,7 @@ func(c *Shelfcode)GetByKeyWord(keyword string,db *sqlx.DB)(ss []Shelfcode,err er
 
 func(c *Shelfcode)GetShelfcode(keyword string,db *sqlx.DB)(ss []Shelfcode,err error){
 	lcCommand := "select code,name,whcode" +
-		" from bcnp.dbo.BCShelf where code = '"+keyword+"'"
+		" from dbo.BCShelf where code = '"+keyword+"'"
 	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	//cc = []Customer{}
