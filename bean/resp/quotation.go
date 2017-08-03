@@ -12,7 +12,19 @@ type Qt struct {
 	DocDate             string `json:"doc_date" db:"DocDate"`
 	ArCode              string `json:"ar_code" db:"ArCode"`
 	SaleCode            string `json:"sale_code"  db:"SaleCode"`
-	TotalAmount         float64 `json:"total_amount" db:"TotalAmount"`
+	BillType			int `json:"bill_type"`
+	BillStatus          int `json:"bill_status" db:"BillStatus"`
+	TaxType             int `json:"tax_type" db:"TaxType"`
+	TaxRate             float64 `json:"tax_rate" db:"TaxRate"`
+	SumOfItemAmount		float64 `json:"sum_of_item_amount" db:"sumofitemamount"`
+	DisCountWord string `json:"dis_count_word" db:"DisCountWord"`
+	DisCountAmount float64 `json:"dis_count_amount" db:"DisCountAmount"`
+	AfterDiscountAmount float64 `json:"after_discount_amount" db:"AfterDiscountAmount"`
+	BeforeTaxAmount float64 `json:"before_tax_amount" db:"BeforeTaxAmount"`
+	TaxAmount float64 `json:"tax_amount" db:"TaxAmount"`
+	TotalAmount float64 `json:"total_amount" db:"TotalAmount"`
+	NetAmount	float64 `json:"net_amount" db:"NetAmount"`
+
 	Subs	[]*QtSub `json:"subs"`
 }
 
@@ -42,7 +54,7 @@ type Quotation struct {
 	TaxRate             float64 `json:"tax_rate" db:"TaxRate"`
 	TaxType             int `json:"tax_type" db:"TaxType"`
 	MyDescription       string `json:"my_description" db:"MyDescription"`
-	SumItemAmount       float32 `json:"sum_item_amount" db:"SumItemAmount"`
+	SumItemAmount       float32 `json:"sum_item_amount" db:"sumofitemamount"`
 	DisCountWord        string `json:"dis_count_word" db:"DisCountWord"`
 	DisCountAmount      float64 `json:"dis_count_amount" db:"DisCountAmount"`
 	AfterDiscountAmount float64 `json:"after_discount_amount" db:"AfterDiscountAmount"`
@@ -119,7 +131,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	fmt.Println(q.DocNo)
 	lcCommand := "select a.roworder , " +
 		" isnull(a.docno,'') as DocNo," +
-		" a.DocDate," +
+		" isnull(a.DocDate,'') as DocDate," +
 		" isnull(a.DueDate,'') as DueDate," +
 		" isnull(a.DeliveryDate,'') as DeliveryDate," +
 		" isnull(a.arcode,'') as ArCode," +
@@ -133,7 +145,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 		" isnull(a.taxrate,7) as TaxRate," +
 		" a.TaxType," +
 		" isnull(a.MyDescription1,'') as MyDescription," +
-		" isnull(a.sumofitemamount,0) as SumItemAmount," +
+		" isnull(a.sumofitemamount,0) as sumofitemamount," +
 		" isnull(a.discountword,'') as DisCountWord," +
 		" isnull(a.discountamount,0) as DisCountAmount," +
 		" isnull(a.AfterDiscount,0) as AfterDiscountAmount," +
@@ -176,17 +188,17 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	fmt.Println(q)
 	// todo: add Node sub details
 	qtsub := `select a.roworder
-			,a.docno
-			,a.docdate
-			,a.arcode
+			,isnull(a.docno,'') as docno
+			,isnull(a.docdate,'') as docdate
+			,isnull(a.arcode,'') as arcode
 			,isnull(a.salecode,'') as salecode
-			,a.ItemCode
+			,isnull(a.ItemCode,'') as ItemCode
 			,isnull(a.departcode,'') as departcode
 			,isnull(b.name1,'') as ItemName
-			,a.Qty
+			,isnull(a.Qty,0) as Qty
 			,isnull(a.whcode,'') as whcode
 			,isnull(a.shelfcode,'') as shelfcode
-			,a.Price
+			,isnull(a.Price,0) as Price
 			,isnull(a.discountword,'') as DisCountWord
 			,isnull(a.discountamount,0) as DisCountAmount
 			,a.UnitCode,a.NetAmount,a.Amount
@@ -205,9 +217,22 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 // test insert only header
 func (qh *Qt) InsQt(db *sqlx.DB) (err error){
 	lcCommand := "insert into dbo.bcquotation(" +
-		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount) " +
-		"values(?,?,?,?,?)"
-	_,err = db.Exec(lcCommand,qh.DocNo,qh.DocDate,qh.ArCode,qh.SaleCode,qh.TotalAmount)
+		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount," +
+		"billtype,billstatus,taxtype,taxrate,sumofitemamount," +
+		"discountword,discountamount,afterdiscount,beforetaxamount,taxamount," +
+		"netamount) " +
+		"values(?,?,?,?,?," +
+		"		?,?,?,?,?," +
+		"		?,?,?,?,?," +
+		"		?)"
+	_,err = db.Exec(
+			lcCommand,
+			qh.DocNo,qh.DocDate,qh.ArCode,qh.SaleCode,qh.TotalAmount,
+			qh.BillType,qh.BillStatus,qh.TaxType,qh.TaxRate,qh.SumOfItemAmount,
+			qh.DisCountWord,qh.DisCountAmount,qh.AfterDiscountAmount,qh.BeforeTaxAmount,qh.TaxAmount,
+			qh.NetAmount,
+	)
+
 	if err != nil{
 		return err
 	}
