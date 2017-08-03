@@ -251,10 +251,14 @@ func (qh *Qt) InsQt(db *sqlx.DB) (err error){
 func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
 	for _,k :=  range sub {
 		lccommand := `insert into dbo.bcQuotationsub(
-	DocNo,ItemCode,WhCode,Qty ,UnitCode	,Amount
-	) values (?,?,?,?,?,?)`
+	DocNo,ItemCode,WhCode,Qty ,UnitCode	,
+	Amount,	ArCode,taxtype,taxrate
+	) values
+	(	?,?,?,?,?,
+		?,?,?,?
+	)`
 		db.Exec(lccommand,
-			qh.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount)
+			qh.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount,qh.ArCode,qh.TaxType,qh.TaxRate)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
