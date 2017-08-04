@@ -170,6 +170,7 @@ func PostQT(c *gin.Context){
 	log.Println("cal test insert QT test")
 	c.Keys=headerKeys
 	qt := m.Qt{}
+	q := m.Quotation{}
 	rs := m.Response{}
 
 	if err := c.BindJSON(&qt); err != nil{
@@ -180,7 +181,7 @@ func PostQT(c *gin.Context){
 		c.JSON(http.StatusOK,rs)
 		return
 	}
-	fmt.Println(qt)
+	fmt.Println("ctrl.struct ->",qt)
 	fmt.Println("docno = ",qt.DocNo)
 	lccommand := "delete bcnp.dbo.bcquotation where docno = ?"
 	_,err := dbx.Exec(lccommand,qt.DocNo)
@@ -199,11 +200,10 @@ func PostQT(c *gin.Context){
 	}
 
 	rs.Status = "success"
-	rs.Data = qt
+	q.DocNo = qt.DocNo
+	_ = q.GetByDocno(qt.DocNo,dbx)
+	rs.Data = q
 	c.JSON(http.StatusOK,rs)
 	return
-
-
-
 
 }

@@ -3,8 +3,8 @@ package Resp
 import (
 	"github.com/jmoiron/sqlx"
 	"fmt"
-//	"debug/dwarf"
-//	"go/doc"
+	//	"debug/dwarf"
+	//	"go/doc"
 )
 
 type Qt struct {
@@ -12,30 +12,36 @@ type Qt struct {
 	DocDate             string `json:"doc_date" db:"DocDate"`
 	ArCode              string `json:"ar_code" db:"ArCode"`
 	SaleCode            string `json:"sale_code"  db:"SaleCode"`
-	BillType			int `json:"bill_type"`
+	BillType            int `json:"bill_type"`
 	BillStatus          int `json:"bill_status" db:"BillStatus"`
 	TaxType             int `json:"tax_type" db:"TaxType"`
 	TaxRate             float64 `json:"tax_rate" db:"TaxRate"`
-	SumOfItemAmount		float64 `json:"sum_of_item_amount" db:"sumofitemamount"`
-	DisCountWord string `json:"dis_count_word" db:"DisCountWord"`
-	DisCountAmount float64 `json:"dis_count_amount" db:"DisCountAmount"`
+	SumOfItemAmount     float64 `json:"sum_of_item_amount" db:"sumofitemamount"`
+	DisCountWord        string `json:"dis_count_word" db:"DisCountWord"`
+	DisCountAmount      float64 `json:"dis_count_amount" db:"DisCountAmount"`
 	AfterDiscountAmount float64 `json:"after_discount_amount" db:"AfterDiscountAmount"`
-	BeforeTaxAmount float64 `json:"before_tax_amount" db:"BeforeTaxAmount"`
-	TaxAmount float64 `json:"tax_amount" db:"TaxAmount"`
-	TotalAmount float64 `json:"total_amount" db:"TotalAmount"`
-	NetAmount	float64 `json:"net_amount" db:"NetAmount"`
-
-	Subs	[]*QtSub `json:"subs"`
+	BeforeTaxAmount     float64 `json:"before_tax_amount" db:"BeforeTaxAmount"`
+	TaxAmount           float64 `json:"tax_amount" db:"TaxAmount"`
+	TotalAmount         float64 `json:"total_amount" db:"TotalAmount"`
+	NetAmount           float64 `json:"net_amount" db:"NetAmount"`
+	CreditDay           int `json:"credit_day" db:"creditday"`
+	DueDate             string `json:"due_date" db:"duedate"`
+	Validity            int `json:"validity" db:"Validity"`
+	AssertStatus        int `json:"assert_status" db:"AssertStatus"`
+	MyDescription1      string `json:"my_description" db:"MyDescription1"`
+	IsCancel            int `json:"is_cancel" db:"IsCancel"`
+	Subs                []*QtSub `json:"subs"`
 }
 
-
 type QtSub struct {
-	DocNo string `json:"doc_no"`
-	ItemCode string `json:"item_code"`
-	WhCode string `json:"wh_code"`
-	Qty int64 `json:"qty"`
-	UnitCode	string `json:"unit_code"`
-	Amount	float64 `json:"amount"`
+	DocNo     string `json:"doc_no"`
+	ItemCode  string `json:"item_code"`
+	WhCode    string `json:"wh_code"`
+	Qty       int64 `json:"qty"`
+	UnitCode  string `json:"unit_code"`
+	RemainQty float64 `json:"remain_qty" db:"RemainQty"`
+	ItemName  string `json:"item_name"`
+	Amount    float64 `json:"amount"`
 }
 
 type Quotation struct {
@@ -80,11 +86,11 @@ type Quotation struct {
 	ConfirmDataTime     string `json:"confirm_data_time"  db:"ConfirmDataTime"`
 	CancelCode          string `json:"cancel_code" db:"CancelCode"`
 	CancelDateTime      string `json:"cancel_date_time"  db:"CancelDateTime"`
-	IsConditionSend      int `json:"is_condition_send"`
-	DepartCode	string `json:"depart_code" db:"departcode"`
-	DeliveryDay	int `json:"delivery_day"`
-//	RefNo 		string `json:"ref_no" db:"refno"`
-	Subs                []*QuotationSub `json:"subs"`
+	IsConditionSend     int `json:"is_condition_send"`
+	DepartCode          string `json:"depart_code" db:"departcode"`
+	DeliveryDay         int `json:"delivery_day"`
+	//	RefNo 		string `json:"ref_no" db:"refno"`
+	Subs []*QuotationSub `json:"subs"`
 }
 
 type QuotationSub struct {
@@ -125,8 +131,6 @@ type QuotationSub struct {
 	Packingrate2    float32 `json:"packing_rate_2"`
 }
 
-
-
 func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 	fmt.Println(q.DocNo)
 	lcCommand := "select a.roworder , " +
@@ -141,7 +145,7 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 		" isnull(b.fax,'') as ArFax," +
 		" isnull(a.salecode,'') as SaleCode," +
 		" isnull(c.name,'') as SaleName," +
-		//" ' ' as RefNo," +
+	//" ' ' as RefNo," +
 		" isnull(a.taxrate,7) as TaxRate," +
 		" a.TaxType," +
 		" isnull(a.MyDescription1,'') as MyDescription," +
@@ -215,29 +219,35 @@ func (q *Quotation) GetByDocno(docno string, db *sqlx.DB) error {
 }
 
 // test insert only header
-func (qh *Qt) InsQt(db *sqlx.DB) (err error){
+func (qh *Qt) InsQt(db *sqlx.DB) (err error) {
+	fmt.Println("start InsQt ")
 	lcCommand := "insert into dbo.bcquotation(" +
 		"DocNo ,DocDate,ArCode,SaleCode,TotalAmount," +
 		"billtype,billstatus,taxtype,taxrate,sumofitemamount," +
 		"discountword,discountamount,afterdiscount,beforetaxamount,taxamount," +
-		"netamount) " +
+		"netamount,creditday,duedate,validity,assertstatus," +
+		"mydescription1,iscancel) " +
 		"values(?,?,?,?,?," +
 		"		?,?,?,?,?," +
 		"		?,?,?,?,?," +
-		"		?)"
-	_,err = db.Exec(
-			lcCommand,
-			qh.DocNo,qh.DocDate,qh.ArCode,qh.SaleCode,qh.TotalAmount,
-			qh.BillType,qh.BillStatus,qh.TaxType,qh.TaxRate,qh.SumOfItemAmount,
-			qh.DisCountWord,qh.DisCountAmount,qh.AfterDiscountAmount,qh.BeforeTaxAmount,qh.TaxAmount,
-			qh.NetAmount,
+		"		?,?,?,?,?," +
+		"		?,?)"
+	_, err = db.Exec(
+		lcCommand,
+		qh.DocNo, qh.DocDate, qh.ArCode, qh.SaleCode, qh.TotalAmount,
+		qh.BillType, qh.BillStatus, qh.TaxType, qh.TaxRate, qh.SumOfItemAmount,
+		qh.DisCountWord, qh.DisCountAmount, qh.AfterDiscountAmount, qh.BeforeTaxAmount, qh.TaxAmount,
+		qh.NetAmount, qh.CreditDay, qh.DueDate, qh.Validity, qh.AssertStatus,
+		qh.MyDescription1, qh.IsCancel,
+
 	)
 
-	if err != nil{
+	if err != nil {
+		fmt.Println(error.Error)
 		return err
 	}
 	// todo : insert sub
-	err = qh.InsSub(qh.Subs,db)
+	err = qh.InsSub(qh.Subs, db)
 	if err != nil {
 		fmt.Println(err.Error)
 		return err
@@ -246,29 +256,36 @@ func (qh *Qt) InsQt(db *sqlx.DB) (err error){
 
 }
 
-
 //  test insert sub
-func (qh *Qt) InsSub(sub []*QtSub,db *sqlx.DB)(err error){
-	for _,k :=  range sub {
+func (qh *Qt) InsSub(sub []*QtSub, db *sqlx.DB) (err error) {
+	fmt.Println("start InsQt_SUB ")
+	for _, k := range sub {
 		lccommand := `insert into dbo.bcQuotationsub(
 	DocNo,ItemCode,WhCode,Qty ,UnitCode	,
-	Amount,	ArCode,taxtype,taxrate
+	Amount,	ArCode,taxtype,taxrate,remainqty,
+	docdate,itemname
 	) values
 	(	?,?,?,?,?,
-		?,?,?,?
+		?,?,?,?,?,
+		?,?
 	)`
-		db.Exec(lccommand,
-			qh.DocNo,k.ItemCode,k.WhCode,k.Qty,k.UnitCode,k.Amount,qh.ArCode,qh.TaxType,qh.TaxRate)
+
+	fmt.Println(qh.DocDate)
+		_,err := db.Exec(lccommand,
+			qh.DocNo, k.ItemCode, k.WhCode, k.Qty, k.UnitCode,
+			k.Amount, qh.ArCode, qh.TaxType, qh.TaxRate, k.RemainQty,
+			qh.DocDate, k.ItemName)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
 		}
 	}
+
 	return err
 }
 
 // ------------------------------------------------------------
-func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
+func (q *Quotation) Insert(db *sqlx.DB) (NewQtNo string, err error) {
 
 	lccommand := `insert into dbo.bcquotation (
 		docno,docdate,taxtype,billtype,arcode,
@@ -285,11 +302,11 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 			?,?,?,?)`
 	_, err = db.Exec(lccommand,
 		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
-		q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,q.IsConfirm,
-		q.MyDescription, q.BillStatus,q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
-		q.AfterDiscountAmount, q.BeforeTaxAmount,q.TaxAmount, q.TotalAmount,q.Iscancel,
-		q.CreatorCode,q.CreateDateTime, q.EditorCode, q.EditDateTime,q.ConfirmCode,
-		q.ConfirmDataTime,q.CancelCode, q.CancelDateTime, q.DeliveryDate)
+		q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate, q.IsConfirm,
+		q.MyDescription, q.BillStatus, q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
+		q.AfterDiscountAmount, q.BeforeTaxAmount, q.TaxAmount, q.TotalAmount, q.Iscancel,
+		q.CreatorCode, q.CreateDateTime, q.EditorCode, q.EditDateTime, q.ConfirmCode,
+		q.ConfirmDataTime, q.CancelCode, q.CancelDateTime, q.DeliveryDate)
 
 	//fmt.Println(lccommand)
 	if err != nil {
@@ -297,21 +314,18 @@ func (q *Quotation)Insert(db *sqlx.DB) (NewQtNo string, err error) {
 	}
 
 	// todo : insert sub
-	err = q.InsertSub(q.Subs,db)
+	err = q.InsertSub(q.Subs, db)
 	if err != nil {
 		fmt.Println(err.Error)
-		return q.DocNo,err
+		return q.DocNo, err
 	}
 	return NewQtNo, err
 }
 
+func (q *Quotation) InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
+	for _, k := range sub {
 
-
-
-func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
-	for _,k :=  range sub{
-
-	lccommand := `
+		lccommand := `
 		insert into dbo.bcQuotationsub (
 	docno,taxtype,itemcode,docdate,arcode,
 	departcode,salecode,mydescription,itemname,whcode,
@@ -326,11 +340,11 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 		 )`
 
 		_, err := db.Exec(lccommand,
-			q.DocNo,q.TaxType,k.ItemCode,q.DocDate,q.ArCode,
-			q.DepartCode,q.SaleCode,k.Mydescription,k.ItemName,k.Whcode,
-			k.Shelfcode,k.Qty, k.Remainqty, k.Price, k.DisCountWord,
-			k.DisCountAmount,k.UnitCode,k.NetAmount,k.Amount,k.Homeamount,
-			q.IsConditionSend,k.Iscancel,k.LineNumber,k.Packingrate1,k.Packingrate2)
+			q.DocNo, q.TaxType, k.ItemCode, q.DocDate, q.ArCode,
+			q.DepartCode, q.SaleCode, k.Mydescription, k.ItemName, k.Whcode,
+			k.Shelfcode, k.Qty, k.Remainqty, k.Price, k.DisCountWord,
+			k.DisCountAmount, k.UnitCode, k.NetAmount, k.Amount, k.Homeamount,
+			q.IsConditionSend, k.Iscancel, k.LineNumber, k.Packingrate1, k.Packingrate2)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
@@ -340,7 +354,7 @@ func (q *Quotation)InsertSub(sub []*QuotationSub, db *sqlx.DB) (err error) {
 
 	return err
 }
-func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
+func (q *Quotation) CheckExists(db *sqlx.DB, docno string) (bool) {
 	fmt.Println("Begin CheckExists")
 	lccommand := "select top 1 docno from dbo.bcquotation where docno = '" + docno + "'"
 	rs, _ := db.Exec(lccommand)
@@ -353,19 +367,17 @@ func (q *Quotation)CheckExists(db *sqlx.DB, docno string) (bool) {
 
 }
 
-
-func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string , result bool,err error) {
+func (q *Quotation) Void(db *sqlx.DB, docno string, cancelcode string) (msg string, result bool, err error) {
 	//todo : Delete Before Update Saleorder
 	//todo : saleorder
 	fmt.Println("begin Quotation.Void")
 
-
 	// todo : check status of quotation  cannot be  void if confirmed or refered
-	result,err = q.isRefered(docno,db)
-	if result == true  {
+	result, err = q.isRefered(docno, db)
+	if result == true {
 		msg = "Document is confirmed  or refered or canceled "
 		result = false
-		return  msg,result , err
+		return msg, result, err
 
 	}
 
@@ -377,7 +389,7 @@ func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string
 	_, err = rs.RowsAffected()
 	if err != nil {
 		result = false
-		return "void header error ",result,err
+		return "void header error ", result, err
 	}
 
 	//todo : quotationsub cancel by update iscacel field
@@ -386,45 +398,43 @@ func(q *Quotation)Void(db *sqlx.DB, docno string, cancelcode string) (msg string
 
 	_, err = rs.RowsAffected()
 	if err != nil {
-		return "void Item error ",result,err
+		return "void Item error ", result, err
 	}
 
-	return "Void Completed",true,nil
+	return "Void Completed", true, nil
 
 }
-
 
 // tempoary struct for check before void
 type chkstatus struct {
-	Docno string
-	Isconfirm int32
+	Docno      string
+	Isconfirm  int32
 	Billstatus int32
-	Iscancel int32
+	Iscancel   int32
 }
 
-
-func(q *Quotation)isRefered(docno string ,db *sqlx.DB)(result bool,err error ){
-	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from dbo.bcquotation where docno = '"+docno+"'"
+func (q *Quotation) isRefered(docno string, db *sqlx.DB) (result bool, err error) {
+	lcCommand := "select top 1  docno,isconfirm,billstatus,iscancel from dbo.bcquotation where docno = '" + docno + "'"
 	fmt.Println(lcCommand)
 	fmt.Println("isRefered Check function begin")
 	chk := chkstatus{}
-	err = db.Get(&chk,lcCommand)
+	err = db.Get(&chk, lcCommand)
 	if err != nil {
-		fmt.Println("error query to check refered document quotation %s",err.Error())
-		return false ,err
+		fmt.Println("error query to check refered document quotation %s", err.Error())
+		return false, err
 	}
-	if chk.Isconfirm == 1 || chk.Billstatus == 1 || chk.Iscancel==1 {
-		return true,nil  // เอกสารอ้างอิงไปแล้ว
+	if chk.Isconfirm == 1 || chk.Billstatus == 1 || chk.Iscancel == 1 {
+		return true, nil // เอกสารอ้างอิงไปแล้ว
 	}
 	//fmt.Println("test")
-	return false,nil
+	return false, nil
 }
 
-func(q *Quotation)Update(db *sqlx.DB)(msg string , err error){
+func (q *Quotation) Update(db *sqlx.DB) (msg string, err error) {
 	// Update Quotation
 
 	// check qt status - Update can use only new,onprocess only
-	fmt.Println("model.quotation.Update() -> received : ",q.DocNo)
+	fmt.Println("model.quotation.Update() -> received : ", q.DocNo)
 
 	// status : done , cancel cannot update
 	if q.BillStatus == 1 || q.Iscancel == 1 {
@@ -441,11 +451,11 @@ func(q *Quotation)Update(db *sqlx.DB)(msg string , err error){
 		" where docno = ?"
 	_, err = db.Exec(lcCommand,
 		q.DocNo, q.DocDate, q.TaxType, q.BillType, q.ArCode,
-		q.DepartCode,q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,
-		q.IsConfirm,q.MyDescription, q.BillStatus,
+		q.DepartCode, q.CreditDay, q.DueDate, q.SaleCode, q.TaxRate,
+		q.IsConfirm, q.MyDescription, q.BillStatus,
 		q.SumItemAmount, q.DisCountWord, q.DisCountAmount,
 		q.AfterDiscountAmount, q.BeforeTaxAmount, q.TaxAmount, q.TotalAmount,
-		q.EditorCode, q.DeliveryDay,q.DeliveryDate,
+		q.EditorCode, q.DeliveryDay, q.DeliveryDate,
 		q.DocNo)
 	if err != nil {
 		msg = "Update Error "
