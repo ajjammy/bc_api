@@ -180,6 +180,7 @@ func PostQT(c *gin.Context){
 		c.JSON(http.StatusOK,rs)
 		return
 	}
+	fmt.Println(qt)
 	fmt.Println("docno = ",qt.DocNo)
 	lccommand := "delete bcnp.dbo.bcquotation where docno = ?"
 	_,err := dbx.Exec(lccommand,qt.DocNo)
