@@ -1,6 +1,6 @@
 {
   "_comment": "Actual deploy use db_host: nopadol.net:3306",
-  "db_host": "nebula2.nopadol.com",
+  "db_host": "nebula3.nopadol.com",
   "db_name": "bcnp",
   "db_user": "sa",
   "db_pass": "[ibdkifu",
