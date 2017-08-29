@@ -111,10 +111,20 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 				"where qty>0 and shelfcode ='-' and whcode not like '%ISP%'  and whcode not like '%TRN%' and  itemcode='"+item.Code+"'"
 			fmt.Println(item.Code)
 			err = db.Select(&items[idx].Stocks,sqlsub)
+
+			if len(items[idx].Stocks) == 0 {
+				stk := Stock{0,"","",""}
+				//stks := []Stock{}
+				items[idx].Stocks = append(items[idx].Stocks,&stk)
+				fmt.Println("Null stock is ",stk)
+
+			}
 			fmt.Println(sqlsub)
 
 		// bind : unit & Price
-		unitsub := "select  a.roworder as id,a.unitcode,b.name as unitname ,c.rate1 as packing_rate,saleprice1 as price "+
+		unitsub := "select  a.roworder as id,a.unitcode,b.name as unitname ," +
+			"isnull(c.rate1,1) as packing_rate," +
+			"saleprice1 as price "+
 			"from .dbo.bcpricelist a left join dbo.bcitemunit b on a.unitcode=b.code "+
 		 	"left join dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode"+
 		 	" where a.itemcode='"+item.Code+"'  and saletype = 0 and transporttype=0"

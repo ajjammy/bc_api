@@ -34,7 +34,6 @@ func main() {
 	app.DELETE("/quotation", ctrl.VoidQuotation)
 	app.POST("/qt", ctrl.PostQT)
 
-
 	app.GET("/customer", ctrl.GetCustomer)
 	app.GET("/customers", ctrl.GetCustomerList)
 
