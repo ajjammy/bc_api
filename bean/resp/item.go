@@ -92,6 +92,11 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	//fmt.Println(unitsub)
 	err = db.Select(&i.Units,unitsub,i.Code)
 
+	if len(i.Units) ==0 {
+		u := Unit{0,"","",0,0}
+		i.Units = append(i.Units,&u)
+	}
+
 	return nil
 }
 
@@ -141,6 +146,11 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		fmt.Println(unitsub)
 
 			err = db.Select(&items[idx].Units,unitsub)
+		if len(items[idx].Units) ==0 {
+			u := Unit{0,"","",0,0}
+			items[idx].Units = append(items[idx].Units,&u)
+		}
+
 	}
 
 	fmt.Println(i)
