@@ -68,13 +68,23 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 	sqlsub := `select qty,unitcode,whcode,shelfcode from dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
+	if len(i.Stocks) == 0 {
+		stk := Stock{0,"","",""}
+		//stks := []Stock{}
+		i.Stocks = append(i.Stocks,&stk)
+		fmt.Println("Null stock is ",stk)
+
+	}
+
 
 	if err !=nil{
 	return err
 	}
 	fmt.Println(i)
 
-	unitsub := `select  a.roworder as id,a.unitcode,b.name as unitname ,c.rate1 as packing_rate,saleprice1 as price
+	unitsub := `select  a.roworder as id,a.unitcode,b.name as unitname ,
+		isnull(c.rate1,1) as packing_rate,
+		saleprice1 as price
 		from dbo.bcpricelist a
 			left join dbo.bcitemunit b on a.unitcode=b.code
 		 	left join dbo.bcstkpacking c on a.unitcode=c.unitcode and a.itemcode=c.itemcode
