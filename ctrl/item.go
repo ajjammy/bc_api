@@ -18,7 +18,7 @@ func GetItem(c *gin.Context){
 	//param1 := c.URL.Query().Get("param1")
 	token := c.Request.URL.Query().Get("token")
 	keyword := c.Request.URL.Query().Get("keyword")
-
+	taxtype := c.Request.URL.Query().Get("taxtype")
 
 	fmt.Println("token = ",token)
 	item := Resp.Item{}
@@ -26,8 +26,10 @@ func GetItem(c *gin.Context){
 	//fmt.Println("result object : ",result)
 	fmt.Println("call Item.GetByCode :",keyword)
 
+	item.TaxType = taxtype
+	item.Code = keyword
 
-	err := item.GetByCode(keyword,dbx)
+	err := item.GetByCode(dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}
@@ -58,7 +60,7 @@ func GetItemList(c *gin.Context){
 	//param1 := c.URL.Query().Get("param1")
 	token := c.Request.URL.Query().Get("token")
 	keyword := c.Request.URL.Query().Get("keyword")
-
+	taxtype := c.Request.URL.Query().Get("taxtype")
 
 	fmt.Println("token = ",token)
 	item := Resp.Item{}
@@ -67,7 +69,7 @@ func GetItemList(c *gin.Context){
 	fmt.Println("call Item.GetByKeyword :",keyword)
 
 
-	items,err := item.GetByKeyword(keyword,dbx)
+	items,err := item.GetByKeyword(keyword,taxtype,dbx)
 	if err != nil{
 		log.Println(err.Error())
 	}

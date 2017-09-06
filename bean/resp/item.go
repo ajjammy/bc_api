@@ -21,13 +21,28 @@ type Item struct {
 	MyGrade string `json:"my_grade" db:"mygrade"`
 	Comm float32 `json:"comm"`
 	ImageProfile string `json:"img_profile" db:"picfilename1"`
-
+	PriceList []*Price `json:"price_list" `
+	TaxType string `json:"tax_type" omitempty`
 	//“sale_qty”:”12”,
 	//“reserve_qty”:”3”,
 	//“po_qty”:”30”,
 	//“my_grade”:”B”,
 	//“comm”:”1” //ณ เวลาที่ค้นหา,
 	//“img_profile”:”59110”
+
+}
+
+type Price struct {
+	SaleType int `json:"sale_type" db:"saletype"`
+	UnitCode string `json:"unit" db:"unitcode"`
+	TaxType int `json:"tax_type" db:"taxtype"`
+	SalePrice1 float32 `json:"sale_price_1" db:"saleprice1"`
+	SalePrice2 float32 `json:"sale_price_2" db:"saleprice2"`
+	SalePrice3 float32 `json:"sale_price_3" db:"saleprice3"`
+	SalePrice4 float32 `json:"sale_price_4" db:"saleprice4"`
+	TransportType int `json:"transport_type" db:"transporttype"`
+	FromQty float32 `json:"from_qty" db:"fromqty"`
+	ToQty float32 `json:"to_qty" db:"toqty"`
 
 }
 
@@ -51,7 +66,7 @@ type Unit struct {
 
 }
 
-func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
+func(i *Item)GetByCode(db *sqlx.DB)(err error){
 
 	lcCommand := "select top 10  roworder, code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
@@ -60,11 +75,11 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
 		"isnull(picfilename1,'') as picfilename1 " +
-		"from bcitem where code = '"+itemcode+"'"
+		"from bcitem where code = '"+i.Code+"'"
 	//fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
-	fmt.Println(itemcode)
+	fmt.Println(i.Code)
 	sqlsub := `select qty,unitcode,whcode,shelfcode from dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
@@ -97,10 +112,19 @@ func(i *Item)GetByCode(itemcode string,db *sqlx.DB)(err error){
 		i.Units = append(i.Units,&u)
 	}
 
+	sqlpricelist := "select saletype,unitcode,taxtype,saleprice1,saleprice2,saleprice3,saleprice4,transporttype,fromqty,toqty " +
+		"from bcpricelist " +
+		"where itemcode='"+i.Code+"' and taxtype ="+(i.TaxType)+""
+	fmt.Println(sqlpricelist)
+	err = db.Select(&i.PriceList,sqlpricelist)
+	if err != nil{
+		fmt.Println(err.Error())
+	}
+
 	return nil
 }
 
-func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
+func(i *Item)GetByKeyword(keyword string,taxtype string,db *sqlx.DB)(items []Item,err error){
 
 	lcCommand := "select top 10 roworder , code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
@@ -149,6 +173,16 @@ func(i *Item)GetByKeyword(keyword string,db *sqlx.DB)(items []Item,err error){
 		if len(items[idx].Units) ==0 {
 			u := Unit{0,"","",0,0}
 			items[idx].Units = append(items[idx].Units,&u)
+		}
+
+		sqlpricelist := "select saletype,unitcode,taxtype,saleprice1,saleprice2,saleprice3,saleprice4,transporttype,fromqty,toqty " +
+			"from bcpricelist " +
+			"where itemcode='"+item.Code+"' and taxtype ="+(taxtype)+""
+		fmt.Println(sqlpricelist)
+		//err = db.Select(&i.PriceList,sqlpricelist)
+		err = db.Select(&items[idx].PriceList,sqlpricelist)
+		if err != nil{
+			fmt.Println(err.Error())
 		}
 
 	}
