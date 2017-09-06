@@ -157,6 +157,7 @@ func(i *Item)GetByKeyword(keyword string,taxtype string,db *sqlx.DB)(items []Ite
 			fmt.Println(item.Code)
 			err = db.Select(&items[idx].Stocks,sqlsub)
 
+			items[idx].TaxType=taxtype
 			if len(items[idx].Stocks) == 0 {
 				stk := Stock{0,"","",""}
 				//stks := []Stock{}
@@ -189,6 +190,10 @@ func(i *Item)GetByKeyword(keyword string,taxtype string,db *sqlx.DB)(items []Ite
 		err = db.Select(&items[idx].PriceList,sqlpricelist)
 		if err != nil{
 			fmt.Println(err.Error())
+		}
+		if len(items[idx].PriceList) ==0 {
+			p := Price{}
+			items[idx].PriceList = append(items[idx].PriceList,&p)
 		}
 
 	}
