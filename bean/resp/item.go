@@ -23,6 +23,7 @@ type Item struct {
 	ImageProfile string `json:"img_profile" db:"picfilename1"`
 	PriceList []*Price `json:"price_list" `
 	TaxType string `json:"tax_type" omitempty`
+	Weight float32 `json:"weight" db:"weight"`
 	//“sale_qty”:”12”,
 	//“reserve_qty”:”3”,
 	//“po_qty”:”30”,
@@ -77,15 +78,17 @@ func(i *Item)GetByCode(db *sqlx.DB)(err error){
 		"isnull(reserveqty,0) as reserveqty," +
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
-		"isnull(picfilename1,'') as picfilename1 " +
+		"isnull(picfilename1,'') as picfilename1," +
+		"isnull(cast(Weight as float),0.00) as weight  " +
 		"from bcitem where code = '"+i.Code+"'"
-	//fmt.Println(lcCommand)
+	fmt.Println(lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Get(i,lcCommand)
 	fmt.Println(i.Code)
 	sqlsub := `select qty,unitcode,whcode,shelfcode from dbo.bcstklocation where qty > 0 and shelfcode = '-'  and whcode not like '%TRN%'  and whcode not like '%ISP%' and  itemcode=?`
 	fmt.Println(sqlsub)
 	err = db.Select(&i.Stocks,sqlsub,i.Code)
+	fmt.Println("weight->",i.Weight)
 	if len(i.Stocks) == 0 {
 		stk := Stock{0,"","",""}
 		//stks := []Stock{}
@@ -138,10 +141,11 @@ func(i *Item)GetByKeyword(keyword string,taxtype string,db *sqlx.DB)(items []Ite
 		"isnull(reserveqty,0) as reserveqty," +
 		"isnull(remaininqty,0) as remaininqty," +
 		"isnull(mygrade,'-') as mygrade," +
-		"isnull(picfilename1,'') as picfilename1 " +
+		"isnull(picfilename1,'') as picfilename1, " +
+		"isnull(cast(Weight as float),0.00) as weight  " +
 		"from dbo.bcitem where code like '%"+keyword+"%' or name1 like '%"+keyword+"%' or code in " +
 		"(select itemcode  from dbo.bcbarcodemaster where barcode like '%"+keyword+"%') "
-	fmt.Println(lcCommand)
+	fmt.Println("command : ",lcCommand)
 	// Get saleorder from Database by docno
 	err = db.Select(&items,lcCommand)
 	if err !=nil{
