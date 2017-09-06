@@ -67,6 +67,9 @@ type Unit struct {
 }
 
 func(i *Item)GetByCode(db *sqlx.DB)(err error){
+	if i.TaxType == "" {
+		i.TaxType="1"
+	}
 
 	lcCommand := "select top 10  roworder, code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
@@ -125,6 +128,9 @@ func(i *Item)GetByCode(db *sqlx.DB)(err error){
 }
 
 func(i *Item)GetByKeyword(keyword string,taxtype string,db *sqlx.DB)(items []Item,err error){
+	if taxtype == "" {
+		taxtype="1"
+	}
 
 	lcCommand := "select top 10 roworder , code,name1,defstkunitcode," +
 		"isnull(stockqty,0) as stockqty," +
